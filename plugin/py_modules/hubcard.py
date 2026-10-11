@@ -94,6 +94,8 @@ def dur_hm(sec):
     if s < 60:
         return ""
     h, m = int(s // 3600), round((s % 3600) / 60)
+    if m == 60:
+        h, m = h + 1, 0
     return t("hours_minutes", h=h, m=m) if h else t("minutes", m=m)
 
 

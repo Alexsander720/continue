@@ -4,7 +4,7 @@
 (проверено 01.10.2026). Русские названия из библиотеки HLTB не находит, поэтому для них
 берём английское имя из Steam Store (appdetails?l=english).
 """
-import difflib, json, os, re, ssl, time
+import difflib, json, os, re, ssl, time, tempfile
 
 import aiohttp
 
@@ -30,7 +30,8 @@ class HLTB:
     def __init__(self, data_dir):
         self.path = os.path.join(data_dir, "hltb.json")
         try:
-            self.cache = json.load(open(self.path, encoding="utf-8"))
+            with open(self.path, encoding="utf-8") as stream:
+                self.cache = json.load(stream)
         except Exception:
             self.cache = {}
 
@@ -39,9 +40,18 @@ class HLTB:
         return e if e and e.get("main") else None
 
     def _save(self):
-        tmp = self.path + ".tmp"
-        json.dump(self.cache, open(tmp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-        os.replace(tmp, self.path)
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+        fd, tmp = tempfile.mkstemp(prefix="hltb.", suffix=".tmp", dir=os.path.dirname(self.path))
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
+                json.dump(self.cache, stream, ensure_ascii=False, indent=1)
+                stream.write("\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(tmp, self.path)
+        finally:
+            if os.path.exists(tmp):
+                os.unlink(tmp)
 
     async def _english_name(self, session, appid):
         if int(appid) > 2**31:  # ярлык не из Steam

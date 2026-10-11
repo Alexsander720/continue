@@ -5,6 +5,9 @@
 сеть нужна только чтобы один раз узнать HLTB новой игры.
 """
 import asyncio, glob, hashlib, html, json, os, re, ssl, time, urllib.request
+import tempfile
+import threading
+import urllib.parse
 
 import decky  # type: ignore
 
@@ -15,12 +18,48 @@ import ui_i18n
 from hltb import HLTB
 
 DATA = decky.DECKY_PLUGIN_RUNTIME_DIR
-DEFAULTS = {"home_installed_first": True, "home_live": True, "home_music": True, "live_bg": "always", "hub_music": True, "game_bg": {}, "brightness_bar": True}
+DEFAULTS = {"home_installed_first": True, "home_live": True, "home_music": True, "live_bg": "always", "hub_music": True, "game_bg": {}, "brightness_bar": True,
+            "hide_launch_notice": True, "music_provider": "continue"}
 STANDALONE_DEFAULTS = {"standalone": True, "preset": "light", "bg_source": "steam", "game_source": {},
                        "disk_limit_gb": 2, "youtube_consent": False, "recording_enabled": False,
-                       "theme_music_consent": False, "home_music": False, "hub_music": False}
+                       "theme_music_consent": False, "home_music": False, "hub_music": False,
+                       "home_installed_first": False, "hide_launch_notice": False, "music_provider": "auto"}
 BG_MODES = ("auto", "trailer", "gameplay", "image", "steam")
 BG_SOURCES = ("steam", "youtube", "recording")
+
+_cache_io_lock = threading.RLock()
+
+
+def _read_json(path):
+    with open(path, encoding="utf-8") as stream:
+        value = json.load(stream)
+    return value if isinstance(value, dict) else {}
+
+
+def _atomic_json(path, value):
+    """A failed write keeps the last complete cache; unique temps avoid collisions."""
+    path = os.fspath(path)
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=os.path.basename(path) + ".", suffix=".tmp", dir=os.path.dirname(os.path.abspath(path)))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
+            json.dump(value, stream, ensure_ascii=False, indent=1)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+
+
+def _appid(value):
+    if isinstance(value, bool) or not isinstance(value, (str, int)):
+        return None
+    if not re.fullmatch(r"[1-9][0-9]{0,9}", str(value)):
+        return None
+    result = int(value)
+    return result if result <= 0xFFFFFFFF else None
 
 
 class Plugin:
@@ -39,7 +78,7 @@ class Plugin:
             if s.get("live_bg") in (None, "ac"):
                 s["live_bg"] = "always"
             s["schema"] = 1
-            json.dump(s, open(self._settings_path(), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+            self._write_settings(s)
         decky.logger.info("Continue?: старт, данные в %s", DATA)
 
     async def _unload(self):
@@ -67,17 +106,11 @@ class Plugin:
         return manager
 
     def _write_settings(self, settings):
-        os.makedirs(DATA, exist_ok=True)
-        path = self._settings_path()
-        tmp = path + ".tmp"
-        with open(tmp, "w", encoding="utf-8", newline="\n") as stream:
-            json.dump(settings, stream, ensure_ascii=False, indent=1)
-            stream.write("\n")
-        os.replace(tmp, path)
+        _atomic_json(self._settings_path(), settings)
 
     async def get_settings(self):
         try:
-            saved = json.load(open(self._settings_path(), encoding="utf-8"))
+            saved = _read_json(self._settings_path())
         except Exception:
             saved = {}
         if not isinstance(saved, dict):
@@ -101,7 +134,8 @@ class Plugin:
 
     # ───── «без видеозаставки» (03.10): своего выключателя у Steam нет — подставляем пустой ролик как локальную заставку ─────
     def _steam_root(self):
-        return os.path.expanduser("~/.local/share/Steam")
+        from ddsaves._common import deck_home
+        return str(deck_home() / ".local/share/Steam")
 
     async def ensure_blank_movie(self):
         """Положить assets/gh_no_startup.webm (0,2 с чёрного) в config/uioverrides/movies Steam; путь для настройки —
@@ -133,13 +167,13 @@ class Plugin:
     def _valid_setting(key, value, standalone):
         if not isinstance(key, str) or key == "standalone":
             return False
-        booleans = {"home_installed_first", "home_live", "home_music", "hub_music", "brightness_bar", "pdb_button", "pdb_tiles"}
+        booleans = {"home_installed_first", "home_live", "home_music", "hub_music", "brightness_bar", "pdb_button", "pdb_tiles", "hide_launch_notice"}
         if key in booleans or (standalone and key == "recording_enabled"):
             return type(value) is bool
         if key in {"youtube_consent", "theme_music_consent"}:
             # Enabling consent requires install_ytdlp(consent=True); revocation is allowed here.
             return standalone and value is False
-        enums = {"live_bg": ("ac", "always", "off")}
+        enums = {"live_bg": ("ac", "always", "off"), "music_provider": ("auto", "theme", "continue")}
         if standalone:
             enums.update({"preset": tuple(standalone_media.PRESETS), "bg_source": BG_SOURCES})
         if key in enums:
@@ -161,7 +195,8 @@ class Plugin:
 
     async def set_game_bg(self, appid, mode):
         """Фон одной игры: auto | trailer | gameplay | image (картинка хаба) | steam (родная обложка) (auto = как решил хаб + общий переключатель)."""
-        if mode not in BG_MODES:
+        appid = _appid(appid)
+        if appid is None or mode not in BG_MODES:
             return None
         s = await self.get_settings()
         m = dict(s.get("game_bg") or {})
@@ -179,7 +214,8 @@ class Plugin:
 
     async def set_game_source(self, appid, source):
         """Select Steam / YouTube / Background Recording for one game (public release only)."""
-        if not self._is_standalone() or source not in BG_SOURCES:
+        appid = _appid(appid)
+        if appid is None or not self._is_standalone() or source not in BG_SOURCES:
             return None
         settings = await self.get_settings()
         selected = dict(settings.get("game_source") or {})
@@ -201,7 +237,7 @@ class Plugin:
 
     def _about_cache(self):
         try:
-            return json.load(open(self._about_path(), encoding="utf-8"))
+            return _read_json(self._about_path())
         except Exception:
             return {}
 
@@ -216,7 +252,8 @@ class Plugin:
             ctx = ssl.create_default_context(cafile=certifi.where())
         except Exception:
             ctx = ssl.create_default_context(cafile="/etc/ssl/certs/ca-certificates.crt")
-        d = json.loads(urllib.request.urlopen(req, timeout=8, context=ctx).read().decode("utf-8"))
+        with urllib.request.urlopen(req, timeout=8, context=ctx) as response:
+            d = json.loads(response.read(1024 * 1024 + 1).decode("utf-8"))
         node = (d.get(str(appid)) or {})
         if not node.get("success"):
             return {"none": True}
@@ -233,8 +270,8 @@ class Plugin:
     async def get_protondb(self, appid):
         """{"tier": platinum|gold|silver|bronze|borked|pending|native|None, "trending", "best", "total", "confidence"}.
         tier=None — отчётов нет. Не-Steam ярлыки (appid ≥ 2^31) — None."""
-        appid = int(appid)
-        if appid <= 0 or appid >= 0x80000000:
+        appid = _appid(appid)
+        if appid is None or appid >= 0x80000000:
             return None
         path = os.path.join(DATA, "protondb.json")
         if Plugin._pdb is None:
@@ -251,12 +288,14 @@ class Plugin:
         except Exception as e:
             decky.logger.info("ProtonDB %s: %s", appid, e)
             return c.get("v") if c else None   # сеть упала — старое лучше пустого
-        Plugin._pdb[str(appid)] = {"at": time.time(), "v": v}
-        try:
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(Plugin._pdb, f)
-        except OSError:
-            pass
+        if self._pdb_lock is None:
+            self._pdb_lock = asyncio.Lock()
+        async with self._pdb_lock:
+            Plugin._pdb[str(appid)] = {"at": time.time(), "v": v}
+            try:
+                _atomic_json(path, Plugin._pdb)
+            except OSError:
+                pass
         return v
 
     @staticmethod
@@ -269,7 +308,8 @@ class Plugin:
         except Exception:
             ctx = ssl.create_default_context(cafile="/etc/ssl/certs/ca-certificates.crt")
         try:
-            d = json.loads(urllib.request.urlopen(req, timeout=8, context=ctx).read().decode("utf-8"))
+            with urllib.request.urlopen(req, timeout=8, context=ctx) as response:
+                d = json.loads(response.read(1024 * 1024 + 1).decode("utf-8"))
         except urllib.error.HTTPError as e:
             if e.code == 404:   # отчётов нет
                 return {"tier": None}
@@ -291,17 +331,18 @@ class Plugin:
         """Перевод из about_ru.json (готовит ПК); нет — пометить для ПК и вернуть None."""
         src = hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
         try:
-            got = json.load(open(os.path.join(DATA, "about_ru.json"), encoding="utf-8")).get(appid)
+            got = _read_json(os.path.join(DATA, "about_ru.json")).get(appid)
             if got and got.get("src") == src:
                 return got["ru"]
         except Exception:
             pass
         try:
             need_p = os.path.join(DATA, "about_need.json")
-            need = json.load(open(need_p, encoding="utf-8")) if os.path.exists(need_p) else {}
-            if need.get(appid) != text:
-                need[appid] = text
-                json.dump(need, open(need_p, "w", encoding="utf-8"), ensure_ascii=False)
+            with _cache_io_lock:
+                need = _read_json(need_p) if os.path.exists(need_p) else {}
+                if need.get(appid) != text:
+                    need[appid] = text
+                    _atomic_json(need_p, need)
         except Exception:
             pass
         return None
@@ -330,7 +371,10 @@ class Plugin:
         return r
 
     async def _get_about_raw(self, appid):
-        appid = str(int(appid))
+        parsed_appid = _appid(appid)
+        if parsed_appid is None:
+            return None
+        appid = str(parsed_appid)
         hub = {} if self._is_standalone() else (self._hub_index().get("cards") or {}).get(appid) or {}
         if hub.get("about"):   # не-Steam игры: описание из своей карточки (магазин Steam о них не знает)
             return {"short": hub["about"]}
@@ -351,9 +395,11 @@ class Plugin:
             decky.logger.warning("about %s: %s", appid, e)
             return None if not got or got.get("none") else got
         got["ts"] = time.time()
-        cache[cache_key] = got
         try:
-            json.dump(cache, open(self._about_path(), "w", encoding="utf-8"), ensure_ascii=False)
+            with _cache_io_lock:
+                cache = self._about_cache()  # merge after the executor yields
+                cache[cache_key] = got
+                _atomic_json(self._about_path(), cache)
         except OSError:
             pass
         return None if got.get("none") else got
@@ -367,7 +413,7 @@ class Plugin:
             return {"cards": {}, "synced_at": None}
         if m != self._hub_mtime:
             try:
-                self._hub = json.load(open(p, encoding="utf-8"))
+                self._hub = _read_json(p)
                 self._hub_mtime = m
             except (OSError, ValueError, TypeError):
                 return {"cards": {}, "synced_at": None}
@@ -414,7 +460,8 @@ class Plugin:
         out = {}
         for appid, c in (self._hub_index().get("cards") or {}).items():
             tid = (c.get("media") or {}).get("theme_id")
-            if tid and glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{tid}.*"):
+            if (isinstance(tid, str) and re.fullmatch(r"[A-Za-z0-9_-]{1,128}", tid)
+                    and glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{glob.escape(tid)}.*")):
                 out[appid] = tid
         return out
 
@@ -424,7 +471,7 @@ class Plugin:
             return await asyncio.get_running_loop().run_in_executor(None, self._media().music_files)
         out = {}
         for appid, tid in (await self.get_music_map()).items():
-            f = sorted(glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{tid}.*"))
+            f = sorted(glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{glob.escape(tid)}.*"))
             if f:
                 out[appid] = os.path.basename(f[0])
         return out
@@ -456,22 +503,41 @@ class Plugin:
         if not maps:
             return
 
-        def pick(label):
+        from ddsaves._common import labels
+        legacy = labels()["legacy"]
+
+        def pick(label, fact_id=None):
+            candidates = [fact_id, label, str(label).split(":")[0].strip()]
+            # Older manifests key the authored RU noun rather than the reader field ID.
+            label_id = next((key for key, translations in labels()["labels"].items()
+                             if label in [translations] if isinstance(translations, str)), None)
+            if label_id is None:
+                label_id = next((key for key, translations in labels()["labels"].items()
+                                 if isinstance(translations, dict) and label in translations.values()), None)
+            candidates.extend(k for k, v in legacy.items() if fact_id and v == fact_id)
+            candidates.extend(k for k, v in legacy.items() if label_id and v == label_id)
             for m in maps:
-                rel = m.get(label) or m.get(str(label).split(":")[0].strip())
-                fp = os.path.join(DATA, "icons", rel) if rel else None
-                if rel and os.path.isfile(fp):
-                    return "img:icons/%s?v=%d" % (rel, os.path.getmtime(fp))   # версия по mtime: Steam не держит старый значок в кэше
+                rel = next((m.get(k) for k in candidates if k and m.get(k)), None)
+                if not isinstance(rel, str) or ".." in rel.replace("\\", "/").split("/"):
+                    continue
+                root = os.path.realpath(os.path.join(DATA, "icons"))
+                fp = os.path.realpath(os.path.join(root, rel))
+                try:
+                    inside = os.path.commonpath((root, fp)) == root
+                except ValueError:
+                    inside = False
+                if inside and os.path.isfile(fp):
+                    return "img:icons/%s?v=%d" % (rel.replace("\\", "/"), os.path.getmtime(fp))
             return None
         facts = []
         for f in card.get("facts") or []:
-            img = pick(f.get("label"))
+            img = pick(f.get("label"), f.get("id"))
             f = dict(f, icon=img) if img else f
             if f.get("people"):   # портреты персонажей («Персонаж: <ключ>»)
-                f = dict(f, people=[dict(p, icon=pick("Персонаж: " + str(p.get("key")))) for p in f["people"]])
+                f = dict(f, people=[dict(p, icon=pick("Персонаж: " + str(p.get("key")), "person:" + str(p.get("key")))) for p in f["people"]])
             facts.append(f)
         card["facts"] = facts
-        ach = pick("Достижения")
+        ach = pick("Достижения", "achievements")
         if ach:
             card["ach_icon"] = ach
 
@@ -568,13 +634,14 @@ class Plugin:
             return {"ok": False, "error": f"{type(e).__name__}: {e}"[:240]}
 
     async def refresh_media(self, appid, name="", game_running=False, source=None, force=False):
-        """Build one cached background without blocking Decky's event loop.
-
-        Calls are rejected while a game is running or while the Deck is on
-        battery.  A semaphore makes the queue one game wide.
-        """
+        """Latest requested game wins; older waiters never start expensive work."""
         if not self._is_standalone():
             return {"ok": False, "standalone": False}
+        appid = _appid(appid)
+        if appid is None or source is not None and source not in BG_SOURCES:
+            return {"ok": False, "error": "Invalid media request"}
+        seq = getattr(self, "_media_refresh_seq", 0) + 1
+        self._media_refresh_seq = seq
         self._media_game_running = bool(game_running)
         power = await self.get_power()
         if game_running:
@@ -582,22 +649,27 @@ class Plugin:
         if not power.get("ac"):
             return {"ok": False, "deferred": "battery"}
         settings = await self.get_settings()
-        selected = source or (settings.get("game_source") or {}).get(str(int(appid))) or settings.get("bg_source") or "steam"
+        selected = source or (settings.get("game_source") or {}).get(str(appid)) or settings.get("bg_source") or "steam"
         if selected == "youtube" and not settings.get("youtube_consent"):
             return {"ok": False, "consent_required": True, "source": "youtube"}
         if selected == "recording" and not settings.get("recording_enabled"):
             return {"ok": False, "disabled": True, "source": "recording"}
         lock = self._media_lock()
-        if lock.locked():
-            return {"ok": False, "deferred": "busy"}
         async with lock:
+            if seq != self._media_refresh_seq:
+                return {"ok": False, "deferred": "superseded"}
             if not await asyncio.get_running_loop().run_in_executor(None, self._media_work_allowed):
                 return {"ok": False, "deferred": "power_or_game"}
+            self._media_active_seq = seq
             try:
                 return await asyncio.get_running_loop().run_in_executor(
-                    None, lambda: self._media().build(int(appid), name, settings, selected, force=bool(force)))
+                    None, lambda: self._media().build(appid, name, settings, selected, force=bool(force)))
             except Exception as exc:
+                if seq != self._media_refresh_seq:
+                    return {"ok": False, "deferred": "superseded"}
                 return {"ok": False, "error": f"{type(exc).__name__}: {exc}"[:240]}
+            finally:
+                self._media_active_seq = None
 
     def _media_lock(self):
         if getattr(self, "_standalone_lock", None) is None:
@@ -629,7 +701,9 @@ class Plugin:
         return False
 
     def _media_work_allowed(self):
-        return (self._is_standalone() and not getattr(self, "_media_game_running", False)
+        active = getattr(self, "_media_active_seq", None)
+        return (self._is_standalone() and (active is None or active == getattr(self, "_media_refresh_seq", active))
+                and not getattr(self, "_media_game_running", False)
                 and self._power_sync().get("ac") and not self._running_game())
 
     async def clear_media_cache(self):
@@ -713,25 +787,59 @@ class Plugin:
     def _fetch_release(self):
         req = urllib.request.Request(f"https://api.github.com/repos/{self.REPO}/releases/latest",
                                      headers={"User-Agent": "Continue-Deck", "Accept": "application/vnd.github+json"})
-        rel = json.loads(urllib.request.urlopen(req, timeout=10, context=self._ssl()).read().decode("utf-8"))
+        rel = json.loads(self._release_bytes(req, 1024 * 1024).decode("utf-8"))
         assets = {a.get("name"): a.get("browser_download_url") for a in rel.get("assets") or []}
         zip_name = next((n for n in assets if n and n.endswith(".zip") and "deck" in n.lower()), None)
         if not zip_name:
             return {"none": True}
-        sha = ""
-        if assets.get(zip_name + ".sha256"):
-            raw = urllib.request.urlopen(urllib.request.Request(assets[zip_name + ".sha256"], headers={"User-Agent": "Continue-Deck"}),
-                                         timeout=10, context=self._ssl()).read().decode("utf-8", "replace")
-            m = re.search(r"(?<![0-9a-fA-F])[0-9a-fA-F]{64}(?![0-9a-fA-F])", raw)
-            sha = m.group(0).lower() if m else ""
+        url, checksum_url = assets[zip_name], assets.get(zip_name + ".sha256")
+        if not self._release_asset_url(url) or not self._release_asset_url(checksum_url):
+            raise ValueError("Release assets must be official Continue HTTPS downloads")
+        raw = self._release_bytes(urllib.request.Request(checksum_url, headers={"User-Agent": "Continue-Deck"}), 4096).decode("utf-8", "replace")
+        m = re.search(r"(?<![0-9a-fA-F])[0-9a-fA-F]{64}(?![0-9a-fA-F])", raw)
+        if not m:
+            raise ValueError("Release checksum is missing or invalid")
+        sha = m.group(0).lower()
+        page = rel.get("html_url")
+        if not isinstance(page, str) or not page.startswith(f"https://github.com/{self.REPO}/releases/"):
+            page = f"https://github.com/{self.REPO}/releases"
         return {"version": str(rel.get("tag_name") or "").lstrip("v"), "url": assets[zip_name], "sha256": sha,
-                "notes": (rel.get("body") or "")[:1500], "page": rel.get("html_url")}
+                "notes": (rel.get("body") or "")[:1500], "page": page}
+
+    @classmethod
+    def _release_asset_url(cls, value):
+        if not isinstance(value, str):
+            return False
+        try:
+            u = urllib.parse.urlsplit(value)
+            prefix = f"/{cls.REPO}/releases/download/"
+            parts = urllib.parse.unquote(u.path).split("/")
+            return (u.scheme == "https" and u.netloc == "github.com" and not u.query and not u.fragment
+                    and u.path.startswith(prefix) and len(u.path[len(prefix):].split("/")) == 2
+                    and all(p and p not in (".", "..") and "\\" not in p for p in parts[1:]))
+        except ValueError:
+            return False
+
+    def _release_bytes(self, request, limit):
+        response = urllib.request.urlopen(request, timeout=10, context=self._ssl())
+        try:
+            # GitHub redirects downloads to its official signed asset CDN.
+            final = response.geturl() if hasattr(response, "geturl") else request.full_url
+            parsed = urllib.parse.urlsplit(final)
+            if parsed.scheme != "https" or parsed.netloc not in ("api.github.com", "github.com", "release-assets.githubusercontent.com", "objects.githubusercontent.com"):
+                raise ValueError("Untrusted release redirect")
+            raw = response.read(limit + 1)
+            if len(raw) > limit:
+                raise ValueError("Release response exceeds size limit")
+            return raw
+        finally:
+            response.close()
 
     async def check_update(self, force=False):
         """{"current", "latest", "available", "url", "sha256", "notes"}; сеть раз в сутки (кэш в update.json).
         Только в собранном релизе (RELEASE.json кладёт build_deck_zip.py). Рабочая копия владельца шире публичной
         — публичный zip поверх неё снёс бы дополнительные возможности, поэтому здесь обновления выключены."""
-        if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "RELEASE.json")):
+        if not self._is_standalone():
             return {"current": "dev", "available": False, "dev": True}
         path = os.path.join(DATA, "update.json")
         try:
@@ -739,19 +847,28 @@ class Plugin:
                 c = json.load(f)
         except (OSError, ValueError):
             c = {}
-        if force or time.time() - c.get("at", 0) > 86400:
+        failed = bool(c.get("error"))
+        if force or (time.time() >= c.get("retry_after", 0) and (failed or time.time() - c.get("at", 0) > 86400)):
             try:
                 rel = await asyncio.get_running_loop().run_in_executor(None, self._fetch_release)
+                if not rel.get("none") and (not re.fullmatch(r"[0-9a-f]{64}", rel.get("sha256") or "") or not self._release_asset_url(rel.get("url"))):
+                    raise ValueError("Incomplete release metadata")
                 c = {"at": time.time(), "rel": rel}
-                with open(path, "w", encoding="utf-8") as f:
-                    json.dump(c, f, ensure_ascii=False)
+                _atomic_json(path, c)
             except Exception as e:
                 decky.logger.info("update check: %s", e)
+                c = {"at": c.get("at", 0), "rel": c.get("rel") or {}, "error": True, "retry_after": time.time() + 900}
+                try:
+                    _atomic_json(path, c)
+                except OSError:
+                    pass
         cur, rel = self._current_version(), c.get("rel") or {}
-        avail = bool(rel.get("version") and rel.get("sha256")
+        avail = bool(not c.get("error") and rel.get("version") and re.fullmatch(r"[0-9a-f]{64}", rel.get("sha256") or "")
+                     and self._release_asset_url(rel.get("url"))
                      and self._version_tuple(rel["version"]) > self._version_tuple(cur))
         return {"current": cur, "latest": rel.get("version"), "available": avail, "url": rel.get("url"),
-                "sha256": rel.get("sha256"), "notes": rel.get("notes"), "page": rel.get("page"), "checked_at": c.get("at")}
+                "sha256": rel.get("sha256"), "notes": rel.get("notes"), "page": rel.get("page"), "checked_at": c.get("at"),
+                "error": bool(c.get("error")), "retry_after": max(0, min(900, c.get("retry_after", 0) - time.time()))}
 
     # ───── питание: живой фон только на зарядке ─────
     async def get_power(self):
@@ -762,18 +879,22 @@ class Plugin:
         ac = None
         for p in glob.glob("/sys/class/power_supply/*"):
             try:
-                kind = open(f"{p}/type").read().strip()
+                with open(f"{p}/type") as stream:
+                    kind = stream.read().strip()
                 if kind in ("Mains", "USB", "USB_C", "USB_PD") and os.path.exists(f"{p}/online"):
-                    ac = (ac or False) or open(f"{p}/online").read().strip() == "1"
+                    with open(f"{p}/online") as stream:
+                        ac = (ac or False) or stream.read().strip() == "1"
             except OSError:
                 pass
         bat = next(iter(glob.glob("/sys/class/power_supply/BAT*")), None)
         pct = None
         if bat:
             try:
-                pct = int(open(f"{bat}/capacity").read())
+                with open(f"{bat}/capacity") as stream:
+                    pct = int(stream.read())
                 if ac is None:
-                    ac = open(f"{bat}/status").read().strip() in ("Charging", "Full", "Not charging")
-            except OSError:
+                    with open(f"{bat}/status") as stream:
+                        ac = stream.read().strip() in ("Charging", "Full", "Not charging")
+            except (OSError, ValueError):
                 pass
         return {"ac": bool(ac), "battery": pct}

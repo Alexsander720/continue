@@ -13,9 +13,16 @@ MAX_REPORT_BYTES = 512 * 1024
 MAX_LOG_BYTES = 32768
 SETTING_KEYS = ('preset', 'bg_source', 'disk_limit_gb', 'youtube_consent', 'recording_enabled',
                 'theme_music_consent', 'home_live', 'home_music', 'hub_music', 'live_bg',
-                'home_installed_first', 'brightness_bar', 'pdb_button', 'pdb_tiles', 'game_source', 'game_bg')
+                'home_installed_first', 'brightness_bar', 'pdb_button', 'pdb_tiles', 'game_source', 'game_bg',
+                'hide_launch_notice', 'music_provider')
 CACHE_KEYS = ('cached_backgrounds', 'cached_games', 'files', 'bytes', 'disk_limit_gb', 'limit_bytes',
               'ffmpeg', 'yt_dlp', 'yt_dlp_verified', 'youtube_experimental', 'error', 'busy')
+
+SCHEMA_KEYS = frozenset(SETTING_KEYS + CACHE_KEYS + (
+    'schema', 'versions', 'plugin', 'decky', 'steamos', 'steam', 'VERSION_ID', 'BUILD_ID',
+    'language', 'settings', 'log_tail', 'games', 'background_cache', 'privacy', 'unavailable_versions',
+    'appid', 'name', 'status', 'error', 'card', 'place', 'facts', 'id', 'label', 'value', 'parse_ms',
+))
 
 
 def home_dir():
@@ -35,7 +42,8 @@ def usernames():
 def steam_identities(steam_root):
     values = []
     try:
-        text = (Path(steam_root) / 'config/loginusers.vdf').read_text(encoding='utf-8')[:262144]
+        with (Path(steam_root) / 'config/loginusers.vdf').open('rb') as stream:
+            text = stream.read(262144).decode('utf-8', 'replace')
         values.extend(re.findall(r'"(?:AccountName|PersonaName)"\s+"([^"\n]+)"', text, re.I))
         for identity in re.findall(r'"(7656119\d{10})"', text):
             values.append(str(int(identity) & 0xFFFFFFFF))
@@ -48,7 +56,8 @@ def sanitize(value, names=None):
     """Apply to keys too. All identities, including the author's, are private."""
     names = usernames() if names is None else names
     if isinstance(value, dict):
-        return {sanitize(str(k), names): sanitize(v, names) for k, v in value.items()}
+        return {str(k) if str(k) in SCHEMA_KEYS else sanitize(str(k), names): sanitize(v, names)
+                for k, v in value.items()}
     if isinstance(value, list):
         return [sanitize(v, names) for v in value]
     # Reader values are normally small counters, but a malformed/community
@@ -59,19 +68,31 @@ def sanitize(value, names=None):
     if not isinstance(value, str):
         return value
     text = value
+    text = re.sub(r'\\\\[^\\/"<>\r\n]+\\[^\\/"<>\r\n]+', r'\\\\<server>\\\\<share>', text)
     text = re.sub(r'(?i)([A-Z]:[\\/]+Users[\\/]+)[^\\/"<>\r\n]+', r'\1<user>', text)
+    text = re.sub(r'(?i)\b[A-Z]:[\\/]+(?!Users[\\/]+)[^\\/"<>\r\n]+', '<path>/<secret>', text)
     text = re.sub(r'(?i)\b[A-Z]:[\\/]+', '<path>/', text)
+    text = re.sub(r'/run/media/[^/"<>\r\n]+/[^/"<>\r\n]+', '/run/media/<user>/<volume>', text)
     text = re.sub(r'(/home/|/Users/|/run/media/)[^/"<>\r\n]+', r'\1<user>', text)
     text = re.sub(r'(?i)(userdata[\\/]+|SaveGames[\\/]+)\d+', r'\1<steamid>', text)
     text = re.sub(r'\b7656119\d{10}\b', '<steamid>', text)
     text = re.sub(r'\b\d{17}\b', '<steamid>', text)
-    text = re.sub(r'\b(?:10|192\.168)\.\d{1,3}\.\d{1,3}(?:\.\d{1,3})?\b', '<address>', text)
+    text = re.sub(r'\[U:\d+:\d+\]', '<steamid>', text, flags=re.I)
+    text = re.sub(r'(?<![\w.])(?:\d{1,3}\.){3}\d{1,3}(?![\w.])', '<address>', text)
     text = re.sub(r'(?i)\b[0-9a-f]{2}(?::[0-9a-f]{2}){5}\b', '<address>', text)
     text = re.sub(r'[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}', '<email>', text)
-    text = re.sub(r'(?i)\b(?:sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{30,}|AIza[A-Za-z0-9_-]{30,}|\d{8,10}:[A-Za-z0-9_-]{35})\b', '<secret>', text)
+    text = re.sub(r'(?i)\b(?:sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{30,}|AIza[A-Za-z0-9_-]{30,}|\d{8,10}:[A-Za-z0-9_-]{35,})\b', '<secret>', text)
+    text = re.sub(r'(?i)(\bauthorization\s*[=:]\s*)(?:Bearer\s+)?[^\s,;]+', r'\1<secret>', text)
     text = re.sub(r'(?i)((?:token|password|secret|api[_-]?key|authorization)\s*[=:]\s*)[^\s,;]+', r'\1<secret>', text)
     for name in sorted(names, key=len, reverse=True):
-        text = re.sub(r'(?i)(?<![\w])' + re.escape(name) + r'(?![\w])', '<user>', text)
+        if not isinstance(name, str) or not name or name.startswith('<'):
+            continue
+        if len(name) <= 2:
+            if text.casefold() == name.casefold():
+                text = '<user>'
+        else:
+            # Underscores delimit embedded identities in generated save names.
+            text = re.sub(r'(?i)(?<![A-Za-zА-Яа-яЁёІіЇїЄєҐґ0-9])(?<!<)' + re.escape(name) + r'(?![A-Za-zА-Яа-яЁёІіЇїЄєҐґ0-9])(?!>)', '<user>', text)
     return text
 
 

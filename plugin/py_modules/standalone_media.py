@@ -34,6 +34,8 @@ TRUSTED = (
 )
 RETRY_SECONDS = 7 * 86400
 YTDLP_UPDATE_SECONDS = 7 * 86400
+YTDLP_ERROR_RETRY_SECONDS = 15 * 60
+MAX_STDIO_BYTES = 16 * 1024 * 1024
 LOOP_SECONDS = 20
 MAX_DOWNLOAD_BYTES = 512 * 1024 * 1024
 CHUNK_BYTES = 64 * 1024
@@ -364,10 +366,12 @@ class MediaManager:
                     time.sleep(0.2)
                 self._checkpoint()
                 for output in (stdout, stderr):
-                    if output.tell() > 16 * 1024 * 1024:
+                    if output.tell() > MAX_STDIO_BYTES:
                         raise RuntimeError("subprocess output exceeds bounded metadata limit")
                     output.seek(0)
-                out, err = stdout.read(), stderr.read()
+                out, err = stdout.read(MAX_STDIO_BYTES + 1), stderr.read(MAX_STDIO_BYTES + 1)
+                if max(len(out), len(err)) > MAX_STDIO_BYTES:
+                    raise RuntimeError("subprocess output exceeds bounded metadata limit")
                 if text:
                     out, err = out.decode("utf-8", "replace"), err.decode("utf-8", "replace")
                 return subprocess.CompletedProcess(command, proc.returncode, out, err)
@@ -1058,13 +1062,7 @@ class MediaManager:
         own = self._own_ytdlp()
         if own:
             return own
-        # Optional reuse only.  No autonomous operation depends on this plugin.
-        candidates = (
-            "/home/deck/homebrew/plugins/SDH-GameThemeMusic/yt-dlp",
-            "/home/deck/homebrew/data/SDH-GameThemeMusic/yt-dlp",
-            "/home/deck/homebrew/data/SDH-GameThemeMusic/bin/yt-dlp",
-        )
-        return next((Path(p) for p in candidates if Path(p).is_file()), None)
+        return None  # Only this plugin's hash-verified binary may be executed.
 
     def install_ytdlp(self, consent=False, force=False):
         if not consent:
@@ -1073,9 +1071,10 @@ class MediaManager:
         previous = state.get("yt_dlp") or {}
         own = self._own_ytdlp()
         checked = previous.get("checked_at")
-        if checked is not None and self.now() - float(checked) < YTDLP_UPDATE_SECONDS and not (force and previous.get("error")):
+        retry_seconds = YTDLP_ERROR_RETRY_SECONDS if previous.get("error") else YTDLP_UPDATE_SECONDS
+        if checked is not None and self.now() - float(checked) < retry_seconds and not force:
             return {"ok": bool(own), "path": str(own) if own else None, "updated": False,
-                    "retry_at": float(checked) + YTDLP_UPDATE_SECONDS, "error": previous.get("error"),
+                    "retry_at": float(checked) + retry_seconds, "error": previous.get("error"),
                     "node": bool(shutil.which("node")), "experimental": not bool(shutil.which("node"))}
         # Record attempts before I/O. Explicit force retries a failed attempt;
         # successful installation/update checks keep the weekly bandwidth window.
@@ -1115,7 +1114,7 @@ class MediaManager:
             state["yt_dlp"]["error"] = f"{type(exc).__name__}: {exc}"[:240]
             self._save_state(state)
             return {"ok": bool(own), "updated": False, "error": state["yt_dlp"]["error"],
-                    "retry_at": float(state["yt_dlp"]["checked_at"]) + YTDLP_UPDATE_SECONDS,
+                    "retry_at": float(state["yt_dlp"]["checked_at"]) + YTDLP_ERROR_RETRY_SECONDS,
                     "experimental": not bool(shutil.which("node"))}
         finally:
             part.unlink(missing_ok=True)

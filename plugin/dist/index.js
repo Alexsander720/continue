@@ -425,6 +425,8 @@ const I18N = {
 };
 
 Object.assign(I18N.ru, {
+  hide_launch_notice: "Скрывать подсказку раскладки", music_provider: "Кто играет музыку",
+  music_auto: "Авто", music_theme: "Game Theme Music", music_continue: "Continue?",
   report_collect: "Собрать отчёт для разработчика", report_description: "Сначала просмотрите обезличенные данные; затем сохраните ZIP и приложите его к Issue вручную.",
   report_title: "Проверка отчёта", report_privacy: "В ZIP войдёт только показанный ниже JSON: версии, язык, настройки, хвост лога, установленные игры и результаты читателей, состояние кеша. Сейвы и медиа не включаются. Имена, пути профиля и Steam ID скрыты. Проверьте текст перед сохранением.",
   report_save: "Сохранить ZIP", report_saved: "Сохранено: {0}/{1}", report_failed: "Не удалось собрать или сохранить отчёт: {0}",
@@ -433,6 +435,8 @@ Object.assign(I18N.ru, {
   consent_theme: "Continue? скачает yt-dlp с проверкой SHA256 для поиска музыки тем. Музыка загружается только по вашему согласию; права принадлежат авторам. Это отдельное разрешение от трейлеров YouTube."
 });
 Object.assign(I18N.en, {
+  hide_launch_notice: "Hide layout hint", music_provider: "Music player",
+  music_auto: "Automatic", music_theme: "Game Theme Music", music_continue: "Continue?",
   report_collect: "Collect a developer report", report_description: "Review the sanitized data first, then save a ZIP and attach it to an Issue manually.",
   report_title: "Review the report", report_privacy: "The ZIP contains only the JSON shown below: versions, language, settings, a log tail, installed games and reader results, and cache status. Saves and media are excluded. Names, profile paths and Steam IDs are redacted. Review the text before saving.",
   report_save: "Save ZIP", report_saved: "Saved: {0}/{1}", report_failed: "Could not collect or save the report: {0}",
@@ -441,6 +445,8 @@ Object.assign(I18N.en, {
   consent_theme: "Continue? will download yt-dlp and verify its SHA256 to search for theme music. Music downloads require your consent; rights belong to their authors. This permission is separate from YouTube trailers."
 });
 Object.assign(I18N.uk, {
+  hide_launch_notice: "Приховувати підказку розкладки", music_provider: "Хто відтворює музику",
+  music_auto: "Авто", music_theme: "Game Theme Music", music_continue: "Continue?",
   report_collect: "Зібрати звіт для розробника", report_description: "Спершу перегляньте знеособлені дані, потім збережіть ZIP і додайте його до Issue вручну.",
   report_title: "Перевірка звіту", report_privacy: "ZIP міститиме лише показаний нижче JSON: версії, мову, налаштування, кінець журналу, встановлені ігри й результати читачів, стан кешу. Збереження та медіа не додаються. Імена, шляхи профілю й Steam ID приховано. Перевірте текст перед збереженням.",
   report_save: "Зберегти ZIP", report_saved: "Збережено: {0}/{1}", report_failed: "Не вдалося зібрати або зберегти звіт: {0}",
@@ -495,6 +501,80 @@ function useLanguage() {
   return code;
 }
 async function localizedCall(...args) { await languageReady; return call(...args); }
+
+let pluginSettings = {};
+function continueMusicAllowed(settings) {
+  const provider = settings?.music_provider || (settings?.standalone ? "auto" : "continue");
+  const present = (window.DeckyPluginLoader?.plugins || []).some(p => p?.name === "Game Theme Music" || p?.name === "SDH-GameThemeMusic");
+  return provider !== "theme" && (provider !== "auto" || !present);
+}
+
+function uiDocument() {
+  return window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.BrowserWindow?.document || document;
+}
+function uiBusy(doc = uiDocument()) { return gameRunning() || doc?.visibilityState === "hidden"; }
+
+// One cheap state watcher suspends all DOM/media work intervals. Visibility events wake immediately;
+// the fallback only reads MainRunningApp/document state when Steam does not send lifetime events.
+const activityListeners = new Set();
+let activityTimer = null, activityDoc = null, activityReg = null;
+function activityBeat() {
+  const doc = uiDocument();
+  if (doc !== activityDoc) {
+    activityDoc?.removeEventListener?.("visibilitychange", activityBeat);
+    activityDoc = doc; doc?.addEventListener?.("visibilitychange", activityBeat);
+  }
+  for (const f of activityListeners) f();
+}
+function watchUIActivity(fn) {
+  activityListeners.add(fn);
+  if (activityTimer == null) {
+    activityTimer = setInterval(activityBeat, 1500);
+    try { activityReg = window.SteamClient?.GameSessions?.RegisterForAppLifetimeNotifications?.(activityBeat); } catch {}
+  }
+  activityBeat();
+  return () => {
+    activityListeners.delete(fn);
+    if (activityListeners.size) return;
+    clearInterval(activityTimer); activityTimer = null;
+    activityDoc?.removeEventListener?.("visibilitychange", activityBeat); activityDoc = null;
+    try { activityReg?.unregister(); } catch {} activityReg = null;
+  };
+}
+function activeInterval(fn, ms, getDoc = uiDocument, onPause = () => {}) {
+  let timer = null, active = null;
+  const run = () => { if (!uiBusy(getDoc())) fn(); };
+  const clean = watchUIActivity(() => {
+    const next = !uiBusy(getDoc());
+    if (next === active) return;
+    active = next;
+    if (timer != null) { clearInterval(timer); timer = null; }
+    if (next) { run(); timer = setInterval(run, ms); } else onPause();
+  });
+  return () => { clean(); if (timer != null) clearInterval(timer); };
+}
+let lastMediaContext;
+function watchMediaContext() {
+  return watchUIActivity(() => {
+    const running = gameRunning();
+    if (running === lastMediaContext) return;
+    lastMediaContext = running;
+    call("set_media_context", running).catch(() => { if (lastMediaContext === running) lastMediaContext = undefined; });
+  });
+}
+
+// Retry the legacy busy response, but never revive a request superseded by a newer game/source.
+async function refreshMediaLatest(appid, name, source = null, alive = () => true) {
+  let result = null;
+  for (let attempt = 0; attempt < 5 && alive(); attempt++) {
+    if (uiBusy()) return { deferred: "running" };
+    result = await call("refresh_media", appid, name, false, source, false);
+    if (!alive()) return null;
+    if (result?.deferred !== "busy" && result?.deferred !== "queued") return result;
+    if (attempt < 4) await new Promise(resolve => setTimeout(resolve, Math.min(8000, 1000 * 2 ** attempt)));
+  }
+  return result;
+}
 
 // ───────────── иконки (линейные, 24×24) ─────────────
 
@@ -746,11 +826,16 @@ function makeStat(doc, label, value) {   // пункт строки по кла�
 function usePlayBarHltb(rootRef, items) {
   const key = JSON.stringify(items);
   useEffect(() => {
+    const labels = new Map(), rows = new Set(), nodes = new Set();
     const ensure = () => {
       const doc = rootRef.current?.ownerDocument;
+      if (!doc || uiBusy(doc)) return;
       const found = doc && playBarStat(doc);
       if (!found) return;
-      for (const l of found.labels) { const s = PB_SHORT[l.textContent.trim()]; if (s) l.textContent = s.label; }
+      for (const l of found.labels) {
+        const s = PB_SHORT[l.textContent.trim()];
+        if (s) { if (!labels.has(l)) labels.set(l, { original: l.textContent, replacement: s.label }); l.textContent = s.label; }
+      }
       if (!items.length || found.row.dataset.ghHltbDone === key) return;
       const { row, template: stat } = found;
       row.querySelectorAll("[data-gh-hltb]").forEach(n => n.remove());
@@ -764,6 +849,7 @@ function usePlayBarHltb(rootRef, items) {
           if (leafs.length >= 2) { leafs[0].textContent = it.label; leafs[1].textContent = it.value; }
         } else c = makeStat(doc, it.label, it.value);
         c.setAttribute("data-gh-hltb", "1");
+        nodes.add(c);
         row.appendChild(c);
       }
       const rr = row.getBoundingClientRect(), cy = rr.top + rr.height / 2;
@@ -776,14 +862,14 @@ function usePlayBarHltb(rootRef, items) {
       const bad = n => { const r = n.getBoundingClientRect(); return r.right > limit || Math.abs(r.top - first) > 6; };
       while (mine.length && bad(mine[mine.length - 1])) mine.pop().remove();   // сначала уходит «На 100%», потом «Сюжет»
       row.dataset.ghHltbDone = key;
+      rows.add(row);
     };
-    ensure();
-    const t = setInterval(ensure, 800);
+    const stop = activeInterval(ensure, 800, () => rootRef.current?.ownerDocument || uiDocument());
     return () => {
-      clearInterval(t);
-      const doc = rootRef.current?.ownerDocument;
-      doc?.querySelectorAll("[data-gh-hltb]").forEach(n => n.remove());
-      doc?.querySelectorAll("[data-gh-hltb-done]").forEach(n => { delete n.dataset.ghHltbDone; });
+      stop();
+      for (const n of nodes) n.remove();
+      for (const row of rows) if (row.dataset.ghHltbDone === key) delete row.dataset.ghHltbDone;
+      for (const [label, text] of labels) if (label.textContent === text.replacement) label.textContent = text.original;
     };
   }, [key]);
 }
@@ -1025,9 +1111,11 @@ function usePlaybackGate(videoRef, enabled) {
       if (busy && !v.paused) v.pause();
       else if (!busy && v.paused) v.play().catch(() => {});
     };
-    const t = setInterval(tick, 1500);
-    tick();
-    return () => clearInterval(t);
+    let busy;
+    return watchUIActivity(() => {
+      const next = uiBusy(videoRef.current?.ownerDocument);
+      if (next !== busy) { busy = next; tick(); }
+    });
   }, [enabled]);
 }
 
@@ -1061,16 +1149,19 @@ function limitVideoWindow(video, media, relative, standalone) {
 
 function useStandaloneMusic(appid, settings, media) {
   useEffect(() => {
-    if (!settings?.standalone || !settings.theme_music_consent) return;
-    let alive = true, audio = null;
+    if (!settings?.standalone || !settings.theme_music_consent || !continueMusicAllowed(settings)) return;
+    let alive = true, audio = null, stop = () => {}, busy;
     call("get_music_files").then(files => {
       if (!alive || !files?.[appid]) return;
       audio = new Audio(DATA + files[appid]); audio.loop = true; audio.volume = 0.5;
-      const tick = () => { if (gameRunning() || document.visibilityState === "hidden") audio.pause(); else audio.play().catch(() => {}); };
-      audio._ghTick = setInterval(tick, 1500); tick();
+      stop = watchUIActivity(() => {
+        const next = uiBusy() || !continueMusicAllowed(settings);
+        if (next === busy) return;
+        busy = next; if (next) audio.pause(); else audio.play().catch(() => {});
+      });
     }).catch(() => {});
-    return () => { alive = false; if (audio) { clearInterval(audio._ghTick); audio.pause(); audio.removeAttribute("src"); } };
-  }, [appid, settings?.standalone, settings?.theme_music_consent, media]);
+    return () => { alive = false; stop(); if (audio) { audio.pause(); audio.removeAttribute("src"); } };
+  }, [appid, settings?.standalone, settings?.theme_music_consent, settings?.music_provider, media]);
 }
 
 const SAVE_DATE = new RegExp("^(" + Object.values(I18N).map(d => d.save_prefix).join("|") + ")");
@@ -1093,6 +1184,7 @@ function GameHubPanel({ appid }) {
 
   useEffect(() => {
     let alive = true;
+    setCard(null); setHltb(null); setAbout(null);
     (async () => {
       try {
         const [c, p, s] = await Promise.all([localizedCall("get_card", appid, name), call("get_power"), call("get_settings")]);
@@ -1100,17 +1192,19 @@ function GameHubPanel({ appid }) {
         setCard(c); setPower(p || { ac: false }); setSettings(s || {});
         standaloneIcons = !!c?.standalone;
         if (c?.hltb) setHltb(c.hltb);
-        else { const x = await localizedCall("get_hltb", appid, name); if (alive && x) setHltb(x); }
-        if (s?.standalone && p?.ac && !gameRunning()) {
-          call("refresh_media", appid, name, false, null, false).then(async r => {
-            if (alive && r?.ok && (!r.cached || r.theme)) setCard(await localizedCall("get_card", appid, name));
+        else { const x = await localizedCall("get_hltb", appid, name); if (alive) setHltb(x || null); }
+        if (alive && s?.standalone && p?.ac && !uiBusy()) {
+          refreshMediaLatest(appid, name, null, () => alive).then(async r => {
+            if (!alive || !r?.ok || (r.cached && !r.theme)) return;
+            const updated = await localizedCall("get_card", appid, name);
+            if (alive) setCard(updated);
           }).catch(e => log("standalone media", e));
         }
       } catch (e) { log("get_card", e); }
     })();
     localizedCall("get_about", appid).then(x => { if (alive) setAbout(x); }).catch(() => {});
-    const t = setInterval(async () => { try { const p = await call("get_power"); if (alive) setPower(p); } catch (e) {} }, 60000);
-    return () => { alive = false; clearInterval(t); };
+    const stop = activeInterval(async () => { try { const p = await call("get_power"); if (alive) setPower(p); } catch (e) {} }, 60000);
+    return () => { alive = false; stop(); };
   }, [appid, language]);
 
   useEffect(() => {  // режим фона поменяли в меню «…»
@@ -1120,22 +1214,31 @@ function GameHubPanel({ appid }) {
   }, [appid]);
 
   useEffect(() => {
-    const f = async ns => { if (ns.standalone) { setSettings(ns); setCard(await localizedCall("get_card", appid, name)); } };
+    let alive = true, generation = 0;
+    const f = async ns => {
+      if (!alive || !ns.standalone) return;
+      const current = ++generation; setSettings(ns);
+      const card = await localizedCall("get_card", appid, name).catch(() => null);
+      if (alive && current === generation) setCard(card);
+    };
     settingsListeners.add(f);
-    return () => settingsListeners.delete(f);
+    return () => { alive = false; settingsListeners.delete(f); };
   }, [appid, name, language]);
 
   useEffect(() => {
     if (!settings.standalone) return;
-    const beat = () => call("set_media_context", gameRunning()).catch(() => {});
-    beat(); const timer = setInterval(beat, 1500);
-    return () => clearInterval(timer);
+    return watchMediaContext();
   }, [settings.standalone]);
 
   useEffect(() => {  // автономный источник поменяли в меню «…»
-    const f = async (id) => { if (id === appid) setCard(await localizedCall("get_card", appid, name)); };
+    let alive = true, generation = 0;
+    const f = async (id) => {
+      if (!alive || id !== appid) return;
+      const current = ++generation, card = await localizedCall("get_card", appid, name).catch(() => null);
+      if (alive && current === generation) setCard(card);
+    };
     sourceListeners.add(f);
-    return () => sourceListeners.delete(f);
+    return () => { alive = false; sourceListeners.delete(f); };
   }, [appid, name, language]);
 
   useEffect(() => {  // меню «…» должно знать, какая игра открыта
@@ -1151,7 +1254,8 @@ function GameHubPanel({ appid }) {
     let tries = 0;
     const t = setInterval(() => {
       const doc = rootRef.current?.ownerDocument;
-      const img = doc?.querySelector(`.${DFL.appDetailsHeaderClasses.TitleImageContainer} img`);
+      if (!doc || uiBusy(doc)) return;
+      const img = doc.querySelector(`.${DFL.appDetailsHeaderClasses.TitleImageContainer} img`);
       const src = img?.getAttribute("src") || "";
       if (/logo/i.test(src) && (src.includes(String(appid)) || src.includes("customimages"))) {
         setSteamLogo(new URL(src, doc.baseURI).href); clearInterval(t);
@@ -1176,11 +1280,11 @@ function GameHubPanel({ appid }) {
     if (!v || !videoRel) return;
     const src = DATA + videoRel;
     seekResume(v, src);
-    const t = setInterval(() => { if (!v.paused) notePos(src, v.currentTime); }, 400);
-    return () => { if (!v.paused) notePos(src, v.currentTime); clearInterval(t); };
+    const stop = activeInterval(() => { if (!v.paused) notePos(src, v.currentTime); }, 400, () => v.ownerDocument);
+    return () => { if (!v.paused) notePos(src, v.currentTime); stop(); };
   }, [videoRel, !!card]);
   useLayoutEffect(() => {  // подогнать размер блока под экран (после каждой смены содержимого)
-    const run = () => fitPanel(panelRef.current, barRef.current, logoRef.current, barWidth, shotRef.current, !!videoRel);
+    const run = () => { if (!uiBusy(rootRef.current?.ownerDocument)) fitPanel(panelRef.current, barRef.current, logoRef.current, barWidth, shotRef.current, !!videoRel); };
     run();
     const t = setTimeout(run, 500);   // шрифты/логотип доехали
     return () => clearTimeout(t);
@@ -1222,7 +1326,7 @@ function GameHubPanel({ appid }) {
     : (mode !== "steam" && card.media?.wall ? h("img", { className: "gh-bg", src: DATA + card.media.wall }) : null);
 
   return h("div", { ref: rootRef, className: "gh-root" },
-    h("style", null, CSS(accent, true)),
+    h("style", null, CSS(accent, !!(block.title || facts.length || detail || card.media?.wall || videoRel))),
     bg,
     h("div", { className: "gh-shade" }),
     h("div", { ref: panelRef, className: "gh-panel" },
@@ -1272,7 +1376,7 @@ function DeckPanel({ appid }) {
   if (g) { FIT.rootH = DECK_H; FIT.barBottom = g.barBottom; FIT.barRight = g.barRight; useHubLook(g.s !== 1); }
   // монитор/ТВ — вид и размеры хаба; свой экран Деки — как было (крупно, с подбором масштаба вверх)
   const css = g && g.s !== 1 ? `.gh-root{zoom:${g.s}}.gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}${HUB_LOOK_CSS}` : "";
-  return h(React.Fragment, null, h("style", { ref }, css), g ? h(GameHubPanel, { appid }) : null);
+  return h(React.Fragment, null, h("style", { ref }, css), g ? h(GameHubPanel, { key: appid, appid }) : null);
 }
 
 function patchAppPage() {
@@ -1290,8 +1394,10 @@ function patchAppPage() {
         const container = DFL.findInReactTree(ret, (x) => Array.isArray(x?.props?.children) &&
           x?.props?.className?.includes(DFL.appDetailsClasses.InnerContainer));
         if (typeof container !== "object" || !appid) return ret;
-        if (!container.props.children.some(c => c?.key === "gamehub-panel"))
-          container.props.children.splice(1, 0, h(DeckPanel, { key: "gamehub-panel", appid }));
+        const old = container.props.children.findIndex(c => String(c?.key || "").startsWith("gamehub-panel"));
+        const panel = h(DeckPanel, { key: "gamehub-panel:" + appid, appid });
+        if (old < 0) container.props.children.splice(1, 0, panel);
+        else if (container.props.children[old]?.props?.appid !== appid) container.props.children.splice(old, 1, panel);
         return ret;
       });
       DFL.afterPatch(routeProps, "renderFunc", patchHandler);
@@ -1404,32 +1510,45 @@ function isHomeGamesProps(p) {
 function keepJsxLayer(name, handle) {
   const J = window.SP_JSX;
   if (!J) return () => {};
-  const st = { seen: 0, active: true };
-  const wrap = fn => function (type, props, key) {
+  const st = { seen: 0, active: true, installed: [], current: null };
+  const wrap = (fn, record) => function (type, props, key) {
     if (props && props.__ghProbe === name) { st.seen++; return fn.call(this, type, props, key); }
-    if (st.active) {
+    if (st.active && record === st.current) {
       const r = handle.call(this, fn, type, props, key);
       if (r !== undefined) return r;
     }
     return fn.call(this, type, props, key);
   };
-  const install = () => { const orig = { jsx: J.jsx, jsxs: J.jsxs }; J.jsx = wrap(orig.jsx); J.jsxs = wrap(orig.jsxs); };
+  const install = () => {
+    // A filtered probe cannot distinguish a removed layer from a hidden one. Limit the
+    // physical chain, and make only the newest installation active in either case.
+    if (st.installed.length >= 3) return;
+    const record = { orig: { jsx: J.jsx, jsxs: J.jsxs } };
+    record.jsx = wrap(record.orig.jsx, record); record.jsxs = wrap(record.orig.jsxs, record);
+    st.current = record; st.installed.push(record); J.jsx = record.jsx; J.jsxs = record.jsxs;
+  };
   const works = () => {
+    if (J.jsx === st.current?.jsx && J.jsxs === st.current?.jsxs) return true;
     const before = st.seen;
     try { J.jsx(function GhProbe() { return null; }, { __ghProbe: name }); } catch (e) { return true; }
     return st.seen > before;
   };
   if (!works()) install();
-  const timer = setInterval(() => { if (!works()) install(); }, 2000);
-  // слой остаётся в цепочке (чужие слои выше него не режем), но выключается
-  return () => { clearInterval(timer); st.active = false; };
+  const stop = activeInterval(() => { if (!works()) install(); }, 2000);
+  return () => {
+    stop(); st.active = false;
+    // Restore only the methods still owned by us; a foreign layer above us stays intact.
+    for (const record of [...st.installed].reverse()) {
+      for (const method of ["jsx", "jsxs"]) if (J[method] === record[method]) J[method] = record.orig[method];
+    }
+  };
 }
 
 function patchHome() {
   return keepJsxLayer("home", (fn, type, props, key) => {
     if (isHomeGamesProps(props)) {
       try { return fn.call(null, type, { ...props, games: installedFirst(props.games) }, key); } catch (e) {}
-    } else if (props && Array.isArray(props.tabs) && props.tabs.some(t => t && t.id === "WhatsNew")) {
+    } else if (!pluginSettings.standalone && props && Array.isArray(props.tabs) && props.tabs.some(t => t && t.id === "WhatsNew")) {
       return null;   // «Что нового / Друзья / Рекомендации»: тема прятала блок, а крестовина проваливалась в него
     }
   });
@@ -1465,24 +1584,32 @@ function patchMediaResume() {
   const proto = window.HTMLMediaElement?.prototype;
   if (!proto || proto.__ghPlay) return () => {};
   const orig = proto.play;
-  proto.__ghPlay = true;
-  proto.play = function (...a) {
+  const samplers = new Map(); let active = true;
+  const wrapped = function (...a) {
     try {
       const rawSrc = this.currentSrc || this.src || "";
       const page = window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.m_history?.location?.pathname || "";
       const am = /library\/app\/(\d+)/.exec(page);
       const src = /^data:audio\//.test(rawSrc) && am ? "music:" + am[1] : "";
-      if (src && !this.__ghSampler) {
+      if (active && src && !samplers.has(this)) {
         seekResume(this, src);
         let idle = 0;
-        this.__ghSampler = setInterval(() => {
-          if (!this.paused) { idle = 0; notePos(src, this.currentTime); } else if (++idle > 50) { clearInterval(this.__ghSampler); this.__ghSampler = null; }
-        }, 400);
+        const stop = activeInterval(() => {
+          if (!this.paused) { idle = 0; notePos(src, this.currentTime); }
+          else if (++idle > 50) { samplers.get(this)?.(); samplers.delete(this); }
+        }, 400, () => this.ownerDocument || uiDocument());
+        samplers.set(this, stop);
       }
     } catch (e) {}
     return orig.apply(this, a);
   };
-  return () => { proto.play = orig; delete proto.__ghPlay; };
+  proto.play = wrapped; proto.__ghPlay = wrapped;
+  return () => {
+    active = false;
+    for (const stop of samplers.values()) stop(); samplers.clear();
+    if (proto.play === wrapped) proto.play = orig;
+    if (proto.__ghPlay === wrapped) delete proto.__ghPlay;
+  };
 }
 let unpatchMediaResume = null;
 
@@ -1491,25 +1618,34 @@ let unpatchMediaResume = null;
 // слой: видео-петля игры из хаба + логотип + короткое описание. Карусель остаётся выше. Видео подчиняется общему «Живому фону»
 // (на зарядке/всегда/выкл) и выбору фона у игры; не крутится, пока запущена игра.
 const homeLiveCache = new Map();   // appid -> {card, about, t}
-async function homeLiveInfo(appid, name) {
+async function homeLiveInfo(appid, name, alive = () => true) {
   const c = homeLiveCache.get(appid);
   if (c && Date.now() - c.t < 120000) return c;
   let [card, about] = await Promise.all([localizedCall("get_card", Number(appid), name).catch(() => null), localizedCall("get_about", Number(appid)).catch(() => null)]);
-  if (card?.standalone && !gameRunning()) {
-    const made = await call("refresh_media", Number(appid), name, false, null, false).catch(() => null);
-    if (made?.ok && !made.cached) card = await localizedCall("get_card", Number(appid), name).catch(() => card);
+  if (alive() && card?.standalone && !uiBusy()) {
+    const made = await refreshMediaLatest(Number(appid), name, null, alive).catch(() => null);
+    if (alive() && made?.ok && (!made.cached || made.theme)) card = await localizedCall("get_card", Number(appid), name).catch(() => card);
   }
   const v = { card, about, t: Date.now() };
-  homeLiveCache.set(appid, v);
+  if (alive()) homeLiveCache.set(appid, v);
   return v;
 }
 
 function patchHomeLive() {
   let doc = null, alive = true, cur = null, vwrap = null, panel = null, settings = {}, power = { ac: false }, busyTick = 0;
-  let audio = null, audioFor = null, musicTimer = null, musicFiles = null;
+  let audio = null, audioFor = null, musicTimer = null, musicFiles = null, unContext = null, configGeneration = 0;
   const HERO = /(?:\/assets\/(\d+)\/library_hero|\/hero4k\/(\d+)\.)/;
   const heroId = im => { const m = HERO.exec(im.getAttribute("src") || ""); return m ? (m[1] || m[2]) : null; };
-  const refreshCfg = async () => { try { settings = (await call("get_settings")) || {}; power = (await call("get_power")) || { ac: false }; if (settings.standalone) call("set_media_context", gameRunning()).catch(() => {}); } catch (e) {} };
+  const refreshCfg = async () => {
+    const generation = ++configGeneration;
+    try {
+      const [nextSettings, nextPower] = await Promise.all([call("get_settings"), call("get_power")]);
+      if (!alive || generation !== configGeneration) return;
+      settings = nextSettings || {}; power = nextPower || { ac: false };
+      if (settings.standalone && !unContext) unContext = watchMediaContext();
+      if (!continueMusicAllowed(settings)) stopMusic(true);
+    } catch (e) {}
+  };
   const remove = () => { for (const e of [vwrap, panel]) { try { e && e.remove(); } catch (x) {} } vwrap = null; panel = null; cur = null; };
   // активный фон главной: картинка library_hero с наибольшей прозрачностью (соседняя игра при перелистывании гаснет рядом)
   const findHero = () => {
@@ -1553,8 +1689,10 @@ function patchHomeLive() {
   const apply = async (appid) => {
     const ov = window.appStore?.GetAppOverviewByAppID?.(Number(appid));
     const name = ov?.display_name || "";
-    const info = await homeLiveInfo(appid, name);
-    if (!alive || !vwrap || cur !== appid) return;
+    const targetDoc = doc;
+    const valid = () => alive && !!vwrap && cur === appid && doc === targetDoc && !uiBusy(doc);
+    const info = await homeLiveInfo(appid, name, valid);
+    if (!valid()) return;
     const card = info.card;
     const v = vwrap.querySelector("video"), logo = panel.querySelector(".gh-hl-logo"), nm = panel.querySelector(".gh-hl-name");
     const rel = card ? pickVideo(card.media, card.bg_mode || "auto", livePolicy(settings, power, true), power.ac, !!card.standalone) : null;
@@ -1576,21 +1714,28 @@ function patchHomeLive() {
   // музыка игры на главной: файл темы из Game Theme Music (data/…/music), плавно входит/выходит, сама не мешает странице игры
   const MUSIC = "http://127.0.0.1:1337/plugins/Game%20Theme%20Music/data/music/";
   const fadeTo = (a, target, done) => {
+    clearInterval(a._ghFade);
     const step = (target - a.volume) / 10; let n = 0;
-    const iv = setInterval(() => { a.volume = Math.min(1, Math.max(0, a.volume + step)); if (++n >= 10) { clearInterval(iv); a.volume = target; if (done) done(); } }, 50);
+    const iv = setInterval(() => { a.volume = Math.min(1, Math.max(0, a.volume + step)); if (++n >= 10) { clearInterval(iv); a._ghFade = null; a.volume = target; if (done) done(); } }, 50);
+    a._ghFade = iv;
   };
-  const stopMusic = () => {
+  const stopMusic = (immediate = false) => {
     clearTimeout(musicTimer); musicTimer = null;
     const a = audio; audio = null; audioFor = null;
-    if (a) fadeTo(a, 0, () => { try { a.pause(); a.remove(); } catch (e) {} });
+    if (a) {
+      const remove = () => { try { a.pause(); a.removeAttribute("src"); a.remove(); } catch (e) {} };
+      if (immediate) { clearInterval(a._ghFade); remove(); } else fadeTo(a, 0, remove);
+    }
   };
   const playMusic = (appid) => {
+    if (!continueMusicAllowed(settings)) { stopMusic(true); return; }
     if (audioFor === appid) return;
     stopMusic();
     audioFor = appid;
     musicTimer = setTimeout(async () => {   // при быстром листании не дёргаем музыку на каждой игре
       try {
-        if (!alive || cur !== appid) return;
+        const targetDoc = doc;
+        if (!alive || cur !== appid || uiBusy(doc) || !continueMusicAllowed(settings)) return;
         let url = null;
         if (typeof pcBusy === "function") {   // ПК: тема из хаба — как на странице игры
           const rel = await call("get_theme", Number(appid), window.appStore?.GetAppOverviewByAppID?.(Number(appid))?.display_name || "");
@@ -1599,30 +1744,34 @@ function patchHomeLive() {
           if (!musicFiles) musicFiles = (await call("get_music_files")) || {};
           url = musicFiles[appid] ? (String(musicFiles[appid]).includes("/") ? DATA + musicFiles[appid] : MUSIC + encodeURIComponent(musicFiles[appid])) : null;
         }
-        if (!url || cur !== appid) return;
+        if (!alive || !url || cur !== appid || doc !== targetDoc || uiBusy(doc) || !continueMusicAllowed(settings)) return;
         const a = doc.createElement("audio");
         a.src = url; a.loop = true; a.volume = 0; a.preload = "auto";
         doc.body.appendChild(a);
         audio = a;
         seekResume(a, "music:" + appid);
         await a.play();
+        if (!alive || audio !== a || doc !== targetDoc || uiBusy(doc)) { a.pause(); a.remove(); return; }
         fadeTo(a, 0.5);
       } catch (e) { log("homemusic", e); }
     }, 700);
   };
   const tick = () => {
     try {
-      if (!alive) { remove(); stopMusic(); return; }
+      if (!alive) { remove(); stopMusic(true); return; }
       // окно Big Picture Steam пересоздаёт (открыли/закрыли BP) — документ берём заново на каждом шаге
       const d2 = window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.BrowserWindow?.document;
-      if (!d2?.body) { remove(); stopMusic(); return; }
-      if (d2 !== doc) { remove(); audio = null; audioFor = null; clearTimeout(musicTimer); musicTimer = null; doc = d2; }
+      if (!d2?.body) { remove(); stopMusic(true); return; }
+      if (d2 !== doc) { remove(); stopMusic(true); doc = d2; }
+      const busy = typeof pcBusy === "function" ? pcBusy(doc) : uiBusy(doc);
+      if (busy) { vwrap?.querySelector("video")?.pause(); stopMusic(true); return; }
+      const live = settings.home_live !== false && livePolicy(settings, power, true) !== "off";
+      const music = settings.home_music !== false && (!settings.standalone || settings.theme_music_consent) && continueMusicAllowed(settings);
+      if (!live && !music) { if (vwrap) remove(); stopMusic(true); return; }
       const path = window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.m_history?.location?.pathname || "";
       const hero = /library\/home/.test(path) ? findHero() : null;
       const hid = hero ? heroId(hero) : null;
       if (!hid) { remove(); stopMusic(); return; }
-      const busy = typeof pcBusy === "function" ? pcBusy(doc) : (gameRunning() || doc.visibilityState === "hidden");
-      const live = settings.home_live !== false && livePolicy(settings, power, true) !== "off";
       if (!live) { if (vwrap) remove(); }
       else {
         if (vwrap && (!vwrap.isConnected || vwrap.parentElement !== hero.parentElement)) remove();
@@ -1637,22 +1786,24 @@ function patchHomeLive() {
           if (!v.paused) notePos(v.getAttribute("src"), v.currentTime);
         }
       }
-      if (settings.home_music !== false && !busy) playMusic(hid); else if (audio || musicTimer) stopMusic();
+      if (music) playMusic(hid); else if (audio || musicTimer) stopMusic(true);
       if (audio && !audio.paused && audioFor) notePos("music:" + audioFor, audio.currentTime);
       if (++busyTick % 40 === 0) refreshCfg();
     } catch (e) { log("homelive", e); }
   };
   window.__ghHomeLive = () => ({ cur, audioFor, hasAudio: !!audio, timer: !!musicTimer, files: musicFiles && Object.keys(musicFiles).length, settings, alive });
-  let iv = null;
+  let stopTick = () => {};
   const start = () => {
     const w = window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.BrowserWindow;
     if (!w?.document?.body) return false;
     doc = w.document;
-    refreshCfg().then(() => { if (alive) iv = setInterval(tick, 400); });
+    refreshCfg().then(() => {
+      if (alive) stopTick = activeInterval(tick, 400, uiDocument, () => { vwrap?.querySelector("video")?.pause(); stopMusic(true); });
+    });
     return true;
   };
   const t = setInterval(() => { if (start()) clearInterval(t); }, 1000);
-  return () => { alive = false; clearInterval(t); if (iv) clearInterval(iv); remove(); stopMusic(); };
+  return () => { alive = false; clearInterval(t); stopTick(); unContext?.(); remove(); stopMusic(true); };
 }
 let unpatchHomeLive = null;
 function applyHomeLiveSetting(on) {
@@ -1731,7 +1882,8 @@ function GameBgPicker() {
     await call("set_game_source", v.appid, o.data);
     setViewing({ ...v, source: o.data });
     sourceListeners.forEach(f => f(v.appid, o.data));
-    call("refresh_media", v.appid, v.name || "", gameRunning(), o.data, false).then(() => sourceListeners.forEach(f => f(v.appid, o.data))).catch(() => {});
+    const valid = () => viewing?.appid === v.appid && viewing?.source === o.data;
+    refreshMediaLatest(v.appid, v.name || "", o.data, valid).then(r => { if (valid() && r?.ok) sourceListeners.forEach(f => f(v.appid, o.data)); }).catch(() => {});
   };
   return h(DFL.PanelSection, { title: t("background", v.name || "") },
     h(DFL.PanelSectionRow, null, h(DFL.DropdownItem, {
@@ -1757,11 +1909,11 @@ function UpdateRow() {
     setBusy(false);
   };
   const recheck = async () => { setBusy(true); try { setU(await call("check_update", true)); } catch {} setBusy(false); };
-  return h(DFL.PanelSectionRow, null, u.available
+  return h(DFL.PanelSectionRow, null, u.available && !u.error
     ? h(DFL.ButtonItem, { layout: "below", disabled: busy, onClick: install,
         description: t("version_now", u.current) + (u.notes ? " · " + firstLine(u.notes) : "") }, t("update_to", u.latest))
     : h(DFL.ButtonItem, { layout: "below", disabled: busy, onClick: recheck,
-        description: u.latest ? t("version_latest", u.latest) : t("update_offline") }, t("version_check", u.current)));
+        description: !u.error && u.latest ? t("version_latest", u.latest) : t("update_offline") }, t("version_check", u.current)));
 }
 
 // ───────────── полоса яркости (08.10, просьба друга): как громкость, но для яркости ─────────────
@@ -1808,7 +1960,7 @@ function BrightnessBar() {
       setPct(Math.round((d?.flBrightness || 0) * 100));
       // 10.10: Steam вызывает колбэк сразу при подписке (через ~20 мс) с ТЕКУЩЕЙ яркостью — полоска «включалась сама»
       // при каждой перевыкатке плагина и пересборке окна
-      if (!brightBarOn || Date.now() - t0 < 600 || Date.now() < brightQuietUntil) return;
+      if (!brightBarOn || otherBrightnessBar() || Date.now() - t0 < 600 || Date.now() < brightQuietUntil) { setVisible(false); return; }
       setVisible(true);
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => setVisible(false), 1000);
@@ -1826,7 +1978,7 @@ function BrightnessBar() {
       h("span", { style: { display: "block", height: "100%", width: `${pct}%`, borderRadius: 3, background: "#1a9fff" } })));
 }
 function installBrightnessBar(on) {
-  brightBarOn = on !== false && !otherBrightnessBar();
+  brightBarOn = on !== false;
   if (!IS_LINUX || !routerHook?.addGlobalComponent || !window.SteamClient?.System?.Display?.RegisterForBrightnessChanges) return () => {};
   routerHook.addGlobalComponent("ContinueBrightnessBar", BrightnessBar);
   const quiet = () => { brightQuietUntil = Date.now() + 6000; };
@@ -1860,22 +2012,47 @@ function QamContent() {
   const [notice, setNotice] = useState("");
   const [dialog, setDialog] = useState(null);
   const [reportBusy, setReportBusy] = useState(false);
-  useEffect(() => { call("get_status").then(setSt).catch(() => {}); call("get_settings").then(setS).catch(() => {}); }, []);
-  const upd = async (k, v) => { const ns = await call("set_setting", k, v); setS(ns); if (ns.standalone) { settingsListeners.forEach(f => f(ns)); if (k === "bg_source" && viewing) call("refresh_media", viewing.appid, viewing.name || "", gameRunning(), null, false).then(() => sourceListeners.forEach(f => f(viewing?.appid))).catch(() => {}); } if (k === "home_installed_first") applyHomeSetting(v); if (["home_live", "home_music", "preset", "bg_source"].includes(k)) { applyHomeLiveSetting(true); homeLiveRefresh(); } };
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    call("get_status").then(x => { if (mounted.current) setSt(x); }).catch(() => {});
+    call("get_settings").then(x => { if (mounted.current) setS(x); }).catch(() => {});
+    return () => { mounted.current = false; };
+  }, []);
+  const upd = async (k, v) => {
+    const ns = await call("set_setting", k, v);
+    if (!mounted.current) return;
+    pluginSettings = ns || {}; setS(ns);
+    if (ns.standalone) {
+      settingsListeners.forEach(f => f(ns));
+      if (k === "bg_source" && viewing) {
+        const target = viewing, valid = () => mounted.current && viewing?.appid === target.appid;
+        refreshMediaLatest(target.appid, target.name || "", null, valid).then(r => { if (valid() && r?.ok) sourceListeners.forEach(f => f(target.appid)); }).catch(() => {});
+      }
+    }
+    if (k === "hide_launch_notice") applyLaunchNoticeSetting(v);
+    if (k === "home_installed_first") applyHomeSetting(v);
+    if (["home_live", "home_music", "music_provider", "preset", "bg_source"].includes(k)) { applyHomeLiveSetting(true); homeLiveRefresh(); }
+  };
   const opts = [{ data: "ac", label: t("charging") }, { data: "always", label: t("always") }, { data: "off", label: t("off") }];
   const presets = ["light", "balanced", "maximum"].map(x => ({ data: x, label: t(`preset_${x}`) }));
   const sources = ["steam", "youtube", "recording"].map(x => ({ data: x, label: t(`source_${x}`) }));
   const limits = [1, 2, 4, 8].map(x => ({ data: x, label: `${x} GB` }));
+  const musicProviders = ["auto", "theme", "continue"].map(x => ({ data: x, label: t(`music_${x}`) }));
   const youtubeConsent = async v => {
-    if (v) { const r = await call("install_ytdlp", true, false).catch(() => null); setNotice(r?.ok ? "" : t(r?.deferred ? "media_deferred" : "media_setup_failed"));
-      const ns = await call("get_settings"); setS(ns); settingsListeners.forEach(f => f(ns)); }
+    if (v) { const r = await call("install_ytdlp", true, true).catch(() => null); if (!mounted.current) return; setNotice(r?.ok ? "" : t(r?.deferred ? "media_deferred" : "media_setup_failed"));
+      const ns = await call("get_settings"); if (!mounted.current) return; pluginSettings = ns || {}; setS(ns); settingsListeners.forEach(f => f(ns)); }
     else await upd("youtube_consent", false);
   };
   const themeConsent = async v => {
-    if (v) { const r = await call("install_ytdlp", true, false, "theme").catch(() => null); setNotice(r?.ok ? "" : t(r?.deferred ? "media_deferred" : "media_setup_failed"));
-      const ns = await call("get_settings"); setS(ns); settingsListeners.forEach(f => f(ns)); await upd("home_music", !!ns.theme_music_consent); }
+    if (v) { const r = await call("install_ytdlp", true, true, "theme").catch(() => null); if (!mounted.current) return; setNotice(r?.ok ? "" : t(r?.deferred ? "media_deferred" : "media_setup_failed"));
+      const ns = await call("get_settings"); if (!mounted.current) return; pluginSettings = ns || {}; setS(ns); settingsListeners.forEach(f => f(ns)); await upd("home_music", !!ns.theme_music_consent); }
     else { await upd("theme_music_consent", false); await upd("home_music", false); }
-    if (v && viewing) call("refresh_media", viewing.appid, viewing.name || "", gameRunning(), null, false).then(() => sourceListeners.forEach(f => viewing && f(viewing.appid))).catch(() => {});
+    if (!mounted.current) return;
+    if (v && viewing) {
+      const target = viewing, valid = () => mounted.current && viewing?.appid === target.appid;
+      refreshMediaLatest(target.appid, target.name || "", null, valid).then(r => { if (valid() && r?.ok) sourceListeners.forEach(f => f(target.appid)); }).catch(() => {});
+    }
     homeLiveRefresh();
   };
   const clearCache = async () => { await call("clear_media_cache"); setSt(await call("get_status")); homeLiveRefresh(); sourceListeners.forEach(f => viewing && f(viewing.appid)); };
@@ -1906,6 +2083,9 @@ function QamContent() {
         : t("hub_status", st.hub_cards) + (st.synced_at ? t("synced", dateRu(st.synced_at), ago(st.synced_at)) : t("not_synced")) +
           t("reader_status", st.deck_readers.length, st.hltb_cached)) : "…")),
     h(DFL.PanelSectionRow, null, h(StartupMovieToggle)),
+    s ? h(DFL.PanelSectionRow, null, h(DFL.ToggleField, { label: t("hide_launch_notice"), checked: !!s.hide_launch_notice, onChange: v => upd("hide_launch_notice", v) })) : null,
+    s ? h(DFL.PanelSectionRow, null, h(DFL.DropdownItem, { label: t("music_provider"), rgOptions: musicProviders,
+      selectedOption: s.music_provider || (s.standalone ? "auto" : "continue"), onChange: o => upd("music_provider", o.data) })) : null,
     s && IS_LINUX ? h(DFL.PanelSectionRow, null, h(DFL.ToggleField, { label: t("brightness"), description: otherBrightnessBar()
       ? t("brightness_other") : t("brightness_desc"),
       checked: s.brightness_bar !== false, disabled: otherBrightnessBar(), onChange: v => { brightBarOn = v; upd("brightness_bar", v); } })) : null,
@@ -2049,36 +2229,46 @@ function launchNoticeCss() {
 function ensureLaunchNoticeHidden() {
   const css = launchNoticeCss();
   if (!css) return () => {};
+  const owned = new Set();
   const put = () => {
     try {
       const d = window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.BrowserWindow?.document;
-      if (!d?.head || d.getElementById("gh-launch-notice")) return;
+      if (!d?.head || uiBusy(d) || d.getElementById("gh-launch-notice")) return;
       const st = d.createElement("style"); st.id = "gh-launch-notice"; st.textContent = css; d.head.appendChild(st);
+      owned.add(st);
     } catch (e) {}
   };
-  put();
-  const t = setInterval(put, 3000);   // окно Big Picture пересоздаётся — ставим заново
+  const stop = activeInterval(put, 3000);
   return () => {
-    clearInterval(t);
-    try { window.SteamUIStore?.WindowStore?.GamepadUIMainWindowInstance?.BrowserWindow?.document?.getElementById("gh-launch-notice")?.remove(); } catch (e) {}
+    stop();
+    for (const style of owned) style.remove(); owned.clear();
   };
 }
 
+let unLaunchNotice = null;
+function applyLaunchNoticeSetting(on) {
+  if (on && !unLaunchNotice) unLaunchNotice = ensureLaunchNoticeHidden();
+  else if (!on && unLaunchNotice) { unLaunchNotice(); unLaunchNotice = null; }
+}
+
 var index = DFL.definePlugin(() => {
-  const unLaunchNotice = ensureLaunchNoticeHidden();
+  let mounted = true;
   const appPatch = patchAppPage();
   const unpatchPadBat = patchPadBattery();
   const unpatchButtons = patchAppButtons();
   const unpatchLibTab = patchLibraryDefaultTab();
   const unpatchPdb = patchLibraryPdb();
   let unBright = () => {};
-  call("get_aliases").then(m => { aliasMap = m || {}; }).catch(() => {});
+  call("get_aliases").then(m => { if (mounted) aliasMap = m || {}; }).catch(() => {});
   // язык названий из игр = язык Steam (ddsaves: нет строки на нём — английский, потом русский)
   languageReady.catch(e => log("language", e));
   call("get_settings").then(s => {
+    if (!mounted) return;
+    pluginSettings = s || {}; lastMediaContext = undefined;
+    applyLaunchNoticeSetting(s?.hide_launch_notice ?? !s?.standalone);
     pdbPrefs = { pdb_button: s?.pdb_button !== false, pdb_tiles: s?.pdb_tiles !== false };
     unBright = installBrightnessBar(s?.brightness_bar);
-    applyHomeSetting(s?.home_installed_first !== false);
+    applyHomeSetting(s?.home_installed_first ?? !s?.standalone);
     applyHomeLiveSetting(true);
     if (!unpatchMediaResume) unpatchMediaResume = patchMediaResume();
     if (s?.hub_music !== false) applyHubMusic().then(n => n && log(`hub themes enabled: ${n}`));
@@ -2088,13 +2278,14 @@ var index = DFL.definePlugin(() => {
     content: h(QamContent),
     icon: h(HubIcon),
     onDismount() {
+      mounted = false;
       routerHook.removePatch("/library/app/:appid", appPatch);
       unpatchLibTab();
       unpatchPdb();
       unBright();
       unpatchButtons();
       unpatchPadBat();
-      unLaunchNotice();
+      applyLaunchNoticeSetting(false);
       if (unpatchHome) { unpatchHome(); unpatchHome = null; }
       if (unpatchHomeLive) { unpatchHomeLive(); unpatchHomeLive = null; }
       if (unpatchMediaResume) { unpatchMediaResume(); unpatchMediaResume = null; }
