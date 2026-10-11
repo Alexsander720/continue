@@ -38,6 +38,6 @@ site/media/*/theme.m4a
 site/media/tour-*.mp4
 
 # Local release artifacts
-dist/
+/dist/
 _readme_preview_*.html
 _tkcheck.jpg
