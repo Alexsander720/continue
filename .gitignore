@@ -1,0 +1,43 @@
+# Python / Node
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.pytest_cache/
+
+# Personal and generated — never commit
+*.key
+*_key.txt
+notify.json
+config/gamehub.config.json
+config/continue.config.json
+data/*.json
+!data/README.md
+cache/
+logs/
+*.log
+*.bak*
+*.orig
+
+# Game content (users generate it locally from their own copy of each game)
+_extract/
+fixtures/**/external/
+*.pak
+*.ucas
+*.utoc
+*.locres
+*.uasset
+
+# Local preview leftovers
+_*.jpg
+
+# Музыка тем игр — не публикуем (права); локально для предпросмотра можно
+site/media/*/theme.m4a
+
+# Ролики тура кладутся в сайт при сборке (Pages) — в git только docs/img/tour-*
+site/media/tour-*.mp4
+
+# Local release artifacts
+dist/
+_readme_preview_*.html
+_tkcheck.jpg

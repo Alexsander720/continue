@@ -1,0 +1,39 @@
+name: Continue draft release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run all checks and build exact update assets
+        env:
+          CONTINUE_TAG: ${{ github.ref_name }}
+        run: python tools/local_ci.py --version "$CONTINUE_TAG"
+      - name: Create a draft with ZIP and SHA256 assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONTINUE_TAG: ${{ github.ref_name }}
+          CONTINUE_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${CONTINUE_TAG#v}"
+          gh release create "$CONTINUE_TAG" \
+            "dist/continue-deck-${version}.zip" \
+            "dist/continue-deck-${version}.zip.sha256" \
+            --repo "$CONTINUE_REPO" --verify-tag --draft \
+            --title "Continue? ${CONTINUE_TAG}" \
+            --notes "Draft build; review checks and Steam Deck acceptance before publishing."

@@ -1,0 +1,14 @@
+{
+  "name": "Continue",
+  "author": "Doctor_Nerd",
+  "flags": [],
+  "api_version": 1,
+  "publish": {
+    "tags": [
+      "library",
+      "style"
+    ],
+    "image": "",
+    "description": "Where you left off — read from your own saves. Proven facts per game, live backgrounds."
+  }
+}

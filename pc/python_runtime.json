@@ -1,0 +1,18 @@
+{
+  "version": "3.14.8",
+  "minimum_version": "3.10",
+  "release_page": "https://www.python.org/downloads/release/python-3148/",
+  "prepared": "2026-10-10",
+  "architectures": {
+    "amd64": {
+      "url": "https://www.python.org/ftp/python/3.14.8/python-3.14.8-embed-amd64.zip",
+      "sha256": "a93abe456ab01bd96d7a085b3cdb6566b3063f4241360d114142fbdb07f0a310",
+      "size_bytes": 12601679
+    },
+    "arm64": {
+      "url": "https://www.python.org/ftp/python/3.14.8/python-3.14.8-embed-arm64.zip",
+      "sha256": "155be84ccb57c6331cf0e39001c78a1dfac3be62f403f3ff5f2e29b80dda7ebe",
+      "size_bytes": 11923092
+    }
+  }
+}

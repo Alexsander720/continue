@@ -1,0 +1,32 @@
+# Лендинг: папка site/ → GitHub Pages при каждом push в main.
+name: Website
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "docs/img/tour-*", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    # Public hosting is an explicit owner decision; private preview pushes do not deploy Pages.
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tour videos into the site
+        run: cp docs/img/tour-*.mp4 site/media/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

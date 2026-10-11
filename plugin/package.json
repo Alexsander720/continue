@@ -1,0 +1,7 @@
+{
+  "name": "continue",
+  "version": "0.1.0",
+  "description": "Continue? — where you left off, on Steam Deck",
+  "type": "module",
+  "license": "GPL-3.0-or-later"
+}

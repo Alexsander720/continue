@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Continue? — your games remember where you left off</title>
+<meta name="description" content="Continue? brings save progress to Steam Deck and Steam Big Picture. Explore the interactive preview on real saves. Free and open source.">
+<meta property="og:title" content="Continue? — your games remember where you left off">
+<meta property="og:description" content="Your Steam library as a living title screen. Steam Deck + Big Picture. Free & open source.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alexsander720.github.io/continue/">
+<meta property="og:image" content="https://alexsander720.github.io/continue/img/share-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Continue? interactive preview in a Steam Deck OLED">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07090c">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="top">
+    <a class="wordmark" href="#top"><span class="wm-c">CONTINUE</span><span class="wm-q">?</span></a>
+    <div class="links" id="navLinks">
+      <a href="#demo" data-i18n="nav.demo"></a>
+      <a href="#games" data-i18n="nav.games"></a>
+      <a href="#features" data-i18n="nav.features"></a>
+      <a href="#battery" data-i18n="nav.battery"></a>
+      <a href="#agents" data-i18n="nav.agents"></a>
+      <a href="#install" data-i18n="nav.install"></a>
+      <a href="#support" class="nav-heart" data-i18n="nav.support"></a>
+    </div>
+    <div class="lang"><button data-lang="en">EN</button><button data-lang="uk">UK</button><button data-lang="ru">RU</button></div>
+    <button class="nav-toggle" id="navToggle" aria-controls="navLinks" aria-expanded="false" data-i18n-aria="nav.open"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg"><video muted playsinline preload="auto" class="hb on"></video><video muted playsinline preload="auto" class="hb"></video></div>
+  <div class="hero-shade"></div>
+  <div class="scanlines"></div>
+
+
+
+  <div class="hero-layout">
+  <div class="hero-content">
+    <div class="arcade" id="arcade" role="button" tabindex="0">
+      <span class="ar-word">CONTINUE<span class="ar-q">?</span></span>
+      <span class="ar-count" id="arCount">9</span>
+    </div>
+    <div class="hero-tag" data-i18n="hero.tag"></div>
+    <h1 data-i18n="hero.h1"></h1>
+    <p class="lead" data-i18n="hero.lead"></p>
+    <div class="cta">
+      <a class="btn btn-play" id="tryDemo" href="#demo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="hero.cta1"></span></a>
+      <button class="tour-btn" id="tourBtn"><span class="tb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span data-i18n="hero.tour"></span></button>
+    </div>
+    <p class="hero-status"><span class="status-dot"></span><span data-i18n="hero.preview"></span><a href="#install" data-i18n="hero.cta2"></a></p>
+    <div class="hero-meta" data-i18n="hero.meta"></div>
+  </div>
+
+<!-- ── DEMO ───────────────────────────────────────── -->
+<section class="demo" id="demo">
+  <div class="sec-head reveal">
+    <h2 data-i18n="demo.h2"></h2>
+    <p data-i18n="demo.p"></p>
+  </div>
+
+  <div class="devsw reveal" role="group" data-i18n-aria="demo.device">
+    <button data-dev="deck" aria-pressed="true"><svg viewBox="0 0 64 32"><rect x="1" y="5" width="62" height="22" rx="11" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="20" y="9" width="24" height="14" rx="1.5" fill="currentColor" opacity=".45"/></svg><span data-i18n="dev.deck"></span></button>
+    <button data-dev="pc" aria-pressed="false"><svg viewBox="0 0 64 32"><rect x="10" y="2" width="44" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M18 30l4-4M46 30l-4-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span data-i18n="dev.pc"></span></button>
+  </div>
+
+  <div class="demo-toolbar">
+    <div class="demo-selection">
+      <button class="demo-arrow" data-demo-step="-1" data-i18n-aria="demo.previous">←</button>
+      <strong id="demoGameName" aria-live="polite"></strong>
+      <button class="demo-arrow" data-demo-step="1" data-i18n-aria="demo.next">→</button>
+    </div>
+    <button class="demo-expand" id="demoExpand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="demo.expand"></span></button>
+  </div>
+  <div id="deviceMount">
+  <div class="deck reveal" id="device">
+    <!-- Official Valve press render; original image bytes, live Continue? screen overlaid in CSS. -->
+    <div class="deck-body" aria-hidden="true">
+      <img src="img/steam-deck-oled.png" width="2500" height="980" alt="" decoding="async">
+    </div>
+
+    <!-- ТВ / монитор для Big Picture: панель 16:9 с тонкой рамкой и ножками -->
+    <svg class="pc-body" viewBox="0 0 1000 600" aria-hidden="true">
+      <defs>
+        <linearGradient id="tvFrame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2d32"/><stop offset="1" stop-color="#121316"/></linearGradient>
+        <linearGradient id="tvFoot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3c42"/><stop offset="1" stop-color="#1a1b1e"/></linearGradient>
+      </defs>
+      <path d="M128 566L104 598h58l14-32zM872 566l24 32h-58l-14-32z" fill="url(#tvFoot)"/>
+      <rect x="0" y="0" width="1000" height="570" rx="9" fill="url(#tvFrame)"/>
+      <rect x=".8" y=".8" width="998.4" height="568.4" rx="8.4" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="1.2"/>
+      <rect x="8" y="8" width="984" height="553.5" rx="2" fill="#000"/>
+      <rect x="492" y="563.5" width="16" height="3" rx="1.5" fill="#4a4d54"/>
+    </svg>
+
+    <div class="screen-wrap" id="screenWrap">
+      <div class="screen" id="screen">
+        <div class="s-bg"><video muted playsinline loop class="sv on"></video><video muted playsinline loop class="sv"></video></div>
+        <div class="s-shade"></div>
+        <div class="s-status">
+          <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm0 19a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 24 24"><circle cx="5" cy="19" r="2" fill="currentColor"/><path d="M4 12.5a7.5 7.5 0 0 1 7.5 7.5M4 6a14 14 0 0 1 14 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <svg class="pc-only" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 12h17M12 3.5c2.6 2.6 2.6 14.4 0 17M12 3.5c-2.6 2.6-2.6 14.4 0 17" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="bat">89%</span><span class="batico"><i></i></span>
+          <span class="clock" id="sClock">1:54 AM</span>
+        </div>
+        <div class="gh-panel" id="ghPanel">
+          <img class="gh-logo" id="ghLogo" alt="">
+          <div class="gh-kicker" id="ghKicker"></div>
+          <div class="gh-title" id="ghTitle"></div>
+          <div class="gh-sub" id="ghSub"></div>
+          <div class="gh-detail" id="ghDetail"></div>
+        </div>
+        <div class="gh-factbar" id="ghFacts"></div>
+        <div class="s-playbar">
+          <button class="s-play" id="sPlay"><svg viewBox="0 0 24 24"><path d="M6 4v16l13-8z"/></svg><span data-i18n="s.play"></span></button>
+          <div class="s-caret"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6z"/></svg></div>
+          <div class="s-stats" id="sStats"></div>
+          <div class="s-round s-store"><svg viewBox="0 0 24 24"><path d="M3 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h8.4a1.6 1.6 0 0 0 1.6-1.2L21 8H6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg></div>
+          <div class="s-round"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 4 4v4a3 3 0 0 1-5.4 1.8L14 15h-4l-1.6 1.8A3 3 0 0 1 3 15v-4a4 4 0 0 1 4-4z" fill="currentColor"/></svg></div>
+          <div class="s-round"><svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.4 2.3-1.9-.3a6.9 6.9 0 0 0-.7-1.7l1.1-1.6-1.9-1.9-1.6 1.1c-.5-.3-1.1-.6-1.7-.7L13.4 3h-2.8l-.3 1.9c-.6.1-1.2.4-1.7.7L7 4.5 5.1 6.4l1.1 1.6c-.3.5-.6 1.1-.7 1.7l-1.9.3v2.8l1.9.3c.1.6.4 1.2.7 1.7l-1.1 1.6 1.9 1.9 1.6-1.1c.5.3 1.1.6 1.7.7l.3 1.9h2.8l.3-1.9c.6-.1 1.2-.4 1.7-.7l1.6 1.1 1.9-1.9-1.1-1.6c.3-.5.6-1.1.7-1.7l1.9-.3z" fill="currentColor"/></svg></div>
+        </div>
+        <div class="s-toast" id="sToast" data-i18n="demo.toast"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="evidenceMount"><div id="demoEvidence">
+  <div class="demo-meta reveal">
+    <span class="proven" id="provenBadge"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-i18n="demo.proven"></b></span>
+    <span class="bgcap" id="bgCap"></span>
+  </div>
+  <a class="demo-source" id="demoSource" href="#games"></a>
+  <p class="nolang" id="noLang"></p>
+  </div></div>
+  <div class="switcher reveal" id="switcher"></div>
+  <div class="demo-tools reveal">
+    <button class="demo-pause" id="demoPause" aria-pressed="false"><span id="demoPauseLabel"></span></button>
+    <button class="music" id="musicBtn" aria-pressed="false"><span class="eq"><i></i><i></i><i></i><i></i></span><span id="musicLbl"></span></button>
+    <span class="keys" data-i18n="demo.keys"></span>
+    <span class="pad-hint" id="padHint">🎮</span>
+  </div>
+</section>
+  </div>
+  <a class="press-start" href="#games" data-i18n="hero.press"></a>
+</header>
+
+<main>
+
+<!-- ── GAMES ──────────────────────────────────────── -->
+<section class="games" id="games">
+  <div class="sec-head reveal">
+    <div class="kicker" data-i18n="cat.kicker"></div>
+    <h2 data-i18n="cat.h2"></h2>
+    <p data-i18n="cat.p"></p>
+  </div>
+  <div class="catalog-tools reveal">
+    <div class="catalog-search"><label class="sr-only" for="catalogSearch" data-i18n="cat.search"></label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.7"/></svg><input id="catalogSearch" type="search" autocomplete="off" data-i18n-placeholder="cat.search"><button id="catalogClear" type="button" data-i18n-aria="cat.clear" hidden>✕</button></div>
+    <div class="catalog-filters" role="group" data-i18n-aria="cat.filter">
+      <button data-cat-filter="all" aria-pressed="true"><span data-i18n="cat.all"></span><b id="catCountAll">13</b></button>
+      <button data-cat-filter="proven" aria-pressed="false"><span data-i18n="cat.proven"></span><b id="catCountProven">7</b></button>
+      <button data-cat-filter="check" aria-pressed="false"><span data-i18n="cat.check"></span><b id="catCountCheck">6</b></button>
+    </div>
+  </div>
+  <p class="catalog-results" id="catalogResults" role="status" aria-live="polite"></p>
+  <div class="catalog reveal" id="catalog"></div>
+  <div class="catalog-empty" id="catalogEmpty" hidden><h3 data-i18n="cat.empty"></h3><p data-i18n="cat.empty.p"></p></div>
+  <div class="cat-more reveal"><span data-i18n="cat.more"></span>
+    <a class="btn btn-ghost" id="catReq" href="#" data-i18n="cat.req"></a>
+    <a class="btn btn-ghost" id="catAdd" href="#agents" data-i18n="cat.add"></a>
+  </div>
+</section>
+
+<!-- ── YOUR GAMEPLAY ──────────────────────────────── -->
+<section class="rec" id="rec">
+  <div class="rec-text reveal">
+    <div class="kicker" data-i18n="rec.kicker"></div>
+    <h2 data-i18n="rec.h2"></h2>
+    <p data-i18n="rec.p"></p>
+    <ul class="rules"><li data-i18n="rec.n1"></li><li data-i18n="rec.n2"></li><li data-i18n="rec.n3"></li></ul>
+    <p class="note" data-i18n="rec.note"></p>
+  </div>
+  <div class="rec-reel reveal">
+    <figure class="clip c1"><video muted playsinline loop preload="none" src="media/2322010/loop.mp4" poster="media/2322010/poster.jpg"></video><img src="media/2322010/logo.png" alt="God of War Ragnarök"><figcaption><span class="rec-dot"></span><span data-i18n="rec.you"></span></figcaption></figure>
+    <figure class="clip c2"><video muted playsinline loop preload="none" src="media/1778820/loop.mp4" poster="media/1778820/poster.jpg"></video><img src="media/1778820/logo.png" alt="TEKKEN 8"><figcaption><span class="rec-dot"></span><span data-i18n="rec.you"></span></figcaption></figure>
+  </div>
+</section>
+
+<!-- ── FEATURES ───────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="sec-head reveal">
+    <h2 data-i18n="feat.h2"></h2>
+    <p data-i18n="feat.p"></p>
+  </div>
+  <div class="grid">
+    <article class="tile reveal">
+      <div class="viz viz-save"><code id="hexLine">47 56 41 53 03 00 00 00 0c 02 00 00</code><div class="resolve" id="resolveLine"></div><div class="resolve-sub" id="resolveSub"></div></div>
+      <h3 data-i18n="f1.t"></h3><p data-i18n="f1.p"></p>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz-icons">
+        <img src="media/2172010/totems.png" alt=""><img src="media/2322010/ravens.png" alt=""><img src="media/2172010/butterfly.png" alt=""><img src="media/367520/geo.png" alt=""><img src="media/532210/souvenirs.png" alt="">
+      </div>
+      <h3 data-i18n="f2.t"></h3><p data-i18n="f2.p"></p>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz-home"><video muted playsinline loop preload="none" src="media/1809540/loop.mp4"></video><div class="home-row"><i class="on" style="background-image:url(media/1809540/cover.jpg)"></i><i style="background-image:url(media/367520/cover.jpg)"></i><i style="background-image:url(media/1092790/cover.jpg)"></i><i style="background-image:url(media/2129530/cover.jpg)"></i></div><span class="eq big"><i></i><i></i><i></i><i></i><i></i></span></div>
+      <h3 data-i18n="f3.t"></h3><p data-i18n="f3.p"></p>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz-two">
+        <svg viewBox="0 0 220 110" class="dk"><rect x="6" y="30" width="96" height="48" rx="22" class="body"/><rect x="30" y="38" width="48" height="32" rx="3" class="scr"/><circle cx="18" cy="44" r="4" class="ctl"/><circle cx="90" cy="44" r="4" class="ctl"/></svg>
+        <svg viewBox="0 0 220 110" class="pc"><rect x="124" y="18" width="90" height="58" rx="5" class="body"/><rect x="130" y="24" width="78" height="46" rx="2" class="scr"/><path d="M160 76h18l4 14h-26z" class="body"/></svg>
+        <div class="sync"><span></span><span></span><span></span></div>
+      </div>
+      <h3 data-i18n="f4.t"></h3><p data-i18n="f4.p"></p>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz-preset">
+        <div class="seg" id="presetSeg"><button data-p="lite" data-i18n="p.lite"></button><button data-p="balanced" data-i18n="p.balanced"></button><button data-p="max" data-i18n="p.max"></button><i class="seg-ind"></i></div>
+        <dl id="presetList"></dl>
+      </div>
+      <h3><span data-i18n="f5.t"></span><span class="pill">v1</span></h3><p data-i18n="f5.p"></p>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz-lang"><div class="lang-flip" id="langFlip"><span class="lc"></span><span class="lt"></span></div></div>
+      <h3 data-i18n="f6.t"></h3><p data-i18n="f6.p"></p>
+    </article>
+  </div>
+  <div class="chips reveal">
+    <h3 data-i18n="chips.h"></h3>
+    <ul id="chipList"></ul>
+  </div>
+</section>
+
+<!-- ── BATTERY ────────────────────────────────────── -->
+<section class="battery" id="battery">
+  <div class="bt-text reveal">
+    <div class="kicker" data-i18n="pw.kicker"></div>
+    <h2 data-i18n="pw.h2"></h2>
+    <p data-i18n="pw.p"></p>
+    <div class="bars" id="powerBars" role="table"></div>
+    <p class="why" data-i18n="pw.why"></p>
+  </div>
+  <div class="bt-modes reveal">
+    <h3 data-i18n="pw.m.h"></h3>
+    <ul><li data-i18n="pw.m1"></li><li data-i18n="pw.m2"></li><li data-i18n="pw.m3"></li></ul>
+    <p class="honest" data-i18n="pw.honest"></p>
+  </div>
+</section>
+
+<!-- ── AGENTS ─────────────────────────────────────── -->
+<section class="agents" id="agents">
+  <div class="ag-text reveal">
+    <div class="kicker" data-i18n="ag.kicker"></div>
+    <h2 data-i18n="ag.h2"></h2>
+    <p data-i18n="ag.p"></p>
+    <ul class="rules">
+      <li data-i18n="ag.r1"></li><li data-i18n="ag.r2"></li><li data-i18n="ag.r3"></li><li data-i18n="ag.r4"></li>
+    </ul>
+    <div class="cta">
+      <a class="btn btn-ghost" id="guideLink" href="#" data-i18n="ag.cta1"></a>
+      <a class="btn btn-discord" id="discordLink" href="#" data-i18n="ag.cta2"></a>
+    </div>
+  </div>
+  <div class="ag-side">
+    <div class="term reveal" id="term">
+      <div class="term-bar"><i></i><i></i><i></i>
+        <div class="term-tabs"><button data-a="claude" class="on">Claude Code</button><button data-a="codex">Codex</button><button data-a="gemini">Gemini CLI</button></div>
+      </div>
+      <pre class="term-body" id="termBody"></pre>
+    </div>
+    <p class="term-note" data-i18n="ag.example"></p>
+    <div class="proof reveal">
+      <h3 data-i18n="pr.h"></h3>
+      <p data-i18n="pr.p"></p>
+      <ul>
+        <li class="ok"><span class="mk">✓</span><span data-i18n="pr.ok"></span><em data-i18n="pr.okv"></em></li>
+        <li class="no"><span class="mk">✕</span><span data-i18n="pr.no1"></span><em data-i18n="pr.nov1"></em></li>
+        <li class="no"><span class="mk">✕</span><span data-i18n="pr.no2"></span><em data-i18n="pr.nov2"></em></li>
+        <li class="no"><span class="mk">✕</span><span data-i18n="pr.no3"></span><em data-i18n="pr.nov3"></em></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTALL ────────────────────────────────────── -->
+<section class="install" id="install">
+  <div class="sec-head reveal">
+    <div class="kicker" data-i18n="in.kicker"></div>
+    <h2 data-i18n="in.h2"></h2>
+    <p data-i18n="in.preview"></p>
+  </div>
+  <div class="cards2">
+    <article class="icard reveal">
+      <div class="ic-head"><svg viewBox="0 0 64 32"><rect x="1" y="5" width="62" height="22" rx="11" fill="none" stroke="currentColor" stroke-width="2"/><rect x="20" y="9" width="24" height="14" rx="1.5" fill="currentColor" opacity=".35"/><circle cx="9" cy="12" r="2.2" fill="currentColor"/><circle cx="55" cy="12" r="2.2" fill="currentColor"/></svg><h3 data-i18n="in.deck"></h3><span class="soon" data-i18n="in.soon"></span></div>
+      <ol><li data-i18n="in.d1"></li><li data-i18n="in.d2"></li><li data-i18n="in.d3"></li></ol>
+      <p class="opt" data-i18n="in.dopt"></p>
+      <a class="guide" id="guideDeck" href="#" data-i18n="in.guide"></a>
+    </article>
+    <article class="icard reveal">
+      <div class="ic-head"><svg viewBox="0 0 64 32"><rect x="12" y="2" width="40" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M26 26h12l2 5H24z" fill="currentColor"/></svg><h3 data-i18n="in.pc"></h3><span class="soon" data-i18n="in.soon"></span></div>
+      <ol><li data-i18n="in.p1"></li><li data-i18n="in.p2"></li><li data-i18n="in.p3"></li></ol>
+      <p class="opt" data-i18n="in.popt"></p>
+      <ul class="changes"><li data-i18n="in.c1"></li><li data-i18n="in.c2"></li><li data-i18n="in.c3"></li></ul>
+      <a class="guide" id="guidePc" href="#" data-i18n="in.guide2"></a>
+    </article>
+  </div>
+  <div class="updates reveal">
+    <div class="up-text"><h3 data-i18n="up.t"></h3><p data-i18n="up.p"></p></div>
+    <div class="changelog">
+      <div class="kicker"><span data-i18n="cl.kicker"></span> <span class="pill" data-i18n="cl.preview"></span></div>
+      <div class="cl-item"><b data-i18n="cl.1v"></b><ul data-i18n="cl.1"></ul></div>
+      <div class="cl-item"><b data-i18n="cl.2v"></b><ul data-i18n="cl.2"></ul></div>
+      <div class="cl-item"><b data-i18n="cl.3v"></b><ul data-i18n="cl.3"></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="sec-head reveal">
+    <div class="kicker" data-i18n="faq.kicker"></div>
+    <h2 data-i18n="faq.h2"></h2>
+  </div>
+  <div class="qa reveal" id="qaList"></div>
+</section>
+
+<!-- ── SUPPORT ────────────────────────────────────── -->
+<section class="support" id="support">
+  <div class="sup-glow"></div>
+  <div class="sec-head reveal">
+    <div class="kicker" data-i18n="sup.kicker"></div>
+    <h2 data-i18n="sup.h2"></h2>
+    <p data-i18n="sup.p"></p>
+  </div>
+  <div class="cards3">
+    <article class="scard reveal mono">
+      <div class="sc-top">
+        <div class="sc-ico"><svg viewBox="0 0 48 48"><path d="M14 8h20v5H14z" fill="currentColor" opacity=".7"/><path d="M12 15h24a3 3 0 0 1 3 3v20a6 6 0 0 1-6 6H15a6 6 0 0 1-6-6V18a3 3 0 0 1 3-3z" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M17 30l5 5 9-11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <img class="qr" src="img/qr-mono.svg" alt="QR monobank">
+      </div>
+      <h3 data-i18n="sup.mono"></h3><p data-i18n="sup.mono.p"></p>
+      <button class="addr" data-copy="mono_card"><b data-i18n="sup.card"></b><span></span></button>
+      <a class="btn btn-heart" data-link="mono"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3.1 4.5 6.8 4.5c2.1 0 3.6 1.1 5.2 3 1.6-1.9 3.1-3 5.2-3 3.7 0 5.9 3.7 4.4 7.2C19.5 16.4 12 21 12 21z"/></svg><span data-i18n="sup.mono.b"></span></a>
+    </article>
+    <article class="scard reveal pp">
+      <div class="sc-top"><div class="sc-ico"><svg viewBox="0 0 48 48"><path d="M10 18h24v12a8 8 0 0 1-8 8h-8a8 8 0 0 1-8-8z" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M34 21h3a4.5 4.5 0 0 1 0 9h-3" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M17 8c-2 3 2 4 0 7M23 7c-2 3 2 4 0 7M29 8c-2 3 2 4 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="steam"/></svg></div></div>
+      <h3 data-i18n="sup.pp"></h3><p data-i18n="sup.pp.p"></p>
+      <button class="addr" data-copy="paypal"><b>PayPal</b><span></span></button>
+    </article>
+    <article class="scard reveal cr">
+      <div class="sc-top">
+        <div class="sc-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15 15h18M24 15v20M16.5 22c0 2 3.4 3.3 7.5 3.3s7.5-1.3 7.5-3.3-3.4-3.2-7.5-3.2-7.5 1.3-7.5 3.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+        <img class="qr" id="cryptoQr" src="img/qr-trc20.svg" alt="QR USDT">
+      </div>
+      <h3 data-i18n="sup.cr"></h3><p data-i18n="sup.cr.p"></p>
+      <button class="addr" data-copy="usdt_trc20" data-qr="img/qr-trc20.svg"><b>TRC20</b><span></span></button>
+      <button class="addr" data-copy="usdt_bep20" data-qr="img/qr-bep20.svg"><b>BEP20</b><span></span></button>
+    </article>
+  </div>
+  <p class="sup-qr reveal" data-i18n="sup.deck"></p>
+</section>
+
+</main>
+
+<footer>
+  <a class="wordmark small" href="#top"><span class="wm-c">CONTINUE</span><span class="wm-q">?</span></a>
+  <div class="f-line"><span data-i18n="foot.made"></span> <span id="authorLine"></span> · <span data-i18n="foot.lic"></span></div>
+  <div class="f-legal" data-i18n="foot.legal"></div>
+</footer>
+
+<dialog class="demo-dialog" id="demoDialog" aria-labelledby="demoDialogTitle">
+  <div class="demo-dialog-head">
+    <div><h2 id="demoDialogTitle" data-i18n="demo.dialog"></h2><span id="expandedGameName"></span></div>
+    <div class="demo-dialog-actions">
+      <button class="demo-arrow" data-demo-step="-1" data-i18n-aria="demo.previous">←</button>
+      <button class="demo-arrow" data-demo-step="1" data-i18n-aria="demo.next">→</button>
+      <button class="demo-dialog-close" id="demoClose" data-i18n-aria="demo.close">✕</button>
+    </div>
+  </div>
+  <p class="demo-pan-hint" data-i18n="demo.pan"></p>
+  <div class="expanded-scroller"><div id="expandedDeviceMount"></div></div>
+  <div id="expandedEvidenceMount"></div>
+</dialog>
+
+<div class="tour-modal" id="tourModal" role="dialog" aria-modal="true" data-i18n-aria="hero.tour" hidden>
+  <div class="tm-box"><video id="tourVideo" controls playsinline preload="none"></video><button class="tm-close" id="tourClose" aria-label="Close">✕</button></div>
+</div>
+
+<div id="reel" hidden>
+  <div class="rl-bg"><img alt=""><img alt=""></div>
+  <div class="rl-glow"></div>
+  <div class="rl-full"><video muted playsinline loop preload="auto"></video><span class="rl-rec"><i></i>REC</span></div>
+  <div class="rl-cap"><div class="rl-kick"></div><div class="rl-text"></div></div>
+  <div class="rl-stage"></div>
+  <div class="rl-chip"></div>
+  <div class="rl-title"><div class="rl-word">CONTINUE<span>?</span></div><div class="rl-tag"></div><div class="rl-url"></div></div>
+</div>
+
+<audio id="theme" loop preload="none"></audio>
+<script src="store.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
