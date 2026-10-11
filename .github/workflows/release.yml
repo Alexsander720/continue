@@ -1,8 +1,13 @@
 name: Continue draft release
 
 on:
-  push:
-    tags: ['v*']
+  # Official releases are made by the maintainer's local publish script (checked on a real Deck);
+  # this job is a manual, reviewable draft only. It is not triggered by tags.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag to build a draft for (for example v0.1.1)
+        required: true
 
 permissions:
   contents: write
@@ -20,12 +25,12 @@ jobs:
           node-version: '22'
       - name: Run all checks and build exact update assets
         env:
-          CONTINUE_TAG: ${{ github.ref_name }}
+          CONTINUE_TAG: ${{ github.event.inputs.tag }}
         run: python tools/local_ci.py --version "$CONTINUE_TAG"
       - name: Create a draft with ZIP and SHA256 assets
         env:
           GH_TOKEN: ${{ github.token }}
-          CONTINUE_TAG: ${{ github.ref_name }}
+          CONTINUE_TAG: ${{ github.event.inputs.tag }}
           CONTINUE_REPO: ${{ github.repository }}
         shell: bash
         run: |
