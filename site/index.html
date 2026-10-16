@@ -56,6 +56,7 @@
     <p class="lead" data-i18n="hero.lead"></p>
     <div class="cta">
       <a class="btn btn-play" id="tryDemo" href="#demo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="hero.cta1"></span></a>
+      <a class="btn btn-download" id="heroDownload" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="hero.download"></span></a>
       <button class="tour-btn" id="tourBtn"><span class="tb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span data-i18n="hero.tour"></span></button>
     </div>
     <p class="hero-status"><span class="status-dot"></span><span data-i18n="hero.preview"></span><a href="#install" data-i18n="hero.cta2"></a></p>
@@ -305,22 +306,39 @@
   <div class="cards2">
     <article class="icard reveal">
       <div class="ic-head"><svg viewBox="0 0 64 32"><rect x="1" y="5" width="62" height="22" rx="11" fill="none" stroke="currentColor" stroke-width="2"/><rect x="20" y="9" width="24" height="14" rx="1.5" fill="currentColor" opacity=".35"/><circle cx="9" cy="12" r="2.2" fill="currentColor"/><circle cx="55" cy="12" r="2.2" fill="currentColor"/></svg><h3 data-i18n="in.deck"></h3><span class="soon" data-i18n="in.soon"></span></div>
+      <div class="ic-actions">
+        <a class="btn btn-download" id="downloadDeck" href="https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-deck-0.1.4.zip"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="in.d.dl"></span></a>
+        <div class="ic-links">
+          <a class="ic-sublink" id="shaDeck" href="https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-deck-0.1.4.zip.sha256" target="_blank" rel="noopener">SHA-256</a>
+          <span class="ic-dot">·</span>
+          <a class="ic-sublink" id="relDeck" href="https://github.com/Alexsander720/continue/releases/tag/v0.1.4" target="_blank" rel="noopener" data-i18n="in.release"></a>
+        </div>
+      </div>
       <ol><li data-i18n="in.d1"></li><li data-i18n="in.d2"></li><li data-i18n="in.d3"></li></ol>
       <p class="opt" data-i18n="in.dopt"></p>
-      <a class="guide" id="guideDeck" href="#" data-i18n="in.guide"></a>
+      <a class="guide" id="guideDeck" href="https://github.com/Alexsander720/continue/blob/main/docs/install-deck.md" data-i18n="in.guide"></a>
     </article>
     <article class="icard reveal">
       <div class="ic-head"><svg viewBox="0 0 64 32"><rect x="12" y="2" width="40" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M26 26h12l2 5H24z" fill="currentColor"/></svg><h3 data-i18n="in.pc"></h3><span class="soon" data-i18n="in.soon"></span></div>
+      <div class="ic-actions">
+        <a class="btn btn-download" id="downloadPc" href="https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-pc-0.1.4-r19.zip"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="in.p.dl"></span></a>
+        <div class="ic-links">
+          <a class="ic-sublink" id="shaPc" href="https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-pc-0.1.4-r19.zip.sha256" target="_blank" rel="noopener">SHA-256</a>
+          <span class="ic-dot">·</span>
+          <a class="ic-sublink" id="relPc" href="https://github.com/Alexsander720/continue/releases/tag/v0.1.4" target="_blank" rel="noopener" data-i18n="in.release"></a>
+        </div>
+      </div>
       <ol><li data-i18n="in.p1"></li><li data-i18n="in.p2"></li><li data-i18n="in.p3"></li></ol>
       <p class="opt" data-i18n="in.popt"></p>
       <ul class="changes"><li data-i18n="in.c1"></li><li data-i18n="in.c2"></li><li data-i18n="in.c3"></li></ul>
-      <a class="guide" id="guidePc" href="#" data-i18n="in.guide2"></a>
+      <a class="guide" id="guidePc" href="https://github.com/Alexsander720/continue/blob/main/docs/install-pc.md" data-i18n="in.guide2"></a>
     </article>
   </div>
   <div class="updates reveal">
     <div class="up-text"><h3 data-i18n="up.t"></h3><p data-i18n="up.p"></p></div>
     <div class="changelog">
       <div class="kicker"><span data-i18n="cl.kicker"></span> <span class="pill" data-i18n="cl.preview"></span></div>
+      <div class="cl-item cl-latest"><b data-i18n="cl.014v"></b><ul data-i18n="cl.014"></ul></div>
       <div class="cl-item"><b data-i18n="cl.1v"></b><ul data-i18n="cl.1"></ul></div>
       <div class="cl-item"><b data-i18n="cl.2v"></b><ul data-i18n="cl.2"></ul></div>
       <div class="cl-item"><b data-i18n="cl.3v"></b><ul data-i18n="cl.3"></ul></div>

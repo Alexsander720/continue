@@ -525,6 +525,16 @@ body.reel .s-play.pulse{animation:playPulse 1.1s ease-in-out 2}
 .icard .changes{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
 .icard .changes li{counter-increment:none;padding:0 0 0 22px;min-height:0;font-size:13.5px;color:var(--mute)}
 .icard .changes li::before{content:"";left:4px;top:.55em;transform:none;width:7px;height:7px;border-radius:50%;background:var(--gold);display:block}
+.btn-download{background:linear-gradient(90deg,var(--gold),var(--gold2));color:#111;font-weight:700;box-shadow:0 8px 30px rgba(200,169,106,.25)}
+.btn-download:hover{background:linear-gradient(90deg,var(--gold2),#fff);box-shadow:0 10px 35px rgba(200,169,106,.45);color:#000}
+.btn-download svg{width:18px;height:18px;fill:none;stroke:currentColor}
+.ic-actions{display:flex;flex-direction:column;gap:10px;margin:18px 0 18px}
+.ic-actions .btn{justify-content:center;height:46px;font-size:14px;width:100%}
+.ic-links{display:flex;align-items:center;justify-content:center;gap:10px;font-size:12.5px;color:var(--mute)}
+.ic-sublink{color:var(--gold2);border-bottom:1px solid rgba(233,207,150,.35);transition:border-color .2s,color .2s}
+.ic-sublink:hover{border-color:var(--gold2);color:#fff}
+.ic-dot{color:var(--dim)}
+.cl-item.cl-latest b{color:var(--gold2)}
 
 /* First screen: the real interactive device is the product illustration. */
 .hero-layout{width:min(1800px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:clamp(28px,4vw,80px);align-items:center;padding:56px 5vw 88px}

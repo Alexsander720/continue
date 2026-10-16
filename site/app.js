@@ -528,7 +528,21 @@ addEventListener("keydown", e => {
 });
 function guideLinks() {
   const base = (DONATE.repo || "") + "/blob/main/docs/", suf = lang === "en" ? "" : "." + lang;
-  $("#guideDeck").href = `${base}install-deck${suf}.md`; $("#guidePc").href = `${base}install-pc${suf}.md`;
+  const gd = $("#guideDeck"), gp = $("#guidePc");
+  if (gd) gd.href = `${base}install-deck${suf}.md`;
+  if (gp) gp.href = `${base}install-pc${suf}.md`;
+  const dd = $("#downloadDeck"), sd = $("#shaDeck"), rd = $("#relDeck");
+  const dp = $("#downloadPc"), sp = $("#shaPc"), rp = $("#relPc");
+  const hd = $("#heroDownload");
+  if (typeof RELEASE !== "undefined") {
+    if (dd) dd.href = RELEASE.deck_zip;
+    if (sd) sd.href = RELEASE.deck_sha;
+    if (rd) rd.href = RELEASE.tag;
+    if (dp) dp.href = RELEASE.pc_zip;
+    if (sp) sp.href = RELEASE.pc_sha;
+    if (rp) rp.href = RELEASE.tag;
+  }
+  if (hd) hd.href = "#install";
 }
 
 /* ── видео играют, только когда видны (Chrome сам глушит невидимые) ── */
