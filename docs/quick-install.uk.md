@@ -13,7 +13,7 @@
 
 ### Windows ПК / Big Picture (5 кроків)
 
-1. Переконайся, що встановлено Python 3.10+, та завантаж [`continue-pc-0.1.4-r19.zip`](https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-pc-0.1.4-r19.zip) і `.sha256` з [релізу v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
+1. Завантаж [`continue-pc-0.1.4-r19.zip`](https://github.com/Alexsander720/continue/releases/download/v0.1.4/continue-pc-0.1.4-r19.zip) і `.sha256` з [релізу v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
 2. Розпакуй ZIP-архів у будь-яку звичайну папку на комп'ютері.
 3. Закрий запущені ігри та запусти `Continue\setup.cmd` (або `setup.cmd`) подвійним кліком.
 4. Погодься на увімкнення локального налагоджувального порту Steam (`127.0.0.1:8080`) і підтвердь перезапуск Steam.
