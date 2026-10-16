@@ -1,0 +1,55 @@
+/* ---
+Chromahon (Steam Menu)
+Notes Page
+--- */
+
+/* Navigation Container */
+._1d6VIquCc410kNE7rDAje6 {
+    background: var(--chromahonSM__secondaryPanel-bg);
+}
+
+/* Note Item */
+._4niDTAfIpKQoRx-CR_3K {
+    color: var(--chromahonSM__secondaryPanel-item-label);
+    transition: font-size .05s ease;
+}
+
+/* Note Item Active */
+._2mL2HfT5AkDXRi1YBnRWKa._1ELdDY5kb5jxjXe-FpWBo5 {
+    background: transparent;
+    transform: none;
+
+    & ._4niDTAfIpKQoRx-CR_3K {
+        font-weight: bold;
+    }
+}
+
+/* Note Item Focus */
+._2mL2HfT5AkDXRi1YBnRWKa:focus {
+    animation: none;
+    background: var(--chromahonSM__secondaryPanel-itemFocus-bg);
+    font-size: 1.1em;
+
+    & ._4niDTAfIpKQoRx-CR_3K {
+        color: var(--chromahonSM__secondaryPanel-itemFocus-label);
+    }
+}
+
+/* Textarea */
+._1Ve4VFO2EEkeNZdel_Asky {
+    background: transparent;
+    color: var(--chromahonSM__tertiaryPanel-fg);
+    border: 2px solid var(--chromahonSM__tertiaryPanel-fg);
+    box-shadow: none;
+}
+
+/* Improve spacing surrounding the 'Add Note' button */
+div:has(.tool-tip-source) {
+    display: flex;
+    justify-content: center;
+    
+    & .tool-tip-source {
+        width: 90%;
+        margin-bottom: 12px;
+    }
+}

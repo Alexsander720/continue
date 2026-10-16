@@ -16,7 +16,7 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parent)]
 from _card import Facts, empty, finish
-from ddsaves._common import documents_dirs, proton_user
+from ddsaves._common import documents_dirs, proton_user, read_bytes
 
 APPID = 2420110
 HEADER_SIZE = 0x194
@@ -87,8 +87,8 @@ def _play_time(value: str) -> Optional[int]:
 
 def _slot(path: Path) -> Optional[dict]:
     try:
-        raw = path.read_bytes()
-    except OSError:
+        raw = read_bytes(path)
+    except (OSError, ValueError):
         return None
     if len(raw) < HEADER_SIZE:
         return None
@@ -117,6 +117,13 @@ def _slot(path: Path) -> Optional[dict]:
 
 
 def read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"Сохранение Horizon Forbidden West не прочитано: {e}")
+
+
+def _read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
     candidates = find(path_or_dir)
     target = None
     parsed = None

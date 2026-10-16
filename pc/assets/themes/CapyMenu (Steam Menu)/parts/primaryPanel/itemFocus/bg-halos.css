@@ -1,0 +1,19 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: primaryPanel > itemFocus-bg
+Flavor: Halos
+Dependencies (see theme.json):
+    5ColorGrad.css
+--- */
+
+:root {
+    --chromahonSM__primaryPanel-itemFocus-bg: 
+        radial-gradient(circle at 20% 20%, var(--chromahonSM__primaryPanel-itemFocus-bg-c1) 0%, transparent 60%),
+        radial-gradient(circle at 80% 30%, var(--chromahonSM__primaryPanel-itemFocus-bg-c2)  0%, transparent 60%),
+        radial-gradient(circle at 50% 90%, var(--chromahonSM__primaryPanel-itemFocus-bg-c3) 0%, transparent 60%),
+        radial-gradient(circle at 30% 70%, var(--chromahonSM__primaryPanel-itemFocus-bg-c4) 0%, transparent 60%),
+        var(--chromahonSM__primaryPanel-itemFocus-bg-c5);
+    
+    --chromahonSM__Anim_primaryPanel-itemFocus-bg: chromahonSM__Anim_5ColorGrad 14s infinite ease-in-out alternate;
+}

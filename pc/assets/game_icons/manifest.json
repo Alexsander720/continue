@@ -1,0 +1,253 @@
+{
+  "108710": {
+    "achievements": "108710/achievements.png",
+    "difficulty": "108710/difficulty.png",
+    "Вывески и знаки": "108710/sign.png",
+    "Пирамиды из банок": "108710/cans.png",
+    "Радиопередачи": "108710/radio.png",
+    "Страницы рукописи": "108710/manuscript.png",
+    "Сундуки с припасами": "108710/chest.png",
+    "Телевизоры": "108710/tv.png",
+    "Термосы с кофе": "108710/thermos.png",
+    "coffee_thermos": "108710/thermos.png",
+    "chests": "108710/chest.png",
+    "can_pyramids": "108710/cans.png",
+    "tv_shows": "108710/tv.png",
+    "radio_shows": "108710/radio.png",
+    "signs": "108710/sign.png"
+  },
+  "1092790": {
+    "achievements": "1092790/achievements.png",
+    "deck": "1092790/deck.png",
+    "lives": "1092790/lives.png",
+    "most_damage_dealt": "1092790/maxdamage.png",
+    "story": "1092790/story.png",
+    "teeth": "1092790/teeth.png",
+    "Одолено боссов": "1092790/bosses.png",
+    "Оплошностей": "1092790/misplays.png",
+    "Основной сюжет": "1092790/story.png",
+    "Поражений": "1092790/losses.png",
+    "Режим": "1092790/mode.png"
+  },
+  "1426210": {
+    "achievements": "1426210/achievements.png",
+    "chapter": "1426210/chapter.png",
+    "minigames": "1426210/minigames.png"
+  },
+  "1689620": {
+    "achievements": "1689620/achievements.png",
+    "chapter": "1689620/chapter.png",
+    "Духовные очки": "1689620/spirit.png",
+    "Предметы магазина": "1689620/shop.png"
+  },
+  "1809540": {
+    "achievements": "1809540/achievements.png",
+    "active_time": "1809540/time.png",
+    "deaths": "1809540/deaths.png",
+    "encyclopedia": "1809540/encyclopedia.png",
+    "equipped_jades": "1809540/jades.png",
+    "jades": "1809540/jades.png",
+    "last_node": "1809540/node.png",
+    "level": "1809540/level.png",
+    "obtained_seals": "1809540/seals.png",
+    "save_time": "1809540/time.png",
+    "seals": "1809540/seals.png",
+    "skills": "1809540/skills.png"
+  },
+  "1874000": {
+    "achievements": "1874000/achievements.png",
+    "episode": "1874000/episode.png",
+    "photos_taken": "1874000/photos.png",
+    "Линия времени": "1874000/timeline.png",
+    "Сцены": "1874000/scenes.png"
+  },
+  "1903340": {
+    "achievements": "1903340/achievements.png",
+    "active_time": "1903340/time.png",
+    "levels": "1903340/levels.png",
+    "save_time": "1903340/time.png",
+    "story": "1903340/story.png"
+  },
+  "2124490": {
+    "achievements": "2124490/achievements.png",
+    "active_time": "2124490/time.png",
+    "ammo_handgun": "2124490/ammo_handgun.png",
+    "ammo_rifle": "2124490/ammo_rifle.png",
+    "ammo_shotgun": "2124490/ammo_shotgun.png",
+    "healing_drinks": "2124490/drinks.png",
+    "healing_syringes": "2124490/syringes.png",
+    "health": "2124490/health.png",
+    "investigated": "2124490/investigated.png",
+    "kills_total": "2124490/kills.png",
+    "last_memo": "2124490/last_memo.png",
+    "maps_by_building": "2124490/maps_by_building.png",
+    "maps_count": "2124490/maps.png",
+    "memos_count": "2124490/notes.png",
+    "save_time": "2124490/time.png",
+    "weapons": "2124490/weapons.png"
+  },
+  "2129530": {
+    "achievements": "2129530/achievements.png",
+    "active_time": "2129530/time.png",
+    "chapter": "2129530/chapter.png",
+    "collected": "2129530/finds.png",
+    "masks": "2129530/masks.png",
+    "posters": "2129530/posters.png",
+    "save_time": "2129530/time.png",
+    "chapter_num": "2129530/chapter.png",
+    "active_gameplay_seconds": "2129530/time.png"
+  },
+  "2172010": {
+    "achievements": "2172010/achievements.png",
+    "active_time": "2172010/time.png",
+    "alive_count": "2172010/alive.png",
+    "butterflies": "2172010/butterfly.png",
+    "chapter": "2172010/chapter.png",
+    "clues": "2172010/clues.png",
+    "person:Ashley": "2172010/p_ashley.png",
+    "person:Chris": "2172010/p_chris.png",
+    "person:Emily": "2172010/p_emily.png",
+    "person:Jessica": "2172010/p_jessica.png",
+    "person:Josh": "2172010/p_josh.png",
+    "person:Matt": "2172010/p_matt.png",
+    "person:Mike": "2172010/p_mike.png",
+    "person:Sam": "2172010/p_sam.png",
+    "save_time": "2172010/time.png",
+    "totems": "2172010/totems.png",
+    "Погибли": "2172010/dead.png"
+  },
+  "2322010": {
+    "achievements": "2322010/achievements.png",
+    "raven": "2322010/odin-raven.png",
+    "skills": "2322010/skills.png",
+    "Прогресс": "2322010/progress.png",
+    "Снаряжение": "2322010/gear.png",
+    "silver": "2322010/coins.svg",
+    "play_time": "2322010/clock.svg"
+  },
+  "2420110": {
+    "achievements": "2420110/achievements.png",
+    "level": "2420110/level.png",
+    "story": "2420110/story.png",
+    "aloy_level": "2420110/level.png",
+    "play_time_seconds": "2420110/clock.svg"
+  },
+  "245280": {
+    "achievements": "245280/achievements.png",
+    "chapter": "245280/chapter.png",
+    "difficulty": "245280/difficulty.png"
+  },
+  "2531310": {
+    "achievements": "2531310/achievements.png",
+    "active_time": "2531310/time.png",
+    "collected": "2531310/finds.png",
+    "save_time": "2531310/time.png",
+    "Актов пройдено": "2531310/acts.png",
+    "Вехи": "2531310/milestones.png",
+    "play_time_seconds": "2531310/time.png"
+  },
+  "2651280": {
+    "achievements": "2651280/achievements.png",
+    "game_percent": "2651280/progress.png",
+    "level": "2651280/level.png",
+    "photos_done": "2651280/photo.png",
+    "prowler_done": "2651280/prowler.png",
+    "spiderbots_done": "2651280/spiderbots.png",
+    "story": "2651280/story.png",
+    "story_done": "2651280/story.png"
+  },
+  "2950340": {
+    "achievements": "2950340/achievements.png",
+    "completed": "2950340/completion.png",
+    "part": "2950340/part.png",
+    "Зачистка": "2950340/completion.png"
+  },
+  "367520": {
+    "abilities": "367520/abilities.png",
+    "achievements": "367520/achievements.png",
+    "active_time": "367520/time.png",
+    "charms": "367520/charms.png",
+    "completed": "367520/completion.png",
+    "dreamers": "367520/dreamers.png",
+    "geo": "367520/geo.png",
+    "grubs": "367520/grubs.png",
+    "masks": "367520/masks.png",
+    "nail": "367520/nail.png",
+    "save_time": "367520/time.png",
+    "spells": "367520/spells.png",
+    "Урон гвоздя": "367520/nail.png"
+  },
+  "391540": {
+    "achievements": "391540/achievements.png",
+    "active_time": "391540/time.png",
+    "armor": "391540/armor.png",
+    "g": "391540/gold.png",
+    "kills": "391540/kills.png",
+    "lv": "391540/lv.png",
+    "max_hp": "391540/hp.png",
+    "save_time": "391540/time.png",
+    "weapons": "391540/weapon.png"
+  },
+  "424840": {
+    "achievements": "424840/achievements.png",
+    "active_time": "424840/time.png",
+    "chapter": "424840/chapter.png",
+    "dlc_items": "424840/dlc.png",
+    "nomes": "424840/nomes.png",
+    "save_time": "424840/time.png",
+    "statues": "424840/statues.png"
+  },
+  "524220": {
+    "achievements": "524220/achievements.png",
+    "character": "524220/character.png",
+    "endings_unlocked": "524220/endings.png",
+    "level": "524220/level.png",
+    "money_g": "524220/money.png",
+    "quests_completed": "524220/quests.png",
+    "story_route": "524220/route.png",
+    "weapons": "524220/weapons.png",
+    "player_level": "524220/level.png",
+    "active_character": "524220/character.png",
+    "weapons_owned": "524220/weapons.png",
+    "gold": "524220/money.png"
+  },
+  "532210": {
+    "achievements": "532210/achievements.png",
+    "brotherhood": "532210/brotherhood.png",
+    "collectibles_count": "532210/souvenirs.png",
+    "episode": "532210/episode.png",
+    "episodes_completed": "532210/episodes_done.png",
+    "journal_pages": "532210/journal.png",
+    "morality": "532210/morality.png"
+  },
+  "646570": {
+    "achievements": "646570/achievements.png",
+    "act_floor": "646570/act.png",
+    "ascension": "646570/ascension.png",
+    "character": "646570/character.png",
+    "gold": "646570/gold.png",
+    "hp": "646570/hp.png",
+    "unlocked_ascension": "646570/ascension.png",
+    "wins": "646570/wins.png"
+  },
+  "860510": {
+    "achievements": "860510/achievements.png",
+    "active_time": "860510/time.png",
+    "chapter": "860510/chapter.png",
+    "save_time": "860510/time.png"
+  },
+  "990080": {
+    "achievements": "990080/achievements.png",
+    "collections": "990080/collections.png",
+    "gold": "990080/gold.png",
+    "healing_potions": "990080/potion.png",
+    "house": "990080/house.png",
+    "level": "990080/level.png",
+    "merlin_trials": "990080/merlin.png"
+  },
+  "1659420": {
+    "completion_percent": "1659420/pie.svg",
+    "treasures_collected": "1659420/gem.svg",
+    "play_time_minutes": "1659420/clock.svg"
+  }
+}

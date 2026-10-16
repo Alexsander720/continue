@@ -1,0 +1,18 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: primaryPanel
+Flavor: H-Linear Grad
+Dependencies (see theme.json):
+    Anim_hLinearGrad.css
+--- */
+
+:root {
+    --chromahonSM__primaryPanel-bg: linear-gradient(
+        to right,
+        var(--chromahonSM__primaryPanel-bg-c1),
+        var(--chromahonSM__primaryPanel-bg-c2)
+    );
+
+    --chromahonSM__Anim_primaryPanel-bg: chromahonSM__Anim_hLinearGrad 12s infinite ease-in-out alternate;
+}

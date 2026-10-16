@@ -1,0 +1,18 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: secondaryPanel
+Flavor: Stripes
+Dependencies (see theme.json):
+    None
+--- */
+
+:root {
+    --chromahonSM__secondaryPanel-bg:
+        linear-gradient(
+            45deg,
+            var(--chromahonSM__secondaryPanel-bg-c1) 0%, var(--chromahonSM__secondaryPanel-bg-c1) 33%,
+            var(--chromahonSM__secondaryPanel-bg-c2) 33%, var(--chromahonSM__secondaryPanel-bg-c2) 66%,
+            var(--chromahonSM__secondaryPanel-bg-c3) 66%, var(--chromahonSM__secondaryPanel-bg-c3) 100%
+        );
+}

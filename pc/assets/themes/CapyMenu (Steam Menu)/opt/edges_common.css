@@ -1,0 +1,7 @@
+:root {
+    --chromahonSM__Opt_toggleRound_small-radius: 4px;
+    --chromahonSM__Opt_toggleRound_soft-radius: 8px;
+    --chromahonSM__Opt_toggleRound_moderate-radius: 12px;
+    --chromahonSM__Opt_toggleRound_strong-radius: 18px;
+    --chromahonSM__Opt_toggleRound_hard-radius: 24px;
+}

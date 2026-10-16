@@ -153,6 +153,10 @@ class WebSocket:
         """Set the socket timeout in seconds; None waits indefinitely."""
         self.sock.settimeout(timeout)
 
+    def abort(self):
+        """Interrupt a stalled sender/reader without acquiring the send lock."""
+        self._shutdown()
+
     def _shutdown(self, drain=False):
         self.connected = False
         if drain:

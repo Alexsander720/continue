@@ -1,0 +1,27 @@
+/* ---
+Chromahon (Input Controls)
+Text Inputs
+--- */
+
+/* Text Input Non-Focused */
+.BasicUI ._3ZR32BdxJUNwAA6Fu6n00p,
+.BasicUI ._3ZR32BdxJUNwAA6Fu6n00p:not(.disabled):not(.gpfocus):hover {
+    background: var(--chromahonControls__textInput-bg);
+    color: var(--chromahonControls__textInput-fg);
+}
+.BasicUI ._3ZR32BdxJUNwAA6Fu6n00p::placeholder {
+    color: var(--chromahonControls__textInput-fg);
+    opacity: .4;
+}
+
+/* Text Input Focused */
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus,
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus:hover {
+    background: var(--chromahonControls__textInput-bg-hl);
+    color: var(--chromahonControls__textInput-fg-hl);
+}
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus::placeholder,
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus:hover::placeholder {
+    color: var(--chromahonControls__textInput-fg-hl);
+    opacity: .4;
+}

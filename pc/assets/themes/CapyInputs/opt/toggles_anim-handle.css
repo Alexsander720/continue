@@ -1,0 +1,6 @@
+.gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx) .gamepaddialog_ToggleSwitch_3__OD {
+    transform: scale(1) translateX(0px) !important;
+}
+.gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleSwitch_3__OD {
+    transform: scale(1) translateX(20px) !important;
+}

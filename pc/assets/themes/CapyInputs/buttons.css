@@ -1,0 +1,108 @@
+/* ---
+Chromahon (Input Controls)
+Buttons, Dropdowns
+--- */
+
+/* ---
+Shared Elements between QA & Steam Menus
+--- */
+
+    /* buttons & dropdowns */
+    button.cXzBZxhPBl7fZs9LODEnc.DialogButton, button.cXzBZxhPBl7fZs9LODEnc.DialogButton.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover.Primary {
+        background: var(--chromahonControls__button-bg);
+    }
+    button.cXzBZxhPBl7fZs9LODEnc.DialogButton, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover {
+        color: var(--chromahonControls__button-fg);
+    }
+    button.cXzBZxhPBl7fZs9LODEnc.DialogButton.gpfocus, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled.gpfocus, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.gpfocus, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active:active, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover.gpfocus, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover:active {
+        background: var(--chromahonControls__button-bg-hl);
+        color: var(--chromahonControls__button-fg-hl);
+    }
+    
+    /* extended dropdowns e.g. Settings -> General -> Timezone */
+    ._2fl-TfpJcuSi88OkNwGOCb,
+    ._3g-QHB82IGz91Hsk1Hw4lh,
+    .cbinvNOoQE045ZV5gCk_N {
+        color: var(--chromahonControls__button-fg);
+    }
+    .gpfocus ._2fl-TfpJcuSi88OkNwGOCb,
+    .gpfocus ._3g-QHB82IGz91Hsk1Hw4lh,
+    .gpfocus .cbinvNOoQE045ZV5gCk_N {
+        color: var(--chromahonControls__button-fg-hl);
+    }
+
+    /* "special" buttons */
+    button.cXzBZxhPBl7fZs9LODEnc.DialogButton.gpfocus.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled.gpfocus.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.gpfocus.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active:active.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover.gpfocus.Primary, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover:active.Primary {
+        background: var(--chromahonControls__button-fg-hl);
+        color: var(--chromahonControls__button-bg-hl);
+    }
+    /* disabled */
+    button.cXzBZxhPBl7fZs9LODEnc.DialogButton.Disabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton[disabled], button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled.Disabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled[disabled], button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.Disabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active[disabled], button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover.Disabled, button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover[disabled] {
+        background: var(--chromahonControls__button-bg);
+        color: var(--chromahonControls__button-fg);
+    }
+    /* remove box-shadow highlight */
+    .eKmEXJCm_lgme24Fp_HWt button.cXzBZxhPBl7fZs9LODEnc.DialogButton.gpfocus, .eKmEXJCm_lgme24Fp_HWt button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled.gpfocus, .eKmEXJCm_lgme24Fp_HWt button.cXzBZxhPBl7fZs9LODEnc.DialogButton:active.gpfocus, .eKmEXJCm_lgme24Fp_HWt button.cXzBZxhPBl7fZs9LODEnc.DialogButton:enabled:active:hover.gpfocus {
+        box-shadow: none;
+    }
+
+    /* checkboxes */
+    .DialogCheckbox {
+        background: var(--chromahonControls__button-bg);
+        box-shadow: none;
+    }
+    .DialogCheckbox_Container:hover .DialogCheckbox:not(.Disabled), .DialogCheckbox:hover:not(.Disabled), .DialogCheckbox_Container:focus .DialogCheckbox:not(.Disabled), .DialogCheckbox:focus:not(.Disabled) {
+        background: var(--chromahonControls__button-bg-hl);
+    }
+    .DialogCheckbox path {
+        stroke: var(--chromahonControls__button-fg);
+    }
+    .DialogCheckbox_Container:focus .DialogCheckbox path {
+        stroke: var(--chromahonControls__button-fg-hl);
+    }
+
+/* ---
+Exclusive to QAM
+--- */
+
+    /* friends page -> header buttons */
+    .GamepadMode.friendlist .TabPanelHeader .NewChatGroupButton, .GamepadMode.friendlist .TabPanelHeader .AddFriendButton, .GamepadMode.friendlist .TabPanelHeader .FriendsInvitesButton {
+        background: var(--chromahonControls__button-bg);
+        color: var(--chromahonControls__button-fg);
+        padding: 4px 8px 4px 8px;
+    }
+    .GamepadMode.friendlist .TabPanelHeader .NewChatGroupButton.gpfocus, .GamepadMode.friendlist .TabPanelHeader .AddFriendButton.gpfocus, .GamepadMode.friendlist .TabPanelHeader .FriendsInvitesButton.gpfocus {
+        background: var(--chromahonControls__button-bg-hl);
+        color: var(--chromahonControls__button-fg-hl);
+    }
+
+    /* soundtracks page -> controls */
+    ._1iFnR7cGRa1kepep433pGx.h782PaUbu8xm3afLFh83E.DialogButton.cXzBZxhPBl7fZs9LODEnc svg path {
+        fill: var(--chromahonControls__button-fg);
+    }
+    ._1iFnR7cGRa1kepep433pGx.DialogButton.cXzBZxhPBl7fZs9LODEnc svg path {
+        fill: var(--chromahonControls__button-fg);
+        stroke: none;
+    }
+    button._1iFnR7cGRa1kepep433pGx.gpfocus,
+    button._1iFnR7cGRa1kepep433pGx:active {
+        background: var(--chromahonControls__button-bg-hl) !important;
+    }
+    button._1iFnR7cGRa1kepep433pGx.gpfocus svg path,
+    button._1iFnR7cGRa1kepep433pGx:active svg path {
+        fill: var(--chromahonControls__button-fg-hl) !important;
+    }
+
+/* ---
+Exclusive to Steam Menu
+--- */
+
+    /* Controller settings > 'Controller settings' Button */
+    ._2H5S67B87P-E-gIGLnerOf ._1T2RsCEMP1dxEe5SbHzxlL {
+        background: var(--chromahonControls__button-bg);
+        color: var(--chromahonControls__button-fg);
+    }
+    ._2H5S67B87P-E-gIGLnerOf ._1T2RsCEMP1dxEe5SbHzxlL.gpfocus {
+        background: var(--chromahonControls__button-bg-hl);
+        color: var(--chromahonControls__button-fg-hl);
+    }

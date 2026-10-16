@@ -1,0 +1,30 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: secondaryPanel-tabIndicator
+Flavor: Solid Colors
+Dependencies (see theme.json):
+    None
+--- */
+
+:root {
+    --chromahonSM__Anim_secondaryPanel-tabIndicator: chromahonSM__Anim_colorChange_secondaryPanel-tabIndicator 4s infinite ease-in-out alternate;
+}
+
+@keyframes chromahonSM__Anim_colorChange_secondaryPanel-tabIndicator {
+    0% {
+        background: var(--chromahonSM__secondaryPanel-tabIndicator);
+    }
+    25% {
+        background: var(--chromahonSM__secondaryPanel-tabIndicator-c2);
+    }
+    50% {
+        background: var(--chromahonSM__secondaryPanel-tabIndicator-c3);
+    }
+    75% {
+        background: var(--chromahonSM__secondaryPanel-tabIndicator-c4);
+    }
+    100% {
+        background: var(--chromahonSM__secondaryPanel-tabIndicator);
+    }
+}

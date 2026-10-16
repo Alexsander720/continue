@@ -41,3 +41,6 @@ site/media/tour-*.mp4
 /dist/
 _readme_preview_*.html
 _tkcheck.jpg
+
+# Agent working dumps — never publish (NOTICE: no full game text)
+/antigravity/

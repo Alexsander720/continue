@@ -1,0 +1,8 @@
+:root {
+    --chromahonControls__textInput-bg-hl: radial-gradient(circle at top -155px left 35px, var(--chromahonControls__textInput-bg-hl-c1) 0% 30%, var(--chromahonControls__textInput-bg-hl-c2) 70% 100%);
+}
+
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus,
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus:hover{
+    background-size: 100% 150%;
+}

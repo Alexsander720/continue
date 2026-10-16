@@ -1,0 +1,185 @@
+/* ---
+Chromahon (Steam Menu)
+Core Template
+
+Defines which UI elements are to be styled by default
+Actual styles for those elements ('Flavors') have their implementation living in the ./parts folder
+./opt may contain additional elements and adjustments that map with togglable CSS Loader patches in theme.json ("type": "checkbox")
+--- */
+
+
+/* ---
+Primary Panel
+--- */
+
+/* Container */
+._23IDiI-F_FxXotrgpY71r8 {
+    background: var(--chromahonSM__primaryPanel-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_primaryPanel-bg, none);
+
+    /* Remove bottom shadow */
+    [class="_3kHmfV9Pej6JhVOBMGhcgq"] {
+        display: none;
+    }
+
+    /* Remove running app separator */
+    ._33RkHXjHPoThT-d4uAt-n6 {
+        display: none;
+    }
+}
+
+/* Item */
+[class="_2ADpTpv53dcY1uFpMWO1KT"] {
+    color: var(--chromahonSM__primaryPanel-item-label); /* label */
+}
+
+[class="_3xZ3ZujYllkNRr5UdDfNmz"] {
+    color: var(--chromahonSM__primaryPanel-item-svg) !important; /* svg */
+}
+
+/* Focused Item */
+[class="_1BbM8Qq8OL5N8gL4PYH397"]:has(.gpfocus) {
+    background: var(--chromahonSM__primaryPanel-itemFocus-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_primaryPanel-itemFocus-bg, none);
+}
+
+.gpfocus [class="_2ADpTpv53dcY1uFpMWO1KT"] {
+    color: var(--chromahonSM__primaryPanel-itemFocus-label); /* label */
+}
+
+.gpfocus [class="_3xZ3ZujYllkNRr5UdDfNmz"] {
+    color: var(--chromahonSM__primaryPanel-itemFocus-svg) !important; /* svg */
+}
+
+/* 'Disable' anim on item: Active & Focused */
+@keyframes _1HTvA0ji8Y-wN-gFU8e48c {
+    0%, 100% {
+        background: transparent;
+    }
+}
+
+/* 'Disable' anim on item: Focused */
+@keyframes _1HnqFT3fbAw0ADaVlUzeNn {
+    0%, 100% {
+        background: transparent;
+    }
+}
+
+/* Active tab indicator */
+/*  Animations do not apply on the base class below, which is why we use a pseudo-element hack instead */
+[class="_1BbM8Qq8OL5N8gL4PYH397"] [class="_1uLVHdiiCg78BRnhqLxUID"] {
+    position: relative;
+    left: -26px;
+    width: 0 !important;
+    background: transparent;
+}
+
+/* Active tab indicator Focus */
+[class="_1BbM8Qq8OL5N8gL4PYH397"]:has(.gpfocus) [class="_1uLVHdiiCg78BRnhqLxUID"]::after {
+    background: var(--chromahonSM__primaryPanel-itemFocus-svg);
+    animation: none;
+}
+
+[class="_1BbM8Qq8OL5N8gL4PYH397"] [class="_1uLVHdiiCg78BRnhqLxUID"]::after {
+    position: absolute;
+    top: 0;
+    content: "";
+    background: var(--chromahonSM__primaryPanel-tabIndicator);
+    animation: var(--chromahonSM__Opt_toggleAnim_primaryPanel-tabIndicator, none);
+    /* restore Steam's defaults */
+    width: 10px; height: 100%;
+    border-radius: 6px;
+}
+
+/* ---
+Secondary Panel
+Resume game, Controller settings, etc.
+--- */
+
+/* Container */
+._12NNtyso3nbzJGi2XxHzcN {
+    background: var(--chromahonSM__secondaryPanel-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_secondaryPanel-bg, none);
+    border: none;
+    justify-content: space-evenly;
+
+    /* Remove top gradient */
+    &::before {
+        background: none;
+    }
+}
+
+/* Item Labels */
+._2b6L36XnXUqFHHkGE4_2mv,
+._2b6L36XnXUqFHHkGE4_2mv._1U3OjZG3cOt5OhO_lKAXI0 {
+    color: var(--chromahonSM__secondaryPanel-item-label);
+}
+
+/* Active Item Label */
+._2b6L36XnXUqFHHkGE4_2mv._1U3OjZG3cOt5OhO_lKAXI0 {
+    font-weight: bold;
+}
+
+/* Focused Item */
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus {
+    background: var(--chromahonSM__secondaryPanel-itemFocus-bg);
+    color: var(--chromahonSM__secondaryPanel-itemFocus-label);
+    mix-blend-mode: normal;
+    animation: var(--chromahonSM__Opt_toggleAnim_secondaryPanel-itemFocus-bg, none);
+}
+
+/* Reimplement item's growing animation in order to prevent overflow when Edges > Round is enabled */
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus,
+._2b6L36XnXUqFHHkGE4_2mv._1U3OjZG3cOt5OhO_lKAXI0 {
+    transform: none;
+}
+._2b6L36XnXUqFHHkGE4_2mv {
+    transition: font-size .05s ease;
+}
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus {
+    font-size: 1.1em;
+}
+
+/* Active Tab Indicator */
+._2b6L36XnXUqFHHkGE4_2mv ._3Il1BD4p9lccpjISQKhR1X {
+    left: -2.5px;
+    background: var(--chromahonSM__secondaryPanel-tabIndicator);
+    animation: var(--chromahonSM__Opt_toggleAnim_secondaryPanel-tabIndicator, none);
+}
+
+/* Active Tab Indicator Focus */
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus ._3Il1BD4p9lccpjISQKhR1X {
+    background: var(--chromahonSM__secondaryPanel-itemFocus-label);
+    animation: none;
+}
+
+/* ---
+Tertiary Panel
+Paged Content via Secondary Panel
+--- */
+
+/* Parent div's underlying background */
+.sfthxkhui6WSgvnbllI_n {
+    background: transparent;
+}
+
+/* Actual Container */
+.RAI0lLN8sCtqCMI36rLiB {
+    background: var(--chromahonSM__tertiaryPanel-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_tertiaryPanel-bg, none);
+}
+
+/* Actual Container Focus */
+.RAI0lLN8sCtqCMI36rLiB._3moC2HsDsMTWYCzhAnW4tu {
+    background: var(--chromahonSM__tertiaryPanel-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_tertiaryPanel-bg, none);
+}
+
+/* Loading Throbber */
+.loadingthrobber_ContainerBackground_2ngG3 {
+    background: none;
+
+    & img {
+        filter: grayscale(100%);
+    }
+}

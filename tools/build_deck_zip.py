@@ -17,7 +17,7 @@ def _write_entry(zipped, name, data):
     info = zipfile.ZipInfo(name, date_time=ZIP_TIMESTAMP)
     info.create_system = 3
     info.external_attr = (0o100644 << 16)
-    zipped.writestr(info, data, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+    zipped.writestr(info, data, compress_type=zipfile.ZIP_STORED)
 
 
 def build(root: Path, version: str) -> tuple[Path, Path]:
@@ -43,7 +43,7 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
         temporary = Path(stream.name)
     try:
         entries = {}
-        with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as zipped:
+        with zipfile.ZipFile(temporary, "w", zipfile.ZIP_STORED) as zipped:
             for path in sorted(source.rglob("*")):
                 if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc":
                     continue
@@ -77,12 +77,22 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
     return archive, checksum
 
 
+def get_package_version(root: Path = ROOT) -> str:
+    package_json = root / "plugin" / "package.json"
+    data = json.loads(package_json.read_text(encoding="utf-8"))
+    version = data.get("version")
+    if not version or not isinstance(version, str):
+        raise ValueError(f"Invalid or missing version in {package_json}")
+    return version
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("version", nargs="?", default="0.1.0")
+    parser.add_argument("version", nargs="?", default=None, help="Release version (defaults to plugin/package.json version)")
     args = parser.parse_args()
+    version = args.version or get_package_version(ROOT)
     try:
-        build(ROOT, args.version)
+        build(ROOT, version)
     except (OSError, ValueError) as error:
         parser.exit(1, f"Build failed: {error}\n")
     return 0

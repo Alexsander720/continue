@@ -16,7 +16,7 @@ if __package__ != 'ddsaves':
     GAMEHUB = ROOT.parents[min(2, len(ROOT.parents) - 1)]/'GameHub' if IS_CODEX else HERE.parent
     sys.path.insert(0, str(GAMEHUB))
 from ddsaves import gvas
-from ddsaves._common import localize, select, ui, empty, fact, finish, newest, proton_user
+from ddsaves._common import localize, select, ui, empty, fact, finish, newest, proton_user, read_bytes
 
 APPID = 2172010
 TABLE_PATH = (HERE.parent/'data' if IS_CODEX else HERE/'data')/'until_dawn.json'
@@ -38,10 +38,17 @@ def find(path_or_dir=None):
     return newest(p.rglob('SaveGame[0-9]*.sav')) if p.is_dir() else None
 
 def read(path_or_dir=None):
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f'Сохранение Until Dawn не прочитано: {e}')
+
+
+def _read(path_or_dir=None):
     T = localize(globals()["T"])
     path = find(path_or_dir)
     if path is None: return empty('Сохранение Until Dawn не найдено')
-    p = gvas.unwrap(gvas.read(path.read_bytes())['props'])
+    p = gvas.unwrap(gvas.read(read_bytes(path))['props'])
     g = p.get('GameSaveData') or {}; level = p.get('LevelData') or {}
     if not all(k in g for k in ('TotemTracker','ClueTracker','ButterflyTracker')):
         return empty('Файл не содержит сюжетное сохранение Until Dawn')

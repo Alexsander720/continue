@@ -1,0 +1,35 @@
+.gamepadhomerecentgames_RecentGamesInnerContainer_282X0 {
+    /* Screen Height - (Header + Footer) - header padding - friend bar */
+    height: calc(100vh - 80px - 14px - 58px);
+}
+
+.gamepadhomerecentgames_RecentGamesInnerContainer_282X0 .basicgamecarousel_BasicGameCarousel_3MdH5 {
+    bottom: 0px;
+    position: absolute !important;
+}
+
+.basicgamecarousel_CarouselGameLabelWrapper_ZkD6W {
+    position: absolute;
+    top: -52px;
+    padding-top: 0;
+}
+
+.basicgamecarousel_BasicGameCarousel_3MdH5 {
+    padding-top: 85px;
+}
+
+.gamepadhomerecentgames_RecentGamesHeader_35iRe {
+    display: none;
+}
+
+.basicgamecarousel_BasicGameCarousel_3MdH5 > .ReactVirtualized__Grid__innerScrollContainer {
+    height: 221px !important;
+}
+
+.gamepadhome_TabbedContent_cE1Sa {
+    margin-top: 0px;
+}
+
+.RecentGamesBackgroundContainer, .RecentGamesBackgroundImages {
+    bottom: var(--SLH-lift-hero-px);
+}

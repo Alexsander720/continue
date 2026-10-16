@@ -1,0 +1,9 @@
+.BasicUI ._3ZR32BdxJUNwAA6Fu6n00p,
+.BasicUI ._3ZR32BdxJUNwAA6Fu6n00p:not(.disabled):not(.gpfocus):hover {
+    border-bottom: 2px solid var(--chromahonControls__textInput-fg);
+}
+
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus,
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus:hover {
+    border-bottom: 2px solid var(--chromahonControls__textInput-fg-hl);
+}

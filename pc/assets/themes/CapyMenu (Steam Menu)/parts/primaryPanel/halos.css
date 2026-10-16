@@ -1,0 +1,19 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: primaryPanel
+Flavor: Halos
+Dependencies (see theme.json):
+    5ColorGrad.css
+--- */
+
+:root {
+    --chromahonSM__primaryPanel-bg: 
+        radial-gradient(circle at 20% 0%, var(--chromahonSM__primaryPanel-bg-c1) 0%, transparent 60%),
+        radial-gradient(circle at 65% 15%, var(--chromahonSM__primaryPanel-bg-c2)  0%, transparent 60%),
+        radial-gradient(circle at 140% 70%, var(--chromahonSM__primaryPanel-bg-c3) 0%, transparent 60%),
+        radial-gradient(circle at 30% 70%, var(--chromahonSM__primaryPanel-bg-c4) 0%, transparent 60%),
+        var(--chromahonSM__primaryPanel-bg-c5);
+    
+    --chromahonSM__Anim_primaryPanel-bg: chromahonSM__Anim_5ColorGrad 14s infinite ease-in-out alternate;
+}

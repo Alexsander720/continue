@@ -74,6 +74,13 @@ def find(path_or_dir: Optional[Union[Path, str]] = None) -> List[Path]:
 
 
 def read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"Сохранение Life is Strange 2 не прочитано: {e}")
+
+
+def _read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
     files = find(path_or_dir)
     if not files:
         return empty("Файлы сохранений Life is Strange 2 не найдены")

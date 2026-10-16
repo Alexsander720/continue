@@ -1,0 +1,37 @@
+:root {
+    --chromahonControls__grad-anim: chromahonControls__Anim-grad-bg 4s infinite ease-in-out alternate;
+}
+
+@keyframes chromahonControls__Anim-grad-bg {
+  0% {
+    background-position: 0% 0%;
+    background-size: 200% 200%;
+  }
+  25% {
+    background-position: 25% 25%;
+    background-size: 220% 200%;
+  }
+  50% {
+    background-position: 50% 50%;
+    background-size: 250% 250%;
+  }
+  75% {
+    background-position: 25% 25%;
+    background-size: 220% 200%;
+  }
+  100% {
+    background-position: 0% 0%;
+    background-size: 200% 200%;
+  }
+}
+
+.gamepaddialog_On_3ld7T>.gamepaddialog_ToggleRail_2JtC3 {
+    animation: var(--chromahonControls__grad-anim);
+}
+
+.gamepadslider_SliderTrack_Mq25N::before {
+    animation: var(--chromahonControls__grad-anim);
+}
+div .u8QEaEpjqBM8RuPzRLjMy.j418S4TEV2LS3JHn6an4s {
+    animation: var(--chromahonControls__grad-anim);
+}

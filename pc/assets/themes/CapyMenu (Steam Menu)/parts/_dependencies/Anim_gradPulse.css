@@ -1,0 +1,8 @@
+@keyframes chromahonSM__Anim_gradPulse {
+    0%, 100% {
+        background-size: 100% 100%;
+    }
+    50% {
+        background-size: 200% 200%;
+    }
+}

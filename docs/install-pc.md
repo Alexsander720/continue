@@ -2,9 +2,9 @@
 
 **English** · [Українська](install-pc.uk.md) · [Русский](install-pc.ru.md)
 
-This guide applies to the separately distributed `continue-pc-<version>.zip`. The installer and runtime have been
-verified with an isolated fake Steam/CDP server and temporary Windows profiles. They have **not yet been accepted on a
-clean real Windows account with a real Steam client**, so treat this as an alpha and close games before restarting Steam.
+This guide is for a **separately provided Windows Steam Big Picture test package** (`continue-pc-<version>.zip`).
+The installer and runtime code are present in the repository under `pc/`, but **a public PC package has passed real-Steam checks on Windows 11 x64, is still awaiting clean-device acceptance, and is not published in GitHub Releases yet**.
+The installer and service have been verified with an isolated fake Steam/CDP server and temporary Windows profiles. On 2026-10-13, installation, repair, a game card, native library tabs, settings, refusal and removal were also checked with real Steam Big Picture on Windows 11 x64, with Python and Steam debugging already available. A clean account without Python, Windows 10 and ARM64 are experimental; physical controller use is still pending. Treat this test package as an alpha and close games before restarting Steam.
 
 Requirements: Windows 10 or 11, Steam installed for the current Windows user, and Steam Big Picture. Administrator
 rights are neither requested nor needed. Continue? uses only Python's standard library. If Python 3.10 or newer with
@@ -13,8 +13,14 @@ checks its published SHA-256, and installs it only under your user profile. It d
 
 ## Install: double-click, consent, restart Steam
 
-1. Download `continue-pc-<version>.zip` together with `continue-pc-<version>.zip.sha256`. Verify the checksum if you
-   received the files from another person, then extract the whole ZIP to an ordinary local folder.
+1. Take the separately provided test package `continue-pc-<version>.zip` together with its checksum file
+   `continue-pc-<version>.zip.sha256`, or build a local test candidate from repository source:
+   ```bash
+   python tools/build_pc_zip.py
+   # or with an explicit version:
+    python tools/build_pc_zip.py 0.1.4
+   ```
+   This creates `dist/continue-pc-<version>.zip` and `dist/continue-pc-<version>.zip.sha256`. Building produces a local test candidate for verification, not a published release or clean-device acceptance. Verify the checksum if you received the files from another person, then extract the whole ZIP to an ordinary local folder.
 2. Double-click `Continue\setup.cmd` (or `Continue\pc\setup.cmd`). Windows may show a warning because the package is
    readable `.cmd`, `.ps1`, `.py`, and JavaScript rather than a signed installer EXE. Inspect the scripts if desired;
    do not grant administrator rights. `setup.cmd` uses `-ExecutionPolicy Bypass` only for its own local PowerShell script.
@@ -32,6 +38,14 @@ Running setup again is a repair install: it preserves settings/data, replaces th
 ownership of the Steam flag, and repairs the task. An installation manifest records the version, paths, selected Python,
 task, and whether Continue? itself created the debugging flag.
 
+## Settings in Big Picture
+
+Open **Continue?** in Steam's main menu, or **…** on a game page. Library, Game card, Backgrounds, Music, Appearance and Connections contain the settings. Continue? library tabs start disabled; TabMaster keeps control when present.
+
+Enable automatic music once for the library after explicit permission. Backgrounds and music prepare only for games you open. Hide save details globally or per game. The optional SteamGridDB key stays in your own profile.
+
+[First use: music, quality and storage, cards, artwork and language](pc-first-start.md). The buttons, controller symbols and card styling preserve the original Big Picture presentation. Extra themes are under Appearance → More appearance options.
+
 ## What changes on the PC
 
 | Item | Exact behavior |
@@ -45,10 +59,17 @@ task, and whether Continue? itself created the debugging flag.
 | Install record | `%LOCALAPPDATA%\Continue\install.json` |
 | Optional Python | `%LOCALAPPDATA%\Continue\python`, only when no suitable existing Python was found |
 
-The public build does not contain the developer's hub, personal paths, mass trailer tools,
-Deck SSH support, SteamGridDB key/window, or private themes. Save cards are read locally by the same public `ddsaves`
+The public build includes standalone Artwork, Music and Themes controls with the original presentation. The developer's hub, Deck SSH support and API key are excluded. Save cards are read locally by the same public `ddsaves`
 readers as the Deck build. Descriptions and media metadata can come from Steam Store; HLTB/network/media failures are
-non-fatal. `ffmpeg` is optional and is never installed by Continue?.
+non-fatal. `ffmpeg`/`ffprobe` arrive only with the optional media tools, downloaded with explicit consent into the
+Continue? profile and verified by checksum; they are never installed system-wide.
+
+### Third-party software and media
+
+YouTube trailers and theme music are downloaded only after explicit consent, locally on this PC. The project ships no
+third-party audio or video, and the user is responsible for following the services' terms and copyright. Helper programs
+(the pinned Python from python.org, yt-dlp, Node and FFmpeg) are third-party software under their own licenses; they are
+downloaded only with consent into the Continue? profile, and each archive is verified by checksum before use.
 
 ## Status and logs
 
@@ -71,8 +92,7 @@ A public installation checks GitHub Releases no more than once per day. It accep
 the directory atomically, starts the new service, and waits for a fresh version/nonce health record. If startup fails, it
 restores and restarts the previous app. Development checkouts without `RELEASE.json` do not update.
 
-No GitHub release was published as part of the local verification; automatic update must still be exercised against an
-actual draft/test release before the PC alpha is announced publicly.
+No public PC release is currently published on GitHub Releases. Public automatic updates will become operational once an official PC release is published after clean Windows/Steam acceptance. Automatic update must still be exercised against an actual draft/test release before the PC alpha is announced publicly.
 
 ## Remove
 

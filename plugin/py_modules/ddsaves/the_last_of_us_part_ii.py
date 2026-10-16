@@ -17,7 +17,7 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parent)]
 from _card import Facts, empty, finish
-from ddsaves._common import documents_dirs, proton_user
+from ddsaves._common import documents_dirs, proton_user, read_bytes
 
 APPID = 2531310
 DESC_OFFSET = 0x05A4
@@ -93,7 +93,7 @@ def _slot(path: Path) -> Optional[dict]:
     data_file = path / "USR-DATA"
     try:
         document = json.loads(params.read_text(encoding="utf-8"))
-        raw = data_file.read_bytes()
+        raw = read_bytes(data_file)
     except (OSError, UnicodeError, ValueError):
         return None
     if not isinstance(document, dict) or len(raw) < DESC_END:
@@ -111,6 +111,13 @@ def _slot(path: Path) -> Optional[dict]:
 
 
 def read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"Сохранение The Last of Us Part II не прочитано: {e}")
+
+
+def _read(path_or_dir: Optional[Union[Path, str]] = None) -> dict:
     target = None
     parsed = None
     for slot in find(path_or_dir):

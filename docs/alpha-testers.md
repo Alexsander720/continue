@@ -2,7 +2,7 @@
 
 **English** · [Українська](alpha-testers.uk.md) · [Русский](alpha-testers.ru.md)
 
-Thank you for testing Continue? 0.1.0. The goal is to find real Deck, Steam-client, save-reader, media, and layout problems without collecting your saves or identity.
+Thank you for testing the Continue? public alpha. The goal is to find real Deck, Steam-client, save-reader, media, and layout problems without collecting your saves or identity.
 
 ## Before testing
 

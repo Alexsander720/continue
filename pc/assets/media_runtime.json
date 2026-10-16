@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-14T10:45:00Z",
+  "platform": "win-x64",
+  "platform_support": {
+    "supported_architectures": ["win-x64"],
+    "emulated_arm": "Supported on Windows 11 ARM64 via built-in x64 emulation (Prism)",
+    "native_arm": "Unsupported: native win-arm64 binaries are not packaged in this runtime"
+  },
+  "allowed_hosts": [
+    "nodejs.org",
+    "github.com",
+    "objects.githubusercontent.com"
+  ],
+  "caps": {
+    "max_download_node_bytes": 83886080,
+    "max_download_ffmpeg_bytes": 230686720,
+    "max_decompressed_bytes": 1073741824
+  },
+  "packages": {
+    "node": {
+      "name": "node",
+      "version": "22.23.3",
+      "release_title": "Node.js v22.23.3 (LTS)",
+      "provenance_url": "https://nodejs.org/dist/v22.23.3/",
+      "shasums_url": "https://nodejs.org/dist/v22.23.3/SHASUMS256.txt",
+      "url": "https://nodejs.org/dist/v22.23.3/node-v22.23.3-win-x64.zip",
+      "filename": "node-v22.23.3-win-x64.zip",
+      "sha256": "2b0ff57b049cda1bbcea2240eec20467018713c1efe1f7360c2681859b90ed71",
+      "size_bytes": 35574076,
+      "max_compressed_bytes": 83886080,
+      "tools": {
+        "node": "node.exe"
+      },
+      "license_file": "LICENSE",
+      "target_license": "LICENSE_node.txt"
+    },
+    "ffmpeg": {
+      "name": "ffmpeg",
+      "version": "9.0.2",
+      "release_title": "FFmpeg 9.0.2 (BtbN autobuild-2026-10-13-13-05)",
+      "provenance_url": "https://ffmpeg.org/download.html",
+      "release_url": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-10-13-13-05",
+      "shasums_url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-13-13-05/checksums.sha256",
+      "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-13-13-05/ffmpeg-n9.0.2-27-g7e93014c5b-win64-gpl-9.0.zip",
+      "filename": "ffmpeg-n9.0.2-27-g7e93014c5b-win64-gpl-9.0.zip",
+      "sha256": "d88fb266d1333bb72e86713c949205e2d927015ab819eb7b3860691f9ad749c6",
+      "size_bytes": 193969550,
+      "max_compressed_bytes": 230686720,
+      "tools": {
+        "ffmpeg": "ffmpeg.exe",
+        "ffprobe": "ffprobe.exe"
+      },
+      "license_file": "LICENSE.txt",
+      "target_license": "LICENSE_ffmpeg.txt"
+    }
+  }
+}

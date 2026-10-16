@@ -1,0 +1,1448 @@
+{
+  "name": "CapyInputs",
+  "display_name": "Chromahon (Input Controls)",
+  "author": "Mugen",
+  "version": "v1.0.0",
+  "manifest_version": 9,
+  "tabs": {
+    "qam": [
+      "QuickAccess"
+    ],
+    "sm": [
+      "MainMenu"
+    ],
+    "both": [
+      "MainMenu",
+      "QuickAccess"
+    ],
+    "default": [
+      "qam"
+    ]
+  },
+  "inject": {
+    "toggles.css": [],
+    "buttons.css": [
+      "both"
+    ],
+    "sliders.css": [],
+    "text-inputs.css": [
+      "sm"
+    ]
+  },
+  "patches": {
+    "Light Scheme Adjustments": {
+      "type": "dropdown",
+      "default": "Disabled",
+      "values": {
+        "Disabled": {},
+        "Apply to Quick Access Menu": {
+          "opt/schemeIsLight.css": []
+        },
+        "Apply to Steam Menu": {
+          "opt/schemeIsLight.css": [
+            "sm"
+          ]
+        },
+        "Apply to both menus": {
+          "opt/schemeIsLight.css": [
+            "both"
+          ]
+        }
+      }
+    },
+    "Gradient Animations (Limited to Toggles & Sliders)": {
+      "type": "dropdown",
+      "default": "Disabled",
+      "values": {
+        "Disabled": {},
+        "Apply to Quick Access Menu": {
+          "opt/toggles_sliders_anim-grad.css": []
+        },
+        "Apply to Steam Menu": {
+          "opt/toggles_sliders_anim-grad.css": [
+            "sm"
+          ]
+        },
+        "Apply to both menus": {
+          "opt/toggles_sliders_anim-grad.css": [
+            "both"
+          ]
+        }
+      }
+    },
+    "➤ Quick Access Menu": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "QAM > Non-Round Toggles": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggles_non-round.css": []
+        },
+        "No": {}
+      }
+    },
+    "QAM > Toggle Handle Animation": {
+      "type": "checkbox",
+      "default": "Yes",
+      "values": {
+        "Yes": {
+          "opt/toggles_anim-handle.css": []
+        },
+        "No": {}
+      }
+    },
+    "QAM > Toggle Rail 'Enabled'": {
+      "type": "slider",
+      "default": "H-Linear Grad",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/toggles/ON_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/toggles/ON_vLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#50eb79",
+          "css_variable": "--chromahonControls__toggle-ON-rail",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#ccdb76",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#76dbda",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#db7689",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c3",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "--chromahonControls__toggle-ON-rail-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Toggle Handle 'Enabled'": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#fff",
+          "css_variable": "--chromahonControls__toggle-ON-handle",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Toggle Rail 'Disabled'": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#292929",
+          "css_variable": "--chromahonControls__toggle-OFF-rail",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Toggle Handle 'Disabled'": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#363636",
+          "css_variable": "--chromahonControls__toggle-OFF-handle",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Non-Round Sliders": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/sliders_non-round.css": []
+        },
+        "No": {}
+      }
+    },
+    "QAM > Slider Fill": {
+      "type": "slider",
+      "default": "Gradient",
+      "values": {
+        "Solid Color": {},
+        "Gradient": {
+          "parts/sliders/fill_hLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#50eb79",
+          "css_variable": "--chromahonControls__slider-fill",
+          "tabs": []
+        },
+        {
+          "name": "Gradient Color 1",
+          "type": "color-picker",
+          "on": "Gradient",
+          "default": "#ccdb76",
+          "css_variable": "--chromahonControls__slider-fill-c1",
+          "tabs": []
+        },
+        {
+          "name": "Gradient Color 2",
+          "type": "color-picker",
+          "on": "Gradient",
+          "default": "#76dbda",
+          "css_variable": "--chromahonControls__slider-fill-c2",
+          "tabs": []
+        },
+        {
+          "name": "Gradient Color 3",
+          "type": "color-picker",
+          "on": "Gradient",
+          "default": "#db7689",
+          "css_variable": "--chromahonControls__slider-fill-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Slider Empty": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#ffffff4D",
+          "css_variable": "--chromahonControls__slider-empty",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Slider Handle": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#fff",
+          "css_variable": "--chromahonControls__slider-handle",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Slider Highlight": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#1C1C1C",
+          "css_variable": "--chromahonControls__slider-hl",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Button Decoration": {
+      "type": "slider",
+      "default": "Underline",
+      "values": {
+        "None": {},
+        "Faint Outline": {
+          "parts/buttons/decoration_faintOutline.css": []
+        },
+        "Outline": {
+          "parts/buttons/decoration_outline.css": []
+        },
+        "Underline": {
+          "parts/buttons/decoration_underline.css": []
+        },
+        "Solid Shadow": {
+          "parts/buttons/decoration_solidShadow.css": []
+        }
+      }
+    },
+    "QAM > Button Background": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/buttons/bg_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/buttons/bg_vLinearGrad.css": []
+        },
+        "Radial Grad": {
+          "parts/buttons/bg_radialGrad.css": []
+        },
+        "Stripes": {
+          "parts/buttons/bg_stripes.css": []
+        },
+        "Cutoff": {
+          "parts/buttons/bg_cutoff.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#161616",
+          "css_variable": "--chromahonControls__button-bg",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 1",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 2",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 3",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Button Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#ccc",
+          "css_variable": "--chromahonControls__button-fg",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Button Highlight Background": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/buttons/highlight/bg_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/buttons/highlight/bg_vLinearGrad.css": []
+        },
+        "Radial Grad": {
+          "parts/buttons/highlight/bg_radialGrad.css": []
+        },
+        "Stripes": {
+          "parts/buttons/highlight/bg_stripes.css": []
+        },
+        "Cutoff": {
+          "parts/buttons/highlight/bg_cutoff.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#d6d6d6",
+          "css_variable": "--chromahonControls__button-bg-hl",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 1",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 2",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": []
+        },
+        {
+          "name": "Cutoff 3",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "QAM > Button Highlight Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#121212",
+          "css_variable": "--chromahonControls__button-fg-hl",
+          "tabs": []
+        }
+      ]
+    },
+    "➤ Steam Menu": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Steam Menu > Button Decoration": {
+      "type": "slider",
+      "default": "None",
+      "values": {
+        "None": {},
+        "Faint Outline": {
+          "parts/buttons/decoration_faintOutline.css": [
+            "sm"
+          ]
+        },
+        "Outline": {
+          "parts/buttons/decoration_outline.css": [
+            "sm"
+          ]
+        },
+        "Underline": {
+          "parts/buttons/decoration_underline.css": [
+            "sm"
+          ]
+        },
+        "Solid Shadow": {
+          "parts/buttons/decoration_solidShadow.css": [
+            "sm"
+          ]
+        }
+      }
+    },
+    "Steam Menu > Button Background": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/buttons/bg_hLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "V-Linear Grad": {
+          "parts/buttons/bg_vLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "Radial Grad": {
+          "parts/buttons/bg_radialGrad.css": [
+            "sm"
+          ]
+        },
+        "Stripes": {
+          "parts/buttons/bg_stripes.css": [
+            "sm"
+          ]
+        },
+        "Cutoff": {
+          "parts/buttons/bg_cutoff.css": [
+            "sm"
+          ]
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#0f0f0f",
+          "css_variable": "--chromahonControls__button-bg",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 1",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 2",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 3",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Button Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#bababa",
+          "css_variable": "--chromahonControls__button-fg",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Button Highlight Background": {
+      "type": "slider",
+      "default": "Radial Grad",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/buttons/highlight/bg_hLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "V-Linear Grad": {
+          "parts/buttons/highlight/bg_vLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "Radial Grad": {
+          "parts/buttons/highlight/bg_radialGrad.css": [
+            "sm"
+          ]
+        },
+        "Stripes": {
+          "parts/buttons/highlight/bg_stripes.css": [
+            "sm"
+          ]
+        },
+        "Cutoff": {
+          "parts/buttons/highlight/bg_cutoff.css": [
+            "sm"
+          ]
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#d6d6d6",
+          "css_variable": "--chromahonControls__button-bg-hl",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#e8e8e8",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#b3b3b3",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 1",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__button-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 2",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__button-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Cutoff 3",
+          "type": "color-picker",
+          "on": "Cutoff",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__button-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Button Highlight Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#121212",
+          "css_variable": "--chromahonControls__button-fg-hl",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Text Input Decoration": {
+      "type": "slider",
+      "default": "None",
+      "values": {
+        "None": {},
+        "Outline": {
+          "parts/textInput/decoration_outline.css": [
+            "sm"
+          ]
+        },
+        "Underline": {
+          "parts/textInput/decoration_underline.css": [
+            "sm"
+          ]
+        }
+      }
+    },
+    "Steam Menu > Text Input Background": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/textInput/bg_hLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "V-Linear Grad": {
+          "parts/textInput/bg_vLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "Radial Grad": {
+          "parts/textInput/bg_radialGrad.css": [
+            "sm"
+          ]
+        },
+        "Stripes": {
+          "parts/textInput/bg_stripes.css": [
+            "sm"
+          ]
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#0f0f0f",
+          "css_variable": "--chromahonControls__textInput-bg",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-c3",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Text Input Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#bababa",
+          "css_variable": "--chromahonControls__textInput-fg",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Text Input Highlight Background": {
+      "type": "slider",
+      "default": "Radial Grad",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/textInput/highlight/bg_hLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "V-Linear Grad": {
+          "parts/textInput/highlight/bg_vLinearGrad.css": [
+            "sm"
+          ]
+        },
+        "Radial Grad": {
+          "parts/textInput/highlight/bg_radialGrad.css": [
+            "sm"
+          ]
+        },
+        "Stripes": {
+          "parts/textInput/highlight/bg_stripes.css": [
+            "sm"
+          ]
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#d6d6d6",
+          "css_variable": "--chromahonControls__textInput-bg-hl",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#e8e8e8",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#b3b3b3",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#14af90",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c1",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af1486",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c2",
+          "tabs": [
+            "sm"
+          ]
+        },
+        {
+          "name": "Stripes 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#af4514",
+          "css_variable": "--chromahonControls__textInput-bg-hl-c3",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    },
+    "Steam Menu > Text Input Highlight Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#121212",
+          "css_variable": "--chromahonControls__textInput-fg-hl",
+          "tabs": [
+            "sm"
+          ]
+        }
+      ]
+    }
+  }
+}

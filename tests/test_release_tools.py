@@ -132,6 +132,44 @@ class ReleaseTools(unittest.TestCase):
             with self.assertRaises(ValueError):
                 tool.build(root, "../../unsafe")
 
+    def test_build_produces_reproducible_zip_metadata_and_storage(self):
+        tool = load_tool("public_builder_repro", "tools/build_deck_zip.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plugin = root / "plugin"
+            (plugin / "dist").mkdir(parents=True)
+            (plugin / "py_modules").mkdir()
+            for name in ("main.py", "dist/index.js", "py_modules/deck_saves.py"):
+                (plugin / name).write_text("# synthetic\n" if name.endswith(".py") else "// synthetic\n")
+            (plugin / "plugin.json").write_text(json.dumps({"name": "Continue?"}))
+            (plugin / "package.json").write_text(json.dumps({"version": "0.1.2"}))
+            (root / "LICENSE").write_text("synthetic license\n")
+            (root / "NOTICE.md").write_text("synthetic notice\n")
+            archive, _ = tool.build(root, "0.1.2")
+            with zipfile.ZipFile(archive) as zipped:
+                infos = zipped.infolist()
+                self.assertGreater(len(infos), 0)
+                names = [info.filename for info in infos]
+                self.assertEqual(names, sorted(names), "ZIP entries must be sorted")
+                for info in infos:
+                    self.assertEqual(info.compress_type, zipfile.ZIP_STORED, f"Entry {info.filename} not ZIP_STORED")
+                    self.assertEqual(info.date_time, (1980, 1, 1, 0, 0, 0), f"Entry {info.filename} timestamp not fixed")
+                    self.assertEqual(info.create_system, 3, f"Entry {info.filename} create_system not Unix (3)")
+                    self.assertEqual(info.external_attr, (0o100644 << 16), f"Entry {info.filename} not 0644 regular file")
+                    self.assertFalse(info.filename.endswith("/"), f"Entry {info.filename} is a directory")
+                    self.assertNotIn("__pycache__", info.filename)
+                    self.assertFalse(info.filename.endswith(".pyc"))
+
+    def test_local_ci_version_resolution_reads_package_json_and_preserves_cli_flag(self):
+        tool = load_tool("local_ci_tool", "tools/local_ci.py")
+        self.assertTrue(hasattr(tool, "get_package_version"), "local_ci must expose get_package_version helper")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pkg = root / "plugin"
+            pkg.mkdir(parents=True)
+            (pkg / "package.json").write_text(json.dumps({"version": "0.1.9"}), encoding="utf-8")
+            self.assertEqual(tool.get_package_version(root), "0.1.9")
+
 
 class CardsGate(unittest.TestCase):
     def test_empty_skeleton_with_two_stages_still_fails(self):

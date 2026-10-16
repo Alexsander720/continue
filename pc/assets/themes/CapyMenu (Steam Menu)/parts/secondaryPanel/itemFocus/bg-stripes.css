@@ -1,0 +1,18 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: secondaryPanel > itemFocus-bg
+Flavor: Stripes
+Dependencies (see theme.json):
+    None
+--- */
+
+:root {
+    --chromahonSM__secondaryPanel-itemFocus-bg:
+        linear-gradient(
+            45deg,
+            var(--chromahonSM__secondaryPanel-itemFocus-bg-c1) 0%, var(--chromahonSM__secondaryPanel-itemFocus-bg-c1) 33%,
+            var(--chromahonSM__secondaryPanel-itemFocus-bg-c2) 33%, var(--chromahonSM__secondaryPanel-itemFocus-bg-c2) 66%,
+            var(--chromahonSM__secondaryPanel-itemFocus-bg-c3) 66%, var(--chromahonSM__secondaryPanel-itemFocus-bg-c3) 100%
+        );
+}

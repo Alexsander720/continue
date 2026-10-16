@@ -1,0 +1,102 @@
+/* ---
+Chromahon (Steam Menu)
+Controller Page
+--- */
+
+/* Reset page zoom */
+._36lCIlna5tsMsvonK1uCXx {
+    zoom: 1 !important;
+}
+
+/* ---
+Foreground Elements
+--- */
+
+/* Inputs Heading */
+._12TaaD8c9mqsb61o6m6nr1 {
+    color: var(--chromahonSM__tertiaryPanel-fg) !important;
+    opacity: .75;
+}
+
+/* Inputs Subheading */
+._12TaaD8c9mqsb61o6m6nr1 ~ div {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Other text elements */
+._2DSDo4JNpZDoDpv34xUvLa *,
+._27Q1TQNf9VysifeaxYFyyU .pywHIi8MBtTWNlCbZ_7Qx,
+._27Q1TQNf9VysifeaxYFyyU ._2BHzj3D6OJd1nbPsnBNhuI {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Controller Glyphs */
+._27Q1TQNf9VysifeaxYFyyU ._3Fz8obBd3-0bKFgiLVPpoT {
+    mix-blend-mode: overlay;
+}
+
+/* Prerequisite for upper glyphs to use mix-blend-mode */
+._3TvBVwaH8eIBabTdki35oe ._1cmUfAiZMYwq7nMWNRhtcG .QAVElkR0V7KPXLjPVsvl-,
+._3TvBVwaH8eIBabTdki35oe ._2_TQS4bA-dG6LHJgauazHs .QAVElkR0V7KPXLjPVsvl- {
+    mask-image: none;
+}
+
+/* Inputs Subheading Focus */
+.gpfocus ._12TaaD8c9mqsb61o6m6nr1 ~ div {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Inputs Focus */
+._3TvBVwaH8eIBabTdki35oe .QAVElkR0V7KPXLjPVsvl- {
+    border-radius: var(--chromahonSM__Opt_toggleRound_soft-radius, 0);
+}
+
+._3TvBVwaH8eIBabTdki35oe .QAVElkR0V7KPXLjPVsvl-:focus {
+    background: rgba(255, 255, 255, .1);
+
+    /* Glyph Label Focus */
+    & ._2ADpTpv53dcY1uFpMWO1KT {
+        color: var(--chromahonSM__tertiaryPanel-fg);
+    }
+}
+
+/* Other Glyph Label Focus */
+.gpfocus ._27Q1TQNf9VysifeaxYFyyU .pywHIi8MBtTWNlCbZ_7Qx,
+.gpfocus ._27Q1TQNf9VysifeaxYFyyU ._2BHzj3D6OJd1nbPsnBNhuI {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Controller Image */
+.rlz-U2wn9ktH5Z9trfpZa {
+    mix-blend-mode: screen;
+    filter: contrast(170%) brightness(1.6) grayscale(100%);
+}
+
+/* 'No controller connected.' text */
+/* svg */ ._3Zcp_c-b3YhXEbrcevoiX6 ._2J8FjbuDX9403OhTeSu2YP,
+/* caption */ ._3Zcp_c-b3YhXEbrcevoiX6 ._2sGaarbWs7Iar4i7zAX3Uy {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Game's built-in support screen text */
+._2q529ACD1lzjGBuZpbSp7O,
+._3jMlJm4PQCA8SfNlUR99Fo,
+._1W1to_azoBRG95oNAFpf9Q,
+._2q529ACD1lzjGBuZpbSp7O ._32f4mUbAzCnRxr-yFIrsQW,
+._2q529ACD1lzjGBuZpbSp7O ._2fNrpCE_Xp5xNOpejG5Krs {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+.eKmEXJCm_lgme24Fp_HWt.GxgIyq8R5xTOeu4ftGrgX::after {
+    background: transparent;
+}
+
+/* 'Your Controller' tooltip */
+._1DHGq556k6U7kJghbkCZ79 .TA5dR9XJAWRyQcgS4_una {
+    background: transparent;
+    border: 2px solid var(--chromahonSM__tertiaryPanel-fg);
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+._1DHGq556k6U7kJghbkCZ79 .TA5dR9XJAWRyQcgS4_una:after {
+    border-bottom-color: var(--chromahonSM__tertiaryPanel-fg);
+}

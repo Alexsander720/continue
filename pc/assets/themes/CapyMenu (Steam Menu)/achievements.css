@@ -1,0 +1,147 @@
+/* ---
+Chromahon (Steam Menu)
+Achievements Page
+--- */
+
+/* ---
+Header 
+--- */
+
+/* Container */
+._gDkIgrqhJq-FtbuR9wJi {
+    background: transparent;
+}
+
+/* Foreground Elements */
+._2iGYYePQN5QQzHWNLybmd4 .Pr0VCo6YB9GN5VnGd_wvF {
+    & :is(
+        ._3wNylaCAUJ8XtRM6mu2C0k,
+        ._28omEDJUOc_yRNrrdxXFx1 .C17OpWBrNblXGLwQpxHk- ._17zZlCuxyWWUil57ZLDOXp,
+        ._28omEDJUOc_yRNrrdxXFx1 .C17OpWBrNblXGLwQpxHk- ._3SUIg58IByHm04owJ81NVL
+        ) {
+        color: var(--chromahonSM__tertiaryPanel-fg);
+    }
+}
+
+/* ---
+Tabbed Content
+--- */
+
+/* Contents Container */
+._1UXC2lGcmNTGepRJTwtuH0 {
+    background: transparent;
+}
+
+/* Tab List Container */
+._26cOWHMMjKvxQ-UyuikavV {
+    -webkit-mask-image: none;
+}
+
+/* Tab List Container Unscrolled */
+._2JobstxtZVYF3078DblN2M {
+    background: var(--chromahonSM__primaryPanel-bg);
+}
+
+/* Tab List Container Scrolled */
+._3IBLc81yyL08OJ7rfKtF00._31ZleDJpmmVr6YwR5VLHiu ._2JobstxtZVYF3078DblN2M::before,
+._2JobstxtZVYF3078DblN2M._1jNhbFODJy7sNdcnEeZkz4::before {
+    background: var(--chromahonSM__primaryPanel-bg);
+    backdrop-filter: none;
+}
+
+/* Tab List Controller Glyphs */
+.N-f57Rtxa8zZD5y8vbm25._1ZEndHxHIsAbRv81gklwjO {
+    opacity: .25;
+}
+
+/* Tab Item */
+._3eEbSktrstBdLk0dVpnKVI {
+    color: var(--chromahonSM__primaryPanel-item-label);
+    border-radius: 0;
+}
+
+/* Tab Item Active */
+._3eEbSktrstBdLk0dVpnKVI._3Gp1bACHx__POxmy6Gd3kG {
+    color: var(--chromahonSM__primaryPanel-itemFocus-label);
+    background: var(--chromahonSM__primaryPanel-itemFocus-bg);
+    animation: var(--chromahonSM__Opt_toggleAnim_primaryPanel-itemFocus-bg, none);
+}
+
+/* Tab Item Focus */
+._3eEbSktrstBdLk0dVpnKVI._3Gp1bACHx__POxmy6Gd3kG:focus {
+    transform: scale(1.05);
+}
+
+/* Headings 'In Progress', 'My Achievements', '% of all players' */
+._2UpV2ekLOgBRHsAaqcedCB ._2LSKtMWWMT5Pne2vGJOtiF,
+.IM0uEBPVo6MDEDQLGzeZr,
+.OAV6QqJuXaBPRBW9RaPA6 {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* (Global) Achievement Item Container */
+._1tTuIhabs4uQQmR2udzw_P,
+._2Kmn7fJOkLT4KyWl467a9M,
+._316Uo4SBrQ_beBdSYn2HNO {
+    background: transparent;
+}
+
+/* (Global) Achievement Item Label */
+._17dhGq-FsL8xZBes7dOOlN,
+._316Uo4SBrQ_beBdSYn2HNO .UWkKthLfz_5MM3NdASE2W .Zoy4Cl4jObtENnsc8sYfx ._3LS_NZyqY77COuRN-Z3TVB {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* (Global) Achievement Item Description */
+._1WP2YDDWrL5LPHoS04AKx8,
+._316Uo4SBrQ_beBdSYn2HNO .UWkKthLfz_5MM3NdASE2W .Zoy4Cl4jObtENnsc8sYfx ._231lloeMz5EvNkHHGXN6RJ,
+.VQbek1VTyOX04qHmTsssW {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+    opacity: .75;
+}
+
+/* Achievement Item Unlocked on (date) */
+._2fFW2raBfeDt3WOPB-aQAq {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Achievement Item In Progress 'x out of y' */
+._2LZ4vK_KnigpU4nOhD3Gic {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Global Achievement Item Checkmark */
+._316Uo4SBrQ_beBdSYn2HNO ._1vd1pZ7fwu6SLn898cXkOs svg {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Global Achievement Item Progress Bar */
+._316Uo4SBrQ_beBdSYn2HNO .UWkKthLfz_5MM3NdASE2W ._2lgHVJbZwxb10Md7bZ6USU {
+    background: rgba(255, 255, 255, .05);
+}
+
+/* Achievement Item Global Percentage */
+._316Uo4SBrQ_beBdSYn2HNO .UWkKthLfz_5MM3NdASE2W ._17WmAft0lOwrau_jKP2_JW {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* ---
+Misc
+--- */
+
+/* Progress Bar Rail */
+._1-nHjRywUoX7Mpyc6JOPaQ {
+    border-radius: 0;
+    box-shadow: inset 0 0 0 2px var(--chromahonSM__tertiaryPanel-fg);
+    background: transparent;
+
+    .gpfocus & {
+        background: transparent;
+    }
+}
+
+/* Progress Bar Fill */
+._1-nHjRywUoX7Mpyc6JOPaQ ._2_0JonK7eKEvh8IoOvq0-B {
+    background: var(--chromahonSM__tertiaryPanel-fg) !important;
+    border-radius: 0;
+}

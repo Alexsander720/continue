@@ -1,0 +1,32 @@
+/* Primary Panel */
+[class="_1BbM8Qq8OL5N8gL4PYH397"] [role="menuitem"].gpfocus {
+    transform: none;
+}
+
+/* Secondary Panel */
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus,
+._2b6L36XnXUqFHHkGE4_2mv._1U3OjZG3cOt5OhO_lKAXI0 {
+    transform: none;
+}
+._2b6L36XnXUqFHHkGE4_2mv {
+    transition: none;
+}
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus {
+    font-size: 1em;
+}
+
+/* Tertiary Panel */
+._2mL2HfT5AkDXRi1YBnRWKa:focus,
+._2mL2HfT5AkDXRi1YBnRWKa._1ELdDY5kb5jxjXe-FpWBo5 {
+    transform: none;
+}
+
+/* Tertiary Panel > Notes > Note Item */
+._4niDTAfIpKQoRx-CR_3K {
+    transition: none;
+}
+
+/* Tertiary Panel > Notes > Note Item Active */
+._2mL2HfT5AkDXRi1YBnRWKa:focus {
+    font-size: 1em;
+}

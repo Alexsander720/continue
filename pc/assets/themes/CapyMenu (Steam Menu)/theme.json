@@ -1,0 +1,1452 @@
+{
+  "name": "CapyMenu (Steam Menu)",
+  "display_name": "Chromahon (Steam Menu)",
+  "author": "Mugen",
+  "version": "v3.0.1",
+  "manifest_version": 9,
+  "dependencies": {
+    "CapyInputs": {}
+  },
+  "flags": [
+    "OPTIONAL_DEPENDENCIES"
+  ],
+  "tabs": {
+    "default": [
+      "MainMenu.*"
+    ]
+  },
+  "inject": {
+    "base.css": [],
+    "controller.css": [],
+    "achievements.css": [],
+    "guides.css": [],
+    "notes.css": [],
+    "game-recording.css": []
+  },
+  "patches": {
+    "➤ USAGE NOTES": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Primary Panel = Home, Library, etc.": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Secondary Panel = Resume game, Controller settings, etc. (In Game Only)": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Tertiary Panel = Paged content (In Game Only)": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "➤ Global Settings": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Edges": {
+      "type": "slider",
+      "default": "Semi-Round",
+      "values": {
+        "Default": {},
+        "Semi-Round": {
+          "opt/edges_common.css": [],
+          "opt/edges_semi-round.css": []
+        },
+        "Round": {
+          "opt/edges_common.css": [],
+          "opt/edges_round.css": []
+        }
+      }
+    },
+    "Item Focus Grow Anim": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {},
+        "No": {
+          "opt/noGrow_itemFocus.css": []
+        }
+      }
+    },
+    "Active Tab Indicator Type": {
+      "type": "slider",
+      "default": "None",
+      "values": {
+        "Default": {},
+        "Wide": {
+          "opt/tabIndicator_wide.css": []
+        },
+        "Dot": {
+          "opt/tabIndicator_dot.css": []
+        },
+        "None": {
+          "opt/tabIndicator_none.css": []
+        }
+      }
+    },
+    "➤ Primary Panel": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Primary Panel > Background": {
+      "type": "slider",
+      "default": "Halos",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/primaryPanel/hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/primaryPanel/vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        },
+        "Radial Grad": {
+          "parts/primaryPanel/radialGrad.css": [],
+          "parts/_dependencies/Anim_gradPulse.css": []
+        },
+        "Halos": {
+          "parts/primaryPanel/halos.css": [],
+          "parts/_dependencies/Anim_5ColorGrad.css": []
+        },
+        "Stripes": {
+          "parts/primaryPanel/stripes.css": []
+        },
+        "IMG": {
+          "parts/primaryPanel/img.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Solid Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#0f0f0f",
+          "css_variable": "chromahonSM__primaryPanel-bg",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 1",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#171717",
+          "css_variable": "chromahonSM__primaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Halo 2",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#1f1f1f",
+          "css_variable": "chromahonSM__primaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 3",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#171717",
+          "css_variable": "chromahonSM__primaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Halo 4",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#121212",
+          "css_variable": "chromahonSM__primaryPanel-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "Halo 5",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#141414",
+          "css_variable": "chromahonSM__primaryPanel-bg-c5",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Image Picker",
+          "type": "image-picker",
+          "on": "IMG",
+          "default": "",
+          "css_variable": "chromahonSM__primaryPanel-bg",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_primaryPanel-bg.css": []
+        },
+        "No": {}
+      }
+    },
+    "Primary Panel > Collapse Bg": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/collapseBg_primaryPanel.css": []
+        },
+        "No": {}
+      }
+    },
+    "Primary Panel > Item Label": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#f0f0f0",
+          "css_variable": "chromahonSM__primaryPanel-item-label",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Icon": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "Hide": {
+          "opt/hideIcons_primaryPanel.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#f0f0f0",
+          "css_variable": "chromahonSM__primaryPanel-item-svg",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Focus Background": {
+      "type": "slider",
+      "default": "Solid Colors",
+      "values": {
+        "Solid Colors": {
+          "parts/primaryPanel/itemFocus/bg-solidColors.css": []
+        },
+        "H-Linear Grad": {
+          "parts/primaryPanel/itemFocus/bg-hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/primaryPanel/itemFocus/bg-vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        },
+        "Halos": {
+          "parts/primaryPanel/itemFocus/bg-halos.css": [],
+          "parts/_dependencies/Anim_5ColorGrad.css": []
+        },
+        "Stripes": {
+          "parts/primaryPanel/itemFocus/bg-stripes.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#0f0f0f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 1",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Halo 2",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 3",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Halo 4",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#dff261",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "Halo 5",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#b161f2",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c5",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Focus Bg Anim (Not on Stripes)": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_primaryPanel-itemFocus-bg.css": []
+        },
+        "No": {}
+      }
+    },
+    "Primary Panel > Item Focus Label": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#f5f5f5",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-label",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Focus Icon": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#f5f5f5",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-svg",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Focus Underline": {
+      "type": "slider",
+      "default": "H-Linear Grad",
+      "values": {
+        "None": {},
+        "Solid Colors": {
+          "opt/underline_primaryPanel-itemFocus.css": [],
+          "opt/underline_tertiaryPanel-itemFocus.css": [],
+          "parts/primaryPanel/itemFocus/underline-solidColors.css": []
+        },
+        "H-Linear Grad": {
+          "opt/underline_primaryPanel-itemFocus.css": [],
+          "opt/underline_tertiaryPanel-itemFocus.css": [],
+          "parts/primaryPanel/itemFocus/underline-hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#d1d1d1",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c4",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#40dce7",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#ffe666",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#ca1c67",
+          "css_variable": "chromahonSM__primaryPanel-itemFocus-underline-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Item Focus Underline Anim": {
+      "type": "checkbox",
+      "default": "Yes",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_primaryPanel-itemFocus-underline.css": []
+        },
+        "No": {}
+      }
+    },
+    "Primary Panel > Active Tab Indicator": {
+      "type": "slider",
+      "default": "Solid Colors",
+      "values": {
+        "Solid Colors": {
+          "parts/primaryPanel/tabIndicator-solidColors.css": []
+        },
+        "V-Linear Grad": {
+          "parts/primaryPanel/tabIndicator-vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#d1d1d1",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c4",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__primaryPanel-tabIndicator-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Primary Panel > Active Tab Indicator Anim": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_primaryPanel-tabIndicator.css": []
+        },
+        "No": {}
+      }
+    },
+    "➤ Secondary Panel": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Secondary Panel > Background": {
+      "type": "slider",
+      "default": "Halos",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/secondaryPanel/hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/secondaryPanel/vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        },
+        "Radial Grad": {
+          "parts/secondaryPanel/radialGrad.css": [],
+          "parts/_dependencies/Anim_gradPulse.css": []
+        },
+        "Halos": {
+          "parts/secondaryPanel/halos.css": [],
+          "parts/_dependencies/Anim_5ColorGrad.css": []
+        },
+        "Stripes": {
+          "parts/secondaryPanel/stripes.css": []
+        },
+        "IMG": {
+          "parts/secondaryPanel/img.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Solid Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#0f0f0f",
+          "css_variable": "chromahonSM__secondaryPanel-bg",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 1",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#80fff0",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Halo 2",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#fdffa3",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 3",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#ec51a3",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Halo 4",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#fffaad",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "Halo 5",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#000000",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c5",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Image Picker",
+          "type": "image-picker",
+          "on": "IMG",
+          "default": "",
+          "css_variable": "chromahonSM__secondaryPanel-bg",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_secondaryPanel-bg.css": []
+        },
+        "No": {}
+      }
+    },
+    "Secondary Panel > Item Label": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#202020",
+          "css_variable": "chromahonSM__secondaryPanel-item-label",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Item Focus Background": {
+      "type": "slider",
+      "default": "Solid Colors",
+      "values": {
+        "Solid Colors": {
+          "parts/secondaryPanel/itemFocus/bg-solidColors.css": []
+        },
+        "H-Linear Grad": {
+          "parts/secondaryPanel/itemFocus/bg-hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/secondaryPanel/itemFocus/bg-vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        },
+        "Halos": {
+          "parts/secondaryPanel/itemFocus/bg-halos.css": [],
+          "parts/_dependencies/Anim_5ColorGrad.css": []
+        },
+        "Stripes": {
+          "parts/secondaryPanel/itemFocus/bg-stripes.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#121212",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 1",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Halo 2",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 3",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Halo 4",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#dff261",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "Halo 5",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#b161f2",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c5",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-bg-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Item Focus Bg Anim (Not on Stripes)": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_secondaryPanel-itemFocus-bg.css": []
+        },
+        "No": {}
+      }
+    },
+    "Secondary Panel > Item Focus Label": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#f5f5f5",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-label",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Item Focus Underline": {
+      "type": "slider",
+      "default": "None",
+      "values": {
+        "None": {},
+        "Solid Colors": {
+          "opt/underline_secondaryPanel-itemFocus.css": [],
+          "opt/underline_tertiaryPanel-itemFocus.css": [],
+          "parts/secondaryPanel/itemFocus/underline-solidColors.css": []
+        },
+        "H-Linear Grad": {
+          "opt/underline_secondaryPanel-itemFocus.css": [],
+          "opt/underline_tertiaryPanel-itemFocus.css": [],
+          "parts/secondaryPanel/itemFocus/underline-hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#d1d1d1",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c4",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c2",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 3",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-itemFocus-underline-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Item Focus Underline Anim": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_secondaryPanel-itemFocus-underline.css": []
+        },
+        "No": {}
+      }
+    },
+    "Secondary Panel > Active Tab Indicator": {
+      "type": "slider",
+      "default": "V-Linear Grad",
+      "values": {
+        "Solid Colors": {
+          "parts/secondaryPanel/tabIndicator-solidColors.css": []
+        },
+        "V-Linear Grad": {
+          "parts/secondaryPanel/tabIndicator-vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Color 1",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#d1d1d1",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator",
+          "tabs": []
+        },
+        {
+          "name": "Color 2 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c2",
+          "tabs": []
+        },
+        {
+          "name": "Color 3 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c3",
+          "tabs": []
+        },
+        {
+          "name": "Color 4 (Anim Only)",
+          "type": "color-picker",
+          "on": "Solid Colors",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c4",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__secondaryPanel-tabIndicator-c3",
+          "tabs": []
+        }
+      ]
+    },
+    "Secondary Panel > Active Tab Indicator Anim": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_secondaryPanel-tabIndicator.css": []
+        },
+        "No": {}
+      }
+    },
+    "➤ Tertiary Panel": {
+      "type": "none",
+      "values": {
+        "_": {}
+      }
+    },
+    "Tertiary Panel > Background": {
+      "type": "slider",
+      "default": "Solid Color",
+      "values": {
+        "Solid Color": {},
+        "H-Linear Grad": {
+          "parts/tertiaryPanel/hLinearGrad.css": [],
+          "parts/_dependencies/Anim_hLinearGrad.css": []
+        },
+        "V-Linear Grad": {
+          "parts/tertiaryPanel/vLinearGrad.css": [],
+          "parts/_dependencies/Anim_vLinearGrad.css": []
+        },
+        "Radial Grad": {
+          "parts/tertiaryPanel/radialGrad.css": [],
+          "parts/_dependencies/Anim_gradPulse.css": []
+        },
+        "Halos": {
+          "parts/tertiaryPanel/halos.css": [],
+          "parts/_dependencies/Anim_5ColorGrad.css": []
+        },
+        "Stripes": {
+          "parts/tertiaryPanel/stripes.css": []
+        },
+        "IMG": {
+          "parts/tertiaryPanel/img.css": []
+        }
+      },
+      "components": [
+        {
+          "name": "Solid Color",
+          "type": "color-picker",
+          "on": "Solid Color",
+          "default": "#121212",
+          "css_variable": "chromahonSM__tertiaryPanel-bg",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 1",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "H-Linear Grad 2",
+          "type": "color-picker",
+          "on": "H-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 1",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 2",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "V-Linear Grad 3",
+          "type": "color-picker",
+          "on": "V-Linear Grad",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 1",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Radial Grad 2",
+          "type": "color-picker",
+          "on": "Radial Grad",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 1",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Halo 2",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Halo 3",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Halo 4",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#dff261",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c4",
+          "tabs": []
+        },
+        {
+          "name": "Halo 5",
+          "type": "color-picker",
+          "on": "Halos",
+          "default": "#b161f2",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c5",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 1",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#eb506f",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c1",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 2",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50eb79",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c2",
+          "tabs": []
+        },
+        {
+          "name": "Stripe 3",
+          "type": "color-picker",
+          "on": "Stripes",
+          "default": "#50baeb",
+          "css_variable": "chromahonSM__tertiaryPanel-bg-c3",
+          "tabs": []
+        },
+        {
+          "name": "Image Picker",
+          "type": "image-picker",
+          "on": "IMG",
+          "default": "",
+          "css_variable": "chromahonSM__tertiaryPanel-bg",
+          "tabs": []
+        }
+      ]
+    },
+    "Tertiary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": {
+      "type": "checkbox",
+      "default": "No",
+      "values": {
+        "Yes": {
+          "opt/toggleAnim_tertiaryPanel-bg.css": []
+        },
+        "No": {}
+      }
+    },
+    "Tertiary Panel > Foreground": {
+      "type": "none",
+      "values": {
+        "_": {}
+      },
+      "components": [
+        {
+          "name": "Color",
+          "type": "color-picker",
+          "on": "_",
+          "default": "#e3e3e3",
+          "css_variable": "chromahonSM__tertiaryPanel-fg",
+          "tabs": []
+        }
+      ]
+    }
+  }
+}

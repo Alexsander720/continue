@@ -1,0 +1,11 @@
+{
+  "name": "No Home Edge Fade",
+  "author": "SuchMeme, RasitAyaz",
+  "version": "v1.2",
+  "manifest_version": 9,
+  "inject": {
+    "shared.css": [
+      "bigpicture"
+    ]
+  }
+}

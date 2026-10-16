@@ -1,0 +1,7 @@
+:root {
+    --chromahonControls__textInput-bg-hl:
+        linear-gradient(to right,
+        var(--chromahonControls__textInput-bg-hl-c1),
+        var(--chromahonControls__textInput-bg-hl-c2),
+        var(--chromahonControls__textInput-bg-hl-c3));
+}

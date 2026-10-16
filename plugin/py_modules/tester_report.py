@@ -204,15 +204,37 @@ def collect(plugin, settings, decky, data_dir):
     return sanitize(report, privacy_names(plugin._steam_root()))
 
 
+def windows_known_folder(folder_id):
+    import ctypes
+    import os
+    if os.name!='nt':return None
+    guid=(ctypes.c_byte*16).from_buffer_copy(uuid.UUID(folder_id).bytes_le)
+    result=ctypes.c_void_p()
+    shell=ctypes.WinDLL('shell32',use_last_error=True)
+    shell.SHGetKnownFolderPath.argtypes=[ctypes.c_void_p,ctypes.c_uint32,ctypes.c_void_p,ctypes.POINTER(ctypes.c_void_p)]
+    shell.SHGetKnownFolderPath.restype=ctypes.c_long
+    if shell.SHGetKnownFolderPath(ctypes.byref(guid),0,None,ctypes.byref(result))!=0:return None
+    try:return Path(ctypes.wstring_at(result))
+    finally:
+        ole=ctypes.WinDLL('ole32');ole.CoTaskMemFree.argtypes=[ctypes.c_void_p];ole.CoTaskMemFree(result)
+
+
 def save(payload, home=None):
     # Saving accepts only the already-reviewed JSON text from the server token.
     if len(payload.encode('utf-8')) > MAX_REPORT_BYTES:
         raise ValueError('Report exceeds the local size limit')
     json.loads(payload)
+    directories=[]
+    if home is None:
+        for folder in ('B4BFCC3A-DB2C-424C-B029-7FE99A87C641','374DE290-123F-4565-9164-39C4925E467B'):
+            try:
+                directory=windows_known_folder(folder)
+                if directory:directories.append(directory)
+            except (OSError,AttributeError):pass
     home = Path(home) if home is not None else home_dir()
+    directories.extend(home/name for name in ('Desktop','Downloads'))
     errors = []
-    for name in ('Desktop', 'Downloads'):
-        directory = home / name
+    for directory in dict.fromkeys(directories):
         if not directory.is_dir():
             continue
         destination = directory / ('continue-report-' + time.strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:8] + '.zip')

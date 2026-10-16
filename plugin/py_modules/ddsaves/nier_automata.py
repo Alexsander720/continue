@@ -92,6 +92,13 @@ def find(path_or_dir=None) -> List[Path]:
 
 
 def read(path_or_dir=None) -> dict:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"Сохранение NieR:Automata не прочитано: {e}")
+
+
+def _read(path_or_dir=None) -> dict:
     files = find(path_or_dir)
     if not files:
         return empty("Файлы сохранений NieR:Automata не найдены")

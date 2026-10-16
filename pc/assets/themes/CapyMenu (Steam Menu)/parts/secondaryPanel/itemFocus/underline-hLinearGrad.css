@@ -1,0 +1,19 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: secondaryPanel > itemFocus-underline
+Flavor: H-Linear Grad
+Dependencies (see theme.json):
+    Anim_hLinearGrad.css
+--- */
+
+:root {
+    --chromahonSM__secondaryPanel-itemFocus-underline: linear-gradient(
+        to right,
+        var(--chromahonSM__secondaryPanel-itemFocus-underline-c1),
+        var(--chromahonSM__secondaryPanel-itemFocus-underline-c2),
+        var(--chromahonSM__secondaryPanel-itemFocus-underline-c3)
+    );
+
+    --chromahonSM__Anim_secondaryPanel-itemFocus-underline: chromahonSM__Anim_hLinearGrad 12s infinite ease-in-out alternate;
+}

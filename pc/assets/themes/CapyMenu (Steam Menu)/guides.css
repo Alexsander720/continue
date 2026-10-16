@@ -1,0 +1,91 @@
+/* ---
+Chromahon (Steam Menu)
+Guides Page
+--- */
+
+/* ---
+Guides Home Page
+--- */
+
+/* Guide List Container */
+._3p2SRI_6Rzc0L-pOB8YxtU {
+    background: transparent;
+}
+
+/* Header */
+._1BiyyfIMnFxvHKCZcN4jUj ._1K5yVLMxKhHzEWrZ_4lNe4 ._3LiqH9px-pNuW77eJHuVqs {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+._14LPcnawmmVVI8-pHPvG6I {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Headings */
+._1qkU5JmJUQbfIFAixQ69e0 {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Pagination */
+._3p2SRI_6Rzc0L-pOB8YxtU ._1VBf9Z7xAl4ENvbU3GDyl {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Guide Item */
+._1etIudziHyGlyIvr-p4RKq {
+    background: transparent;
+}
+._1etIudziHyGlyIvr-p4RKq * {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* 'No guides found', 'Error loading guides', etc. */
+._3p2SRI_6Rzc0L-pOB8YxtU {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* ---
+Guide Entry Article
+--- */
+
+/* Container */
+._1AjMEPh2D2uh0WtSWZSAmm ._3CGnF6y_teAn4fWWAULdpz {
+    justify-content: space-evenly;
+
+    & a {
+        color: var(--chromahonSM__tertiaryPanel-fg);
+        font-style: italic;
+    }
+}
+
+/* Header */
+._1AjMEPh2D2uh0WtSWZSAmm ._2_Ivx0UgoA78OytC0Peabq {
+    border: none;
+
+    & * {
+        color: var(--chromahonSM__tertiaryPanel-fg);
+    }
+}
+
+/* Contents */ ._2Mna7P09wsmL1diRBZcr6I ~ *, ._1AjMEPh2D2uh0WtSWZSAmm ._1wBkhCdENmqPO3srTfk8wb,
+/* Contents Headings */ ._1AjMEPh2D2uh0WtSWZSAmm ._2gRALAuATDimKQETY0iXlJ .vJoi89k1UUR_Bs4fH6ZHG {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Spoilers */
+._3kRr4bh8twnlt_7wcEFZr3 {
+    background: rgba(255, 255, 255, .4);
+    color: rgba(255, 255, 255, .4);
+}
+._3kRr4bh8twnlt_7wcEFZr3:hover, ._3kRr4bh8twnlt_7wcEFZr3._3g1-8c9NBcNDwW4-6x1pM6 {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Table of Contents */
+._1AjMEPh2D2uh0WtSWZSAmm .CwN4ge_GiZJPJmXuIn2SJ {
+    border: none;
+}
+/* Table of Contents Items */
+._1AjMEPh2D2uh0WtSWZSAmm .CwN4ge_GiZJPJmXuIn2SJ ._2bjWQipeqFQcjno8WMEXDb {
+    background: rgba(255, 255, 255, .1);
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}

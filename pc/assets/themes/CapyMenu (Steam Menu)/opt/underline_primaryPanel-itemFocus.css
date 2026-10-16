@@ -1,0 +1,24 @@
+[class="_1BbM8Qq8OL5N8gL4PYH397"]:has(.gpfocus) {
+    position: relative;
+}
+
+[class="_1BbM8Qq8OL5N8gL4PYH397"]:has(.gpfocus)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--chromahonSM__primaryPanel-itemFocus-underline);
+    animation:
+        var(--chromahonSM__Opt_toggleAnim_primaryPanel-itemFocus-underline, none),
+        chromahonSM__Anim_underlineSlide .1s ease-in forwards;
+}
+
+@keyframes chromahonSM__Anim_underlineSlide {
+    0% {
+        transform: translateY(4px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

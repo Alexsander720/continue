@@ -1,0 +1,30 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: secondaryPanel > itemFocus-bg
+Flavor: Solid Colors
+Dependencies (see theme.json):
+    None
+--- */
+
+:root {
+    --chromahonSM__Anim_secondaryPanel-itemFocus-bg: chromahonSM__Anim_colorChange_secondaryPanel-itemFocus-bg 4s infinite ease-in-out alternate;
+}
+
+@keyframes chromahonSM__Anim_colorChange_secondaryPanel-itemFocus-bg {
+    0% {
+        background: var(--chromahonSM__secondaryPanel-itemFocus-bg);
+    }
+    25% {
+        background: var(--chromahonSM__secondaryPanel-itemFocus-bg-c2);
+    }
+    50% {
+        background: var(--chromahonSM__secondaryPanel-itemFocus-bg-c3);
+    }
+    75% {
+        background: var(--chromahonSM__secondaryPanel-itemFocus-bg-c4);
+    }
+    100% {
+        background: var(--chromahonSM__secondaryPanel-itemFocus-bg);
+    }
+}

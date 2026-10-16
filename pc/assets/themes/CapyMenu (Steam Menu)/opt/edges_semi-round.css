@@ -1,0 +1,37 @@
+/* Primary Panel */
+._23IDiI-F_FxXotrgpY71r8 {
+    border-top-right-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+    border-bottom-right-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+}
+
+/* App Icon */
+.BasicUI ._2E7G8grj_-tgxXbTXs1t2E {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+    overflow: hidden;
+}
+
+/* Secondary Panel */
+._12NNtyso3nbzJGi2XxHzcN {
+    border-top-left-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+    border-bottom-left-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+}
+
+/* Tertiary Panel > Achievements > Tab List */
+._3eEbSktrstBdLk0dVpnKVI {
+    border-radius: var(--chromahonSM__Opt_toggleRound_moderate-radius);
+}
+
+/* Tertiary Panel > Achievements > Progress Bar Rail */
+._1-nHjRywUoX7Mpyc6JOPaQ {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+}
+
+/* Tertiary Panel > Achievements > Progress Bar Fill */
+._1-nHjRywUoX7Mpyc6JOPaQ ._2_0JonK7eKEvh8IoOvq0-B {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+}
+
+/* Tertiary Panel > Notes > Textarea */
+._1Ve4VFO2EEkeNZdel_Asky {
+    border-radius: var(--chromahonSM__Opt_toggleRound_moderate-radius);
+}

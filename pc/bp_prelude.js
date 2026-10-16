@@ -26,6 +26,7 @@ const __ghBoot = (() => {
   const propList = props => new RegExp("const\\{" + props.map(p => `"?${p}"?:[a-zA-Z_$]{1,2}`).join(","));
   const focusableRe = propList(["flow-children", "onActivate", "onCancel", "focusClassName", "focusWithinClassName"]);
   const Focusable = findExport(e => (typeof e == "function" && focusableRe.test(e.toString())) || (e?.render?.toString && focusableRe.test(e.render.toString())));
+  if (!window.SP_REACT || !window.SP_JSX || !Focusable) throw new Error('Steam UI components are not ready');
   const win = () => { try { return window.SteamUIStore.GetFocusedWindowInstance() || window.SteamUIStore.WindowStore.GamepadUIMainWindowInstance; } catch (e) { return null; } };
   // Поиск значка кнопки в таблице Steam (тип контроллера → картинка): нужен, чтобы подменять значки на DualSense
   // только там, где у DualSense такой значок есть (трекпады Steam Controller и т.п. остаются как были).

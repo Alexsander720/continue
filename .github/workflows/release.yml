@@ -17,28 +17,84 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ github.event.inputs.tag }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run all checks and build exact update assets
+      - name: Verify release tag and commit
+        id: guard
         env:
           CONTINUE_TAG: ${{ github.event.inputs.tag }}
-        run: python tools/local_ci.py --version "$CONTINUE_TAG"
+        shell: bash
+        run: |
+          python - <<'EOF'
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          tag = os.environ.get("CONTINUE_TAG", "").strip()
+          if not re.fullmatch(r"v\d+\.\d+\.\d+", tag):
+              sys.exit(f"Error: Invalid semver tag format: {tag!r}")
+          version = tag[1:]
+
+          def run_git(*args):
+              res = subprocess.run(["git", *args], capture_output=True, text=True)
+              if res.returncode != 0:
+                  sys.exit(f"Git command failed ({' '.join(args)}): {res.stderr.strip()}")
+              return res.stdout.strip()
+
+          tag_commit = run_git("rev-parse", "-q", "--verify", f"refs/tags/{tag}^{{commit}}")
+          head_commit = run_git("rev-parse", "-q", "--verify", "HEAD^{commit}")
+
+          if head_commit != tag_commit:
+              sys.exit(f"Error: HEAD ({head_commit}) does not match tag commit ({tag_commit}) for {tag}")
+
+          pkg_path = Path("plugin/package.json")
+          if not pkg_path.is_file():
+              sys.exit(f"Error: Missing {pkg_path}")
+          pkg = json.loads(pkg_path.read_text(encoding="utf-8"))
+          if pkg.get("version") != version:
+              sys.exit(f"Error: plugin/package.json version ({pkg.get('version')}) does not match tag version ({version})")
+
+          print(f"Verified release: tag={tag}, version={version}, commit={tag_commit}")
+
+          gh_out = os.environ.get("GITHUB_OUTPUT")
+          if gh_out:
+              with open(gh_out, "a", encoding="utf-8") as f:
+                  f.write(f"tag={tag}\n")
+                  f.write(f"version={version}\n")
+                  f.write(f"commit={tag_commit}\n")
+          EOF
+      - name: Run all checks and build exact update assets
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify and build both packages
+        run: python tools/local_ci.py --version "${{ steps.guard.outputs.version }}"
       - name: Create a draft with ZIP and SHA256 assets
         env:
           GH_TOKEN: ${{ github.token }}
-          CONTINUE_TAG: ${{ github.event.inputs.tag }}
+          VERIFIED_TAG: ${{ steps.guard.outputs.tag }}
+          VERIFIED_VERSION: ${{ steps.guard.outputs.version }}
+          VERIFIED_COMMIT: ${{ steps.guard.outputs.commit }}
           CONTINUE_REPO: ${{ github.repository }}
         shell: bash
         run: |
           set -euo pipefail
-          version="${CONTINUE_TAG#v}"
-          gh release create "$CONTINUE_TAG" \
-            "dist/continue-deck-${version}.zip" \
-            "dist/continue-deck-${version}.zip.sha256" \
+          current_head="$(git rev-parse -q --verify HEAD^{commit})"
+          if [ "$current_head" != "$VERIFIED_COMMIT" ]; then
+            echo "Error: HEAD changed before draft creation ($current_head != $VERIFIED_COMMIT)" >&2
+            exit 1
+          fi
+          gh release create "$VERIFIED_TAG" \
+            "dist/continue-deck-${VERIFIED_VERSION}.zip" \
+            "dist/continue-deck-${VERIFIED_VERSION}.zip.sha256" \
             --repo "$CONTINUE_REPO" --verify-tag --draft \
-            --title "Continue? ${CONTINUE_TAG}" \
-            --notes "Draft build; review checks and Steam Deck acceptance before publishing."
+            --title "Continue? ${VERIFIED_TAG}" \
+            --notes "Draft build (${VERIFIED_COMMIT}); review checks and Steam Deck acceptance before publishing."

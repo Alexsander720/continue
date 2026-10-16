@@ -75,6 +75,13 @@ def decode(path, names):
 
 
 def read(path_or_dir=None):
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"Сохранение UNCHARTED не прочитано: {e}")
+
+
+def _read(path_or_dir=None):
     names = tables()
     for path in find(path_or_dir):
         progress = decode(path, names)

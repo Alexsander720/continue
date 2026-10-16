@@ -295,27 +295,52 @@ def build_bundle(config):
     body, count = re.subn(r'^const DATA = .*;$', 'const DATA = %s;' % json.dumps(config.media_url), body, flags=re.M)
     if count != 1:
         raise ValueError('Expected single DATA declaration')
+    achievement_row = '  if (ach) facts.push({ icon: card.ach_icon || "trophy", label: t("achievements"), value: `${ach.got} / ${ach.total} · ${Math.round(ach.got * 100 / ach.total)}%` });'
+    if body.count(achievement_row) != 1:
+        raise ValueError('Expected single native achievement fact row')
+    body = body.replace(achievement_row, achievement_row.replace('if (ach)', 'if (ach && card.display?.achievements !== false)') + '\n  if (ach?.latest && card.display?.latest_achievement !== false) facts.push({icon: ach.latest.icon, label: t("last_achievement"), value: ach.latest.name});')
+    for original, replacement in [
+        ('usePlayBarHltb(rootRef, card ? pbItems : []);', 'usePcPlaytimeVisibility(rootRef, card?.display?.playtime === false);\n  usePlayBarHltb(rootRef, card && card.display?.playtime !== false ? pbItems : []);'),
+        ('  const detail = block.title ? (lead || "") : lead;', '  const detail = card.display?.description === false ? "" : (block.title ? (lead || "") : lead);'),
+        ('    if (audioFor === appid) return;', '    if (audioFor === appid && (audio || musicTimer)) return;'),
+        ('        fadeTo(a, 0.5);', '        fadeTo(a, Math.max(0,Math.min(1,settings.music_volume ?? 0.4)));'),
+        ('  if (!block) block = { kicker: mins > 0 || card.block ? "" : t("not_started"), title: "", sub: "", detail: "" };', '  if (!block) block = { kicker: card.display?.story === false || mins > 0 || card.block ? "" : t("not_started"), title: "", sub: "", detail: "" };'),
+    ]:
+        if body.count(original) != 1:
+            raise ValueError('Expected single public panel display insertion')
+        body = body.replace(original, replacement)
     here = config.app / 'pc'
     prelude = (here / 'bp_prelude.js').read_text(encoding='utf-8')
+    controls = (here / 'bp_public_controls.js').read_text(encoding='utf-8')
+    settings_ui = (here / 'bp_public_settings.js').read_text(encoding='utf-8')
+    for token, name in [('__PC_GLYPHS__', 'glyphs.json'), ('__PC_GAME_STYLES__', 'game_styles.json')]:
+        controls = controls.replace(token, json.dumps(read_json(here / 'assets' / name), ensure_ascii=False))
+    controls = controls.replace('__PC_ICON_NAMES__', json.dumps(sorted(file.stem for file in (config.plugin / 'assets/icons').glob('*.svg'))))
     suffix = (here / 'bp_suffix.js').read_text(encoding='utf-8')
-    version = hashlib.sha256((prelude + body + suffix).encode()).hexdigest()[:12]
+    version = hashlib.sha256((prelude + body + controls + settings_ui + suffix).encode()).hexdigest()[:12]
     suffix = suffix.replace('__GH_VER__', json.dumps(version))
-    return '(() => {\n' + prelude + '\n' + body + '\n' + suffix + '\n})();', version
+    return '(() => {\n' + prelude + '\n' + body + '\n' + controls + '\n' + settings_ui + '\n' + suffix + '\n})();', version
 
 
 class Backend:
     PUBLIC = {'get_card', 'get_about', 'get_hltb', 'get_settings', 'set_setting', 'set_game_bg', 'get_power',
               'get_aliases', 'get_music_map', 'get_music_files', 'get_status', 'set_lang', 'get_media_status',
               'set_game_source', 'refresh_media', 'set_media_context', 'clear_media_cache', 'install_ytdlp',
-              'check_update', 'preview_tester_report', 'save_tester_report', 'ensure_blank_movie', 'get_protondb'}
+              'check_update', 'preview_tester_report', 'save_tester_report', 'ensure_blank_movie', 'get_protondb', 'get_theme',
+              'get_card_fields', 'get_pc_media_status', 'media_job_status', 'update_music_loader'}
 
     def __init__(self, config):
         self.config = config
-        self.gate = threading.Lock()  # language and settings mutations are ordered
+        self.gate = threading.RLock()  # shared settings mutations are ordered
+        self.theme_gate = threading.Lock()
+        backend = self
         stub = types.ModuleType('decky')
         stub.DECKY_PLUGIN_RUNTIME_DIR, stub.logger = str(config.data), log
         sys.modules['decky'] = stub
         sys.path[:0] = [str(config.app / 'pc'), str(config.plugin / 'py_modules'), str(config.plugin)]
+        from public_preferences import PublicPreferences, filter_card, card_fields
+        from public_game_assets import seed_game_icons
+        self.preferences = PublicPreferences(config.root, settings_lock=self.gate)
         import hltb_stdlib
         sys.modules['hltb'] = hltb_stdlib
         spec = importlib.util.spec_from_file_location('continue_pc_plugin', config.plugin / 'main.py')
@@ -356,17 +381,230 @@ class Backend:
             async def get_protondb(self, appid):
                 return {'tier': None}  # Linux compatibility badge is irrelevant here
 
+            async def get_card(self, appid, name=''):
+                card = await super().get_card(appid, name)
+                if isinstance(card, dict):
+                    for fact in card.get('facts') or []:
+                        if str(fact.get('icon') or '').startswith('img:'):
+                            continue
+                        if fact.get('label') == main.ui_i18n.t('label_progress'):
+                            fact['icon'] = 'trend'
+                        elif fact.get('label') == 'Прокачка':
+                            fact['icon'] = 'backpack'
+                can_continue = bool(isinstance(card,dict) and (card.get('block') or {}).get('title'))
+                preferences = self._pc_display_snapshot
+                card = filter_card(card, preferences)
+                if isinstance(card, dict):
+                    card['display'] = preferences
+                    card['continue_available'] = can_continue
+                return card
+
+            async def get_card_fields(self, appid, name=''):
+                card = await super().get_card(appid, name)
+                return card_fields(card, self._pc_display_snapshot)
+
             async def ensure_blank_movie(self):
-                return False  # Windows install changes only the disclosed debugging flag
+                # Created only by the explicit startup-movie control, never at install.
+                source = config.plugin / 'assets/gh_no_startup.webm'
+                target = config.steam / 'config/uioverrides/movies/continue_no_startup.webm'
+                data = source.read_bytes()
+                digest = hashlib.sha256(data).hexdigest()
+                if target.exists() and (target.is_symlink() or hashlib.sha256(target.read_bytes()).hexdigest() != digest):
+                    return False
+                created = not target.exists()
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if created:
+                    target.write_bytes(data)
+                prior = read_json(config.root / 'startup_movie.json')
+                write_json(config.root / 'startup_movie.json', {'created': created or prior.get('created') is True, 'sha256': digest})
+                return True
+
+            @staticmethod
+            def _valid_setting(key, value, standalone):
+                if key in ('pc_glyphs', 'pc_home', 'pc_pads'):
+                    return value in ('owner', 'native') and isinstance(value, str)
+                if key == 'music_volume':
+                    return type(value) in (int, float) and 0 <= value <= 1
+                if key == 'media_quality':
+                    return type(value) is int and value in (720, 1080, 2160)
+                if key == 'disk_limit_gb':
+                    return type(value) is int and value in (2, 4, 8, 16)
+                if key == 'media_fallback':
+                    return type(value) is bool
+                return main.Plugin._valid_setting(key, value, standalone)
+
+            async def get_settings(self):
+                settings = await super().get_settings()
+                for key in ('pc_glyphs', 'pc_home', 'pc_pads'):
+                    settings.setdefault(key, 'owner')
+                saved = read_json(config.root / 'settings.json')
+                if not isinstance(saved, dict):
+                    saved = {}
+                settings['disk_limit_gb'] = saved.get('disk_limit_gb') if type(saved.get('disk_limit_gb')) is int and saved['disk_limit_gb'] in (2,4,8,16) else 2
+                settings['media_quality'] = saved.get('media_quality') if type(saved.get('media_quality')) is int and saved['media_quality'] in (720,1080,2160) else 1080
+                settings.setdefault('media_fallback', False)
+                settings['preset'] = 'maximum'  # PC quality/location controls own playback policy.
+                return settings
 
             async def get_aliases(self):
                 return {}
+
+            def _media_work_allowed(self):
+                return not getattr(self,'_pc_stopping',False) and super()._media_work_allowed()
+
+            async def _unload(self):
+                self._pc_stopping = True
+                await super()._unload()
+                tasks = [row[1] for row in getattr(self,'_pc_media_jobs',{}).values() if not row[1].done()]
+                for task in tasks:
+                    task.cancel()
+                if tasks:
+                    await asyncio.gather(*tasks,return_exceptions=True)
 
             async def get_music_map(self):
                 return {}
 
             async def get_music_files(self):
-                return {}
+                files = await super().get_music_files()
+                choices = (await self.get_settings()).get('music_choices') or {}
+                return {appid: path for appid, path in files.items() if choices.get(str(appid)) != 'none'}
+
+            async def get_theme(self, appid, name=''):
+                if type(appid) is not int or not 1 <= appid <= 0xffffffff:
+                    return None
+                settings = await self.get_settings()
+                if not settings.get('theme_music_consent') or settings.get('home_music') is False:
+                    return None
+                file = (await self.get_music_files()).get(str(appid))
+                if not file and (settings.get('music_choices') or {}).get(str(appid)) != 'none':
+                    await self.refresh_media(appid,name)
+                return file
+
+            def _media(self):
+                manager = getattr(self, '_standalone_media', None)
+                if manager is None:
+                    from public_media_policy import PCMediaManager
+                    from public_media_runtime import MediaRuntime
+                    manager = PCMediaManager(config.data, config.plugin, allowed=self._media_work_allowed)
+                    manager.runtime = MediaRuntime(config.data, config.app / 'pc/assets/media_runtime.json', allowed=self._media_work_allowed)
+                    self._standalone_media = manager
+                return manager
+
+            async def install_ytdlp(self, consent=False, force=False, purpose='youtube'):
+                if consent is not True or type(force) is not bool or purpose not in ('youtube','theme'):
+                    return {'ok': False, 'consent_required': True}
+                jobs = getattr(self, '_pc_media_jobs', {})
+                key = ('setup',purpose)
+                for job, (prior_key, task) in jobs.items():
+                    if key == prior_key and not task.done():
+                        return {'ok': True, 'pending': True, 'job': job}
+                async def prepare():
+                    if not self._media_work_allowed():
+                        return {'ok': False, 'deferred': 'power_or_game'}
+                    manager = self._media()
+                    async with self._media_lock():
+                        ready = await asyncio.get_running_loop().run_in_executor(None, lambda: manager.runtime.prepare(consent=True))
+                        if not ready.get('ok'):
+                            return ready
+                        await asyncio.get_running_loop().run_in_executor(None, lambda: backend.call('_enable_media_consent',[purpose],internal=True))
+                        return await asyncio.get_running_loop().run_in_executor(None, lambda: manager.install_ytdlp(True,force))
+                job = secrets.token_hex(12)
+                if sum(not row[1].done() for row in jobs.values()) >= 4:
+                    return {'ok': False, 'deferred': 'busy'}
+                jobs[job] = (key,asyncio.create_task(prepare()))
+                while len(jobs)>32:
+                    prior=next((j for j,row in jobs.items() if row[1].done()),None)
+                    if prior is None:break
+                    jobs.pop(prior)
+                self._pc_media_jobs = jobs
+                return {'ok': True, 'pending': True, 'job': job}
+
+            async def _enable_media_consent(self,purpose):
+                settings = await self.get_settings()
+                settings['theme_music_consent' if purpose=='theme' else 'youtube_consent'] = True
+                self._write_settings(settings)
+
+            async def refresh_media(self, appid, name='', game_running=False, source=None, force=False):
+                if type(appid) is not int or not 1 <= appid <= 0xffffffff or type(force) is not bool:
+                    return {'ok': False, 'error': 'Invalid media request'}
+                jobs = getattr(self, '_pc_media_jobs', {})
+                key = (appid, source, force)
+                for job, (prior_key, task) in jobs.items():
+                    if key == prior_key and not task.done():
+                        return {'ok': True, 'pending': True, 'job': job}
+                if sum(not row[1].done() for row in jobs.values()) >= 4:
+                    return {'ok': False, 'deferred': 'busy'}
+                job = secrets.token_hex(12)
+                task = asyncio.create_task(super().refresh_media(appid, name, game_running, source, force))
+                jobs[job] = (key, task)
+                while len(jobs)>32:
+                    prior=next((j for j,row in jobs.items() if row[1].done()),None)
+                    if prior is None:break
+                    jobs.pop(prior)
+                self._pc_media_jobs = jobs
+                return {'ok': True, 'pending': True, 'job': job}
+
+            async def media_job_status(self, job):
+                if not isinstance(job, str) or not re.fullmatch(r'[0-9a-f]{24}', job):
+                    return {'done': True, 'result': {'ok': False, 'error': 'Invalid job'}}
+                row = getattr(self, '_pc_media_jobs', {}).get(job)
+                if row is None:
+                    return {'done': True, 'result': {'ok': False, 'deferred': 'superseded'}}
+                task = row[1]
+                if not task.done():
+                    return {'done': False}
+                try:
+                    result = task.result()
+                except (Exception, asyncio.CancelledError):
+                    result = {'ok': False, 'error': 'Media preparation failed'}
+                return {'done': True, 'result': result}
+
+            async def update_music_loader(self, consent=False, rollback=False):
+                if consent is not True or type(rollback) is not bool:
+                    return {'ok': False, 'consent_required': True}
+                jobs = getattr(self, '_pc_media_jobs', {})
+                if any(not row[1].done() for row in jobs.values()):
+                    return {'ok': False, 'deferred': 'busy'}
+                async def update():
+                    async with self._media_lock():
+                        if not self._media_work_allowed():
+                            return {'ok': False, 'deferred': 'power_or_game'}
+                        manager = self._media()
+                        action = (lambda: manager.rollback_ytdlp(True)) if rollback else (lambda: manager.install_ytdlp(True, True))
+                        return await asyncio.get_running_loop().run_in_executor(None, action)
+                job = secrets.token_hex(12)
+                jobs[job] = (('loader', rollback), asyncio.create_task(update()))
+                while len(jobs) > 32:
+                    prior = next((j for j, row in jobs.items() if row[1].done()), None)
+                    if prior is None:
+                        break
+                    jobs.pop(prior)
+                self._pc_media_jobs = jobs
+                return {'ok': True, 'pending': True, 'job': job}
+
+            async def get_pc_media_status(self, appid=None):
+                from public_media_policy import get_game_media_status, get_media_capabilities
+                manager = self._media()
+                settings = await self.get_settings()
+                result = {'bytes': manager._cache_bytes(), 'capabilities': get_media_capabilities(settings, tool_lookup=manager.tool)}
+                result['runtime'] = manager.runtime.status()
+                loader = manager._state()
+                result['loader'] = {key: value for key, value in (loader.get('yt_dlp') or {}).items() if key in ('version', 'checked_at')}
+                result['rollback_available'] = bool(loader.get('yt_dlp_previous'))
+                if appid is not None:
+                    if type(appid) is not int or not 1 <= appid <= 0xffffffff:
+                        raise ValueError('Invalid appid')
+                    state = get_game_media_status(manager, appid, '', settings)
+                    labels = {'no_video': 'unavailable', 'no_music': 'disabled', 'music_disabled': 'disabled', 'not_cached': 'waiting'}
+                    for old, new in [('video','background'),('music','music')]:
+                        info = state[old]
+                        info['state'] = labels.get(info['status'],info['status'])
+                        if manager.active and manager.active['appid'] == appid and manager.active['kind'] == new:
+                            info['state'] = 'downloading'
+                        if new == 'background' and (settings['live_bg'] == 'off' or settings.get('game_bg',{}).get(str(appid)) in ('image','steam')):
+                            info['state'] = 'disabled'
+                        result[new] = info
+                return result
 
             async def check_update(self, force=False):
                 from public_update import PublicUpdater
@@ -377,15 +615,41 @@ class Backend:
         self.worker = threading.Thread(target=self.loop.run_forever, name='backend', daemon=True)
         self.worker.start()
         self.call('_main', [], internal=True)
+        from public_customization import PublicCustomization
+        from public_themes import PublicThemes
+        from public_visuals import PublicVisuals
+        self.customization = PublicCustomization(config.root, self.plugin._media, self.plugin._media_work_allowed, settings_lock=self.gate)
+        self.themes = PublicThemes(config.app / 'pc/assets/themes', config.root)
+        self.visuals = PublicVisuals(config.root, self.plugin._media, self.plugin._media_work_allowed)
+        self.PUBLIC = self.PUBLIC | self.customization.METHODS | self.themes.METHODS | self.visuals.METHODS
+        self.PUBLIC |= self.preferences.METHODS
         target = config.data / 'icons'
         target.mkdir(exist_ok=True)
         for file in (config.plugin / 'assets/icons').glob('*.svg'):
             shutil.copyfile(file, target / file.name)
+        seed_game_icons(config.app / 'pc/assets/game_icons', config.data)
 
     def call(self, method, args, internal=False):
         if not isinstance(args, list) or len(args) > 8 or (not internal and method not in self.PUBLIC):
             raise ValueError('Unknown public method or invalid arguments')
-        with self.gate:
+        if hasattr(self, 'customization') and method in self.customization.METHODS:
+            result = self.customization.call(method, args)
+            json.dumps(result, allow_nan=False)
+            return result
+        if hasattr(self, 'preferences') and method in self.preferences.METHODS:
+            return self.preferences.call(method, args)
+        if hasattr(self, 'visuals') and method in self.visuals.METHODS:
+            return self.visuals.call(method, args)
+        if hasattr(self, 'themes') and method in self.themes.METHODS:
+            with self.theme_gate:
+                return self.themes.call(method, args)
+        # External metadata and background media must not hold the settings
+        # ordering lock for their whole network timeout.
+        independent = {'get_about', 'get_hltb', 'get_protondb', 'check_update', 'refresh_media', 'set_media_context', 'get_pc_media_status', 'media_job_status'}
+        from contextlib import nullcontext
+        with nullcontext() if method in independent else self.gate:
+            if method in ('get_card','get_card_fields') and hasattr(self,'preferences'):
+                self.plugin._pc_display_snapshot = self.preferences.get_card_preferences(args[0])['effective']
             future = asyncio.run_coroutine_threadsafe(getattr(self.plugin, method)(*args), self.loop)
             try:
                 result = future.result(timeout=55)
@@ -397,6 +661,10 @@ class Backend:
 
     def close(self):
         try:
+            if hasattr(self, 'customization'):
+                self.customization.close()
+            if hasattr(self, 'visuals'):
+                self.visuals.close()
             self.call('_unload', [], internal=True)
         finally:
             self.loop.call_soon_threadsafe(self.loop.stop)
@@ -413,11 +681,26 @@ class Session:
         self.backend, self.pool = backend, pool
         self.lock, self.seq, self.waiting = threading.Lock(), 0, {}
         self.alive = True
+        self.context_revision = 0
         self.reader = threading.Thread(target=self.read_loop, name='cdp', daemon=True)
         self.reader.start()
 
     def send(self, method, params=None, timeout=30, wait=True):
-        with self.lock:
+        deadline=time.monotonic()+timeout
+        expired=threading.Event()
+        def abort():
+            expired.set();self.alive=False
+            self.ws.abort()
+        watchdog=threading.Timer(timeout,abort);watchdog.daemon=True;watchdog.start()
+        try:
+            return self._send_until(method,params,deadline,wait,expired)
+        finally:
+            watchdog.cancel()
+
+    def _send_until(self,method,params,deadline,wait,expired):
+        if not self.lock.acquire(timeout=max(0,deadline-time.monotonic())):
+            raise TimeoutError('CDP send lock deadline exceeded')
+        try:
             self.seq += 1
             mid = self.seq
             future = concurrent.futures.Future() if wait else None
@@ -425,11 +708,14 @@ class Session:
                 self.waiting[mid] = future
             try:
                 self.ws.send(json.dumps({'id': mid, 'method': method, 'params': params or {}}))
+                if expired.is_set():raise TimeoutError('CDP send deadline exceeded')
             except Exception:
                 self.waiting.pop(mid, None)
                 raise
+        finally:
+            self.lock.release()
         try:
-            return future.result(timeout=timeout) if future else None
+            return future.result(timeout=max(0,deadline-time.monotonic())) if future else None
         finally:
             if future:
                 with self.lock:
@@ -450,6 +736,8 @@ class Session:
                         future = self.waiting.pop(msg['id'], None)
                     if future and not future.done():
                         future.set_result(msg)
+                elif msg.get('method') in ('Runtime.executionContextsCleared', 'Runtime.executionContextCreated', 'Runtime.executionContextDestroyed'):
+                    self.context_revision += 1
                 elif msg.get('method') == 'Runtime.bindingCalled' and msg.get('params', {}).get('name') == '__ghBridge':
                     self.pool.submit(self.handle, msg['params'].get('payload', '{}'))
         except Exception as error:
@@ -489,6 +777,42 @@ class Session:
 
 
 READY_JS = '!!(window.webpackChunksteamui && window.SteamUIStore && window.appStore && window.appDetailsStore)'
+
+
+def component_ready_js(prelude):
+    # Use the very same module discovery and Focusable matcher as bootstrap.
+    boot = prelude[:prelude.index('// мост к службе:')]
+    return READY_JS + ' && (() => {try {\n' + boot + '\nreturn !!(window.SP_REACT && window.SP_JSX && __ghBoot.DFL.Focusable);\n} catch (_) {return false;} })()'
+
+
+class InjectionRetry:
+    def __init__(self):
+        self.context = None
+        self.failures = 0
+        self.next_attempt = 0
+
+    def tick(self, session, bundle, version, ready_js, now=None):
+        now = time.monotonic() if now is None else now
+        context = (session, getattr(session, 'context_revision', 0))
+        if self.context != context:
+            self.context, self.failures, self.next_attempt = context, 0, 0
+        if now < self.next_attempt or not session.evaluate(ready_js):
+            return False
+        if session.evaluate('window.__ghPC && window.__ghPC.ver') == version:
+            self.failures, self.next_attempt = 0, 0
+            return False
+        try:
+            session.evaluate(bundle, timeout=60)
+            if session.evaluate('window.__ghPC && window.__ghPC.ver') != version:
+                raise RuntimeError('Bootstrap did not install its version marker')
+        except RuntimeError:
+            self.failures += 1
+            delay = min(60, 3 * 2 ** min(self.failures - 1, 5))
+            self.next_attempt = now + delay
+            log.warning('Injection failed; retry in %s seconds', delay)
+            return False
+        self.failures, self.next_attempt = 0, 0
+        return True
 
 
 def shared_ctx_ws(config):
@@ -542,18 +866,28 @@ def serve(config, stop_event=None):
 def _serve_locked(config, stop_event=None):
     config.data.mkdir(exist_ok=True)
     stop_event = stop_event or threading.Event()
-    try:
-        server = media_server(config.data, config.media_port, config.token, stop_event, config.version)
-    except OSError:
-        log.info('Media port %s occupied; this instance exits', config.media_port)
-        return 0
-    backend, session = None, None
+    for attempt in range(5):
+        try:
+            server = media_server(config.data, config.media_port, config.token, stop_event, config.version)
+            break
+        except OSError:
+            log.error('Media port %s occupied; close the other Continue?/Continue instance', config.media_port)
+            write_json(config.root/'service-error.json',{'error':'media_port_occupied','port':config.media_port,'at':time.time()})
+            config.ready.unlink(missing_ok=True)
+            if attempt==4:return 3
+            if stop_event.wait(3):return 0
+    (config.root/'service-error.json').unlink(missing_ok=True)
+    backend, session, theme_injector = None, None, None
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=4, thread_name_prefix='bridge')
     worker = threading.Thread(target=server.serve_forever, name='media', daemon=True)
     worker.start()
     try:
         backend = Backend(config)
+        from public_theme_cdp import ThemeInjector
+        theme_injector = ThemeInjector(config, backend)
         bundle, version = build_bundle(config)
+        ready_js = component_ready_js((config.app / 'pc/bp_prelude.js').read_text(encoding='utf-8'))
+        injection = InjectionRetry()
         write_json(config.ready, {'pid': os.getpid(), 'version': config.version, 'at': time.time(), 'token': config.token,
                                  'nonce': os.environ.get('CONTINUE_UPDATE_NONCE', ''),
                                  'media_port': config.media_port, 'cdp_port': config.cdp_port})
@@ -569,7 +903,7 @@ def _serve_locked(config, stop_event=None):
                 update_busy.clear()
 
         next_update = time.monotonic() + 60
-        url_seen, failed = None, None
+        url_seen = None
         while not stop_event.is_set():
             if time.monotonic() >= next_update and not update_busy.is_set():
                 next_update = time.monotonic() + 86400
@@ -586,16 +920,12 @@ def _serve_locked(config, stop_event=None):
                         if session:
                             session.close()
                         session = Session(url, backend, pool)
-                        url_seen, failed = url, None
+                        url_seen = url
                         session.send('Runtime.addBinding', {'name': '__ghBridge'})
-                    if session.evaluate(READY_JS) and session.evaluate('window.__ghPC && window.__ghPC.ver') != version and failed != (url, version):
-                        try:
-                            session.evaluate(bundle, timeout=60)
-                            write_json(config.root / 'injected.json', {'ver': version, 'at': time.time()})
-                            log.info('Injected bundle %s', version)
-                        except RuntimeError:
-                            failed = (url, version)
-                            log.warning('Injection failed; retry after reconnect')
+                        session.send('Runtime.enable')
+                    if injection.tick(session, bundle, version, ready_js):
+                        write_json(config.root / 'injected.json', {'ver': version, 'at': time.time()})
+                        log.info('Injected bundle %s', version)
             except Exception as error:
                 log.info('Waiting for Steam (%s)', type(error).__name__)
                 if session:
@@ -604,10 +934,26 @@ def _serve_locked(config, stop_event=None):
             stop_event.wait(3)
         return 0
     finally:
+        movie_restored = False
         if session:
+            try:
+                movie_restored = session.evaluate('window.__ghPC?.ver === %s ? window.__ghPC.unload() : false' % json.dumps(version), timeout=5) is True
+            except Exception:
+                pass
             session.close()
+        if theme_injector:
+            theme_injector.close()
         if backend:
             backend.close()
+        if movie_restored:
+            record = read_json(config.root / 'startup_movie.json')
+            movie = config.steam / 'config/uioverrides/movies/continue_no_startup.webm'
+            try:
+                if record.get('created') is True and movie.is_file() and not movie.is_symlink() and hashlib.sha256(movie.read_bytes()).hexdigest() == record.get('sha256'):
+                    movie.unlink()
+                (config.root / 'startup_movie.json').unlink(missing_ok=True)
+            except OSError:
+                pass
         pool.shutdown(wait=True, cancel_futures=True)
         server.shutdown()
         server.server_close()

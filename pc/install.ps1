@@ -10,6 +10,7 @@ param(
     [string]$FixturePython
 )
 . (Join-Path $PSScriptRoot 'windows_common.ps1')
+$lifecycleLock = $null
 
 try {
     $context = Initialize-ContinueContext $FixtureProfile $FixtureSteam $FixturePython
@@ -22,19 +23,31 @@ try {
         throw 'Only the public PC package with RELEASE.json can be installed. Download and extract the complete Continue PC ZIP.'
     }
     $steam = Get-ContinueSteamPath
+    [void](Assert-ContinueSafePath $context.Manifest $context.Root)
     $old = Read-ContinueJson $context.Manifest
+    $recovery = Read-ContinueRecovery
+    if (-not $old -and $recovery) { $old = $recovery.owner }
     Assert-ContinueManifest $old
-    if ((Test-Path -LiteralPath $context.App) -and -not $old) { throw 'The Continue app folder already exists without an install manifest. Move it aside before installing.' }
-    $existingTask = Get-ContinueTask
-    if ($existingTask -and -not (Test-ContinueOwnedTask $existingTask $old)) { throw 'ContinueBigPicture belongs to another installation. No task, Steam flag or app was changed.' }
     Write-Host 'Continue needs Steam local debugging on 127.0.0.1:8080. While the .cef-enable-remote-debugging flag exists, any process on this PC can talk to the Steam interface through that port.'
     Write-Host 'This installation adds that flag, a per-user ContinueBigPicture task, and files under your LocalAppData\Continue folder. Steam must restart to load the flag. No administrator rights are requested.'
     if ($DeclineDebugPort -or ($AcceptDebugPort -and $DeclineDebugPort)) { throw 'Debug-port consent declined; installation cancelled.' }
     if (-not $AcceptDebugPort) {
         if ($NonInteractive -or -not (Confirm-ContinueChoice 'Allow this local Steam debugging port?' $false)) { throw 'Explicit debug-port consent is required; installation cancelled.' }
     }
-    [void][IO.Directory]::CreateDirectory($context.Root)
+    $lifecycleLock = Enter-ContinueLifecycleLock
+    [void](Restore-ContinueInstallTransaction)
+    # Re-read ownership after acquiring the lock; the pre-consent snapshot may
+    # have become stale while another installer/updater was finishing.
+    $old = Read-ContinueJson $context.Manifest
+    $recovery = Read-ContinueRecovery
+    if (-not $old -and $recovery) { $old = $recovery.owner }
+    Assert-ContinueManifest $old
+    if ((Test-Path -LiteralPath $context.App) -and -not $old) { throw 'The Continue app folder already exists without an install manifest. Move it aside before installing.' }
+    $existingTask = Get-ContinueTask
+    if ($existingTask -and -not (Test-ContinueOwnedTask $existingTask $old)) { throw 'ContinueBigPicture belongs to another installation. Nothing was changed.' }
+    if ((Test-Path -LiteralPath (Join-Path $context.Root 'update-journal.json'))) { throw 'An update recovery journal is pending. Recover the update before installing; its rollback files were preserved.' }
     $python = Find-ContinuePython $SourceRoot
+    Install-ContinueBootstrap $SourceRoot
     $stage = Join-Path $context.Root ('app-stage-' + [guid]::NewGuid().ToString('N'))
     $backup = Join-Path $context.Root ('app-backup-' + [guid]::NewGuid().ToString('N'))
     $flag = Join-Path $steam '.cef-enable-remote-debugging'
@@ -43,6 +56,27 @@ try {
     $swapped = $false
     $manifestWritten = $false
     $manifest = $null
+    $transactionPath = Join-Path $context.Root 'install-transaction.json'
+    $willCreateFlag = -not (Test-Path -LiteralPath $flag)
+    $willOwnFlag = $willCreateFlag -or ($old -and $old.debug_flag_created)
+    $installId = if ($old) { $old.install_id } else { [guid]::NewGuid().ToString('N') }
+    $manifest = [ordered]@{
+        schema = 1; install_id = $installId; version = $release.version
+        root = $context.Root; app = $context.App; data = $context.Data; logs = $context.Logs
+        steam = $steam; debug_flag = $flag; debug_flag_created = [bool]$willOwnFlag
+        task_name = $context.TaskName; task_created = $true
+        pythonw = $python.Pythonw; python_console = $python.Console; python_version = $python.Version
+        python_created = [bool]$python.Owned; debug_port_consent = $true
+        installed_utc = [DateTime]::UtcNow.ToString('o')
+    }
+    # The receipt and the identity of the empty file precede every side effect.
+    # Rename a stamped candidate without overwriting a concurrent consumer's flag.
+    $flagStage = '.continue-debug-' + [guid]::NewGuid().ToString('N') + '.tmp'
+    $flagStamp = if ($willCreateFlag) { [DateTime]::UtcNow.Ticks.ToString() } else { $old.debug_flag_stamp }
+    $manifest['debug_flag_stamp'] = $flagStamp
+    $transaction = [ordered]@{schema=1;state='prepared';stage=[IO.Path]::GetFileName($stage);backup=[IO.Path]::GetFileName($backup);old=$old;next=$manifest}
+    if ($willCreateFlag) { $transaction['flag_stage'] = $flagStage }
+    Write-ContinueJson $transactionPath $transaction
     try {
         Copy-ContinueApplication $SourceRoot $stage
         if (-not $context.Fixture) {
@@ -63,30 +97,41 @@ try {
         foreach ($dir in @($context.Data, $context.Logs)) { [void](Assert-ContinueSafePath $dir $context.Root); [void][IO.Directory]::CreateDirectory($dir) }
         $settings = Join-Path $context.Root 'settings.json'
         if (-not (Test-Path -LiteralPath $settings)) { Write-ContinueJson $settings ([ordered]@{}) }
+        if ($recovery -and $recovery.startup_movie -and $recovery.startup_movie.previous) {
+            $values = Read-ContinueJson $settings
+            if (-not $values.PSObject.Properties['startup_movie_prev']) {
+                $values | Add-Member -NotePropertyName 'startup_movie_prev' -NotePropertyValue $recovery.startup_movie.previous
+                Write-ContinueJson $settings $values
+            }
+        }
         if ((Test-Path -LiteralPath $flag) -and -not (Test-Path -LiteralPath $flag -PathType Leaf)) {
             throw 'The Steam debugging-flag path exists but is not a file. It was left unchanged; inspect it before retrying.'
         }
-        if (-not (Test-Path -LiteralPath $flag)) {
-            # CreateNew avoids overwriting a flag created concurrently by another tool.
-            try { $stream = [IO.File]::Open($flag, [IO.FileMode]::CreateNew); $stream.Dispose(); $flagCreatedNow = $true }
-            catch [IO.IOException] { if (-not (Test-Path -LiteralPath $flag)) { throw } }
+        if ($willCreateFlag) {
+            $candidate = Join-Path $steam $flagStage
+            [void](Assert-ContinueSafePath $candidate $steam)
+            $stream = [IO.File]::Open($candidate, [IO.FileMode]::CreateNew)
+            try { $stream.Flush($true) } finally { $stream.Dispose() }
+            [IO.File]::SetLastWriteTimeUtc($candidate, [DateTime]::new([long]$flagStamp, [DateTimeKind]::Utc))
+            try { [IO.File]::Move($candidate, $flag); $flagCreatedNow = $true }
+            catch [IO.IOException] { if (-not (Test-Path -LiteralPath $flag -PathType Leaf)) { throw } }
         }
         $ownedFlag = $flagCreatedNow -or ($old -and $old.debug_flag_created)
-        $installId = if ($old) { $old.install_id } else { [guid]::NewGuid().ToString('N') }
-        $manifest = [ordered]@{
-            schema = 1; install_id = $installId; version = $release.version
-            root = $context.Root; app = $context.App; data = $context.Data; logs = $context.Logs
-            steam = $steam; debug_flag = $flag; debug_flag_created = [bool]$ownedFlag
-            task_name = $context.TaskName; task_created = $true
-            pythonw = $python.Pythonw; python_console = $python.Console; python_version = $python.Version
-            python_created = [bool]$python.Owned; debug_port_consent = $true
-            installed_utc = [DateTime]::UtcNow.ToString('o')
-        }
+        Remove-ContinueInstallFlagStage ([pscustomobject]$transaction)
+        $manifest.debug_flag_created = [bool]$ownedFlag
+        if (-not $flagCreatedNow) { $manifest.debug_flag_stamp = $old.debug_flag_stamp }
+        $transaction['next'] = $manifest
+        Write-ContinueJson $transactionPath $transaction
         Write-ContinueJson $context.Manifest $manifest
         $manifestWritten = $true
         Register-ContinueTask ([pscustomobject]$manifest)
+        $transaction.state = 'committed'
+        Write-ContinueJson $transactionPath $transaction
+        # The task cannot acquire the lifecycle lock until this process exits.
         Start-ContinueTask ([pscustomobject]$manifest)
         if (Test-Path -LiteralPath $backup) { Remove-ContinuePath $backup }
+        Remove-ContinuePath $transactionPath
+        if ($recovery -and -not $recovery.startup_movie) { Remove-ContinuePath $context.Recovery }
     } catch {
         $failure = $_
         if ($manifestWritten) {
@@ -98,7 +143,9 @@ try {
             Write-ContinueJson $context.Manifest $old
             try { Register-ContinueTask $old; Start-ContinueTask $old } catch { Write-Warning 'Previous app files were restored, but Continue could not be restarted. Run setup.cmd to repair.' }
         } elseif ($manifestWritten) { Remove-ContinuePath $context.Manifest }
-        if ($flagCreatedNow -and -not ($old -and $old.debug_flag_created)) { [void](Assert-ContinueSafePath $flag $steam); Remove-Item -LiteralPath $flag -Force }
+        if ($flagCreatedNow) { Remove-ContinueOwnedDebugFlag ([pscustomobject]$manifest) }
+        Remove-ContinueInstallFlagStage ([pscustomobject]$transaction)
+        Remove-ContinuePath $transactionPath
         throw $failure
     } finally { if (Test-Path -LiteralPath $stage) { Remove-ContinuePath $stage } }
     Write-Host "Continue $($release.version) installed in $($context.App). Its service starts with pythonw, without a console window."
@@ -109,4 +156,4 @@ try {
 } catch {
     [Console]::Error.WriteLine('Continue installation: ' + $_.Exception.Message)
     exit 1
-}
+} finally { Exit-ContinueLifecycleLock $lifecycleLock }

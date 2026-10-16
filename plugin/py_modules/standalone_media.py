@@ -20,6 +20,7 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
+import unicodedata
 from pathlib import Path
 
 
@@ -52,6 +53,58 @@ PRESETS = {
     "balanced": {"height": 720, "crf": 23, "min_free_gb": 0.5, "max_games": 40},
     "maximum": {"height": 1080, "crf": 21, "min_free_gb": 1, "max_games": 40},
 }
+
+_CHILD_WINDOWS = os.name == 'nt'
+
+
+def _clean_child_env(environ=None, *, runtime_dirs=()):
+    """System tools must not load Decky's PyInstaller libraries or Python home."""
+    source = os.environ if environ is None else environ
+    env = {k: v for k, v in source.items() if not k.startswith('_PYI') and k not in (
+        'LD_LIBRARY_PATH', 'LD_LIBRARY_PATH_ORIG', 'LD_PRELOAD', 'PYTHONHOME', 'PYTHONPATH')}
+    if source.get('LD_LIBRARY_PATH_ORIG'):
+        env['LD_LIBRARY_PATH'] = source['LD_LIBRARY_PATH_ORIG']
+    separator = ';' if _CHILD_WINDOWS else ':'
+    path = (source.get('PATH') or os.defpath) if _CHILD_WINDOWS else '/usr/local/bin:/usr/bin:/bin'
+    env['PATH'] = separator.join([path, *dict.fromkeys(str(p) for p in runtime_dirs if p)])
+    if not env.get('HOME'):
+        env['HOME'] = (source.get('USERPROFILE') or str(Path.home())) if _CHILD_WINDOWS else '/home/deck'
+    env['LANG'] = 'C.UTF-8'
+    return env
+
+
+class Python3RequiredError(RuntimeError):
+    """Stable reason for localized Deck UI; never launch a frozen PluginLoader."""
+    def __init__(self):
+        super().__init__('python3_required')
+
+
+THEME_REASONS = frozenset({'theme_no_candidate', 'theme_title_filtered', 'theme_timeout',
+    'theme_encode_failed', 'theme_format_unavailable', 'theme_network_error', 'theme_download_failed', 'theme_file_busy'})
+
+
+class ThemeMusicError(RuntimeError):
+    """Safe, stable UI reason; subprocess stderr stays out of the UI/state."""
+    def __init__(self, reason):
+        self.reason = reason if reason in THEME_REASONS else 'theme_download_failed'
+        super().__init__(self.reason)
+
+
+def theme_failure_reason(error):
+    if isinstance(error, ThemeMusicError):
+        return error.reason
+    text = str(error).casefold()
+    if isinstance(error, (subprocess.TimeoutExpired, TimeoutError)) or any(w in text for w in ('timed out', 'timeout', 'deadline exceeded')):
+        return 'theme_timeout'
+    if isinstance(error, PermissionError) or any(w in text for w in ('permission denied', 'file is being used', 'winerror 32')):
+        return 'theme_file_busy'
+    if any(w in text for w in ('ffmpeg', 'postprocessing', 'encode')):
+        return 'theme_encode_failed'
+    if any(w in text for w in ('requested format', 'unsupported codec', 'invalid media', 'no audio')):
+        return 'theme_format_unavailable'
+    if isinstance(error, OSError) or any(w in text for w in ('connection', 'name resolution', 'network', 'unable to download', 'urlopen', 'http error 5')):
+        return 'theme_network_error'
+    return 'theme_download_failed'
 
 
 def _ssl_context():
@@ -313,6 +366,20 @@ def _bmff(path, *, audio=False, init_only=False):
         return {"codec": codec.decode(), "duration": duration, "fragmented": fragmented, "width": width, "height": height}
 
 
+class YouTubeBlockedError(RuntimeError):
+    """The provider refused a request; retry later without changing connectivity."""
+
+
+def check_youtube_refusal(stderr):
+    if isinstance(stderr, bytes):
+        stderr = stderr.decode('utf-8', errors='replace')
+    text = str(stderr or '').casefold().replace('\u2019', "'")
+    if re.search(r'\b(?:http(?:\s+error)?|status(?:\s+code)?)\s*[:=]?\s*403\b', text) or any(
+        hint in text for hint in ("confirm you're not a bot", 'confirm you are not a bot', 'bot-check')
+    ):
+        raise YouTubeBlockedError('YouTube temporarily declined the request; try again later')
+
+
 class MediaManager:
     """Owns files created by the autonomous public release.
 
@@ -323,7 +390,7 @@ class MediaManager:
     """
 
     def __init__(self, data_dir, plugin_dir=None, *, urlopen=None, run=None, now=None, allowed=None):
-        self.data = Path(data_dir)
+        self.data = Path(data_dir).resolve()
         self.plugin_dir = Path(plugin_dir or Path(__file__).resolve().parents[1])
         self.media = self.data / "media"
         self.bin = self.data / "bin"
@@ -341,6 +408,19 @@ class MediaManager:
     def cancel(self):
         """Cooperatively stop this manager's work; never kill Steam processes."""
         self._cancelled = True
+        runtime = getattr(self, 'runtime', None)
+        if runtime is not None and hasattr(runtime, 'cancel'):
+            runtime.cancel()
+
+    def _child_env(self, environ=None):
+        runtime = getattr(self, 'runtime', None)
+        directories = []
+        if runtime is not None:
+            for name in ('node', 'ffmpeg', 'ffprobe'):
+                tool = runtime.tool(name)
+                if tool:
+                    directories.append(str(Path(tool).parent))
+        return _clean_child_env(environ, runtime_dirs=directories)
 
     def _checkpoint(self):
         if self._cancelled or not self.allowed():
@@ -348,6 +428,7 @@ class MediaManager:
 
     def _run(self, command, *, capture_output=True, text=False, timeout=180, **kwargs):
         self._checkpoint()
+        kwargs['env'] = self._child_env(kwargs.get('env'))
         if self._injected_run:
             result = self._injected_run(command, capture_output=capture_output, text=text, timeout=timeout, **kwargs)
             self._checkpoint()
@@ -647,13 +728,13 @@ class MediaManager:
     def music_files(self):
         out = {}
         try:
-            paths = list(self.media.glob("*_theme.*")) if self.media.exists() else []
+            paths = list(self.media.glob("*_theme.m4a")) if self.media.exists() else []
         except OSError:
             return out
         for path in paths:
             try:
                 appid = path.name.split("_", 1)[0]
-                if appid.isdigit() and self._valid_audio(path):
+                if re.fullmatch(r'[1-9][0-9]*_theme\.m4a', path.name) and self._valid_audio(path):
                     out[appid] = self._relative(path)
             except OSError:
                 continue
@@ -935,6 +1016,10 @@ class MediaManager:
             for command in commands:
                 try:
                     result = self.run(command, capture_output=True, timeout=180)
+                except subprocess.TimeoutExpired:
+                    if audio:
+                        raise ThemeMusicError('theme_timeout')
+                    continue
                 except (OSError, subprocess.SubprocessError):
                     continue
                 valid = self._valid_audio(part) if audio else self._valid_video(part)
@@ -1044,6 +1129,8 @@ class MediaManager:
     # ---- verified yt-dlp zipapp ------------------------------------------------------
 
     def _own_ytdlp(self):
+        from loader_transaction import recover
+        recover(self)
         path = self.bin / "yt-dlp"
         if not path.is_file() or path.stat().st_size < 512 * 1024:
             return None
@@ -1065,59 +1152,12 @@ class MediaManager:
         return None  # Only this plugin's hash-verified binary may be executed.
 
     def install_ytdlp(self, consent=False, force=False):
-        if not consent:
-            return {"ok": False, "consent_required": True}
-        state = self._state()
-        previous = state.get("yt_dlp") or {}
-        own = self._own_ytdlp()
-        checked = previous.get("checked_at")
-        retry_seconds = YTDLP_ERROR_RETRY_SECONDS if previous.get("error") else YTDLP_UPDATE_SECONDS
-        if checked is not None and self.now() - float(checked) < retry_seconds and not force:
-            return {"ok": bool(own), "path": str(own) if own else None, "updated": False,
-                    "retry_at": float(checked) + retry_seconds, "error": previous.get("error"),
-                    "node": bool(shutil.which("node")), "experimental": not bool(shutil.which("node"))}
-        # Record attempts before I/O. Explicit force retries a failed attempt;
-        # successful installation/update checks keep the weekly bandwidth window.
-        state["yt_dlp"] = {**previous, "checked_at": self.now()}
-        self._save_state(state)
-        part = self.bin / "yt-dlp.download.part"
-        try:
-            self._checkpoint()
-            self._check_space(0)
-            release = self._json_url("https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest")
-            version = str(release.get("tag_name") or "")
-            if not re.fullmatch(r"[A-Za-z0-9._-]{1,100}", version):
-                raise RuntimeError("invalid official yt-dlp release tag")
-            assets = {a.get("name"): a.get("browser_download_url") for a in release.get("assets") or []}
-            for name in ("yt-dlp", "SHA2-256SUMS"):
-                expected = f"https://github.com/yt-dlp/yt-dlp/releases/download/{version}/{name}"
-                if assets.get(name) != expected:
-                    raise RuntimeError("yt-dlp asset is not from the official GitHub release")
-            sums = self._bytes(assets["SHA2-256SUMS"], limit=4 * 1024 * 1024).decode("utf-8", "replace")
-            match = re.search(r"(?mi)^([0-9a-f]{64})\s+\*?yt-dlp\s*$", sums)
-            if not match:
-                raise RuntimeError("yt-dlp checksum is missing from SHA2-256SUMS")
-            self._stream(assets["yt-dlp"], part, timeout=120, limit=32 * 1024 * 1024)
-            digest = self._hash_file(part)
-            if digest != match.group(1).lower():
-                raise RuntimeError("yt-dlp sha256 mismatch")
-            if part.stat().st_size < 512 * 1024:
-                raise RuntimeError("official yt-dlp zipapp is too small")
-            destination = self.bin / "yt-dlp"
-            part.chmod(part.stat().st_mode | 0o700)
-            self._promote(part, destination)
-            state["yt_dlp"] = {"checked_at": self.now(), "version": version, "sha256": digest}
-            self._save_state(state)
-            return {"ok": True, "path": str(destination), "updated": True, "version": version,
-                    "sha256": digest, "node": bool(shutil.which("node")), "experimental": not bool(shutil.which("node"))}
-        except Exception as exc:
-            state["yt_dlp"]["error"] = f"{type(exc).__name__}: {exc}"[:240]
-            self._save_state(state)
-            return {"ok": bool(own), "updated": False, "error": state["yt_dlp"]["error"],
-                    "retry_at": float(state["yt_dlp"]["checked_at"]) + YTDLP_ERROR_RETRY_SECONDS,
-                    "experimental": not bool(shutil.which("node"))}
-        finally:
-            part.unlink(missing_ok=True)
+        from loader_transaction import update
+        return update(self,consent,force)
+
+    def rollback_ytdlp(self, consent=False):
+        from loader_transaction import rollback
+        return rollback(self,consent)
 
     def _ytdlp_command(self):
         own = self.bin / "yt-dlp"
@@ -1126,19 +1166,30 @@ class MediaManager:
         tool = self.locate_ytdlp()
         if not tool:
             raise RuntimeError("yt-dlp is not installed; user consent is required")
-        # The official Unix asset is a Python zipapp.  Invoking it with the
-        # Decky interpreter also works when its executable bit is unavailable.
+        # The official Unix asset is a Python zipapp. Decky's sys.executable
+        # is PluginLoader, which would start a second loader instead of Python.
         with tool.open("rb") as stream:
             native = stream.read(4) == b"\x7fELF"
-        return [str(tool)] if native else [sys.executable, str(tool)]
+        if native:
+            return [str(tool)]
+        interpreter = sys.executable if Path(sys.executable).name.lower().startswith('python') else None
+        if not interpreter:
+            interpreter = shutil.which('python3', path=_clean_child_env()['PATH'])
+        if not interpreter and os.path.isfile('/usr/bin/python3') and os.access('/usr/bin/python3', os.X_OK):
+            interpreter = '/usr/bin/python3'
+        if not interpreter:
+            raise Python3RequiredError()
+        return [interpreter, str(tool)]
 
     @staticmethod
     def _meaningful_words(name):
-        return [w for w in re.findall(r"\w+", re.sub(r"[™®©]", "", str(name)).casefold())
-                if w not in {"the", "of", "and", "remastered", "digital"}]
+        normalized = unicodedata.normalize('NFKD', re.sub(r"[™®©]", "", str(name))).casefold()
+        normalized = ''.join(c for c in normalized if not unicodedata.combining(c))
+        return [w for w in re.findall(r"\w+", normalized)
+                if w not in {"the", "of", "and", "remastered", "digital", "edition", "complete", "enhanced", "definitive", "deluxe", "ultimate"}]
 
-    def youtube_candidates(self, name, official=(), *, audio=False):
-        query = f"ytsearch12:{name} {'Theme Music' if audio else 'official trailer'}"
+    def youtube_candidates(self, name, official=(), *, audio=False, query_suffix=None):
+        query = f"ytsearch12:{name} {query_suffix or ('Theme Music' if audio else 'official trailer')}"
         command = self._ytdlp_command() + [query, "--dump-json", "--skip-download", "--ignore-errors", "--no-warnings", "--no-playlist",
                     "--socket-timeout", "20", "--retries", "1", "--extractor-retries", "1", "--no-cache-dir", "--ignore-config"]
         if audio:
@@ -1146,10 +1197,12 @@ class MediaManager:
         if shutil.which("node"):
             command += ["--js-runtimes", "node"]
         result = self.run(command, capture_output=True, text=True, timeout=180)
+        check_youtube_refusal(result.stderr)
         if result.returncode not in (0, 1):
             raise RuntimeError((result.stderr or "yt-dlp search failed")[-300:])
         wanted = self._meaningful_words(name)
         rows = []
+        self._theme_title_filtered = False
         for line in (result.stdout or "").splitlines():
             try:
                 entry = json.loads(line)
@@ -1158,8 +1211,9 @@ class MediaManager:
             if not entry or not entry.get("webpage_url"):
                 continue
             title = str(entry.get("title") or "")
-            hay = set(re.findall(r"\w+", title.casefold()))
+            hay = set(self._meaningful_words(title))
             if wanted and not all(word in hay for word in wanted):
+                self._theme_title_filtered = True
                 continue
             channel = str(entry.get("channel") or entry.get("uploader") or "").casefold()
             channel_words = re.findall(r"\w+", channel)
@@ -1181,6 +1235,29 @@ class MediaManager:
             rows.append({"url": entry["webpage_url"], "title": title, "channel": channel,
                          "height": height, "trusted": trusted, "duration": entry.get("duration")})
         rows.sort(key=lambda row: (row["trusted"], row["height"], "trailer" in row["title"].casefold()), reverse=True)
+        if audio and not rows and result.stderr and result.returncode:
+            raise ThemeMusicError(theme_failure_reason(result.stderr))
+        return rows
+
+    def theme_candidates(self, name):
+        """At most two ordinary searches; no retries on provider/network errors."""
+        rows = self.youtube_candidates(name, audio=True)
+        filtered = getattr(self, '_theme_title_filtered', False)
+        if not rows:
+            self._checkpoint()
+            time.sleep(1.5)
+            self._checkpoint()
+            normalized = ' '.join(self._meaningful_words(name))
+            # Canonical English is preferred. If unavailable, transliterate a
+            # localized fallback without any extra request or translation API.
+            letters = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяіїєґ'
+            latin = 'a b v g d e yo zh z i y k l m n o p r s t u f kh ts ch sh shch  y  e yu ya i yi ye g'.split(' ')
+            table = dict(zip(letters, latin))
+            normalized = ''.join(table.get(c, c) for c in normalized)
+            rows = self.youtube_candidates(normalized, audio=True, query_suffix='OST soundtrack')
+            filtered = filtered or getattr(self, '_theme_title_filtered', False)
+        if not rows:
+            raise ThemeMusicError('theme_title_filtered' if filtered else 'theme_no_candidate')
         return rows
 
     def _download_youtube(self, url, destination_stem, settings, *, audio=False):
@@ -1206,14 +1283,19 @@ class MediaManager:
             command += ["--js-runtimes", "node"]
         try:
             result = self.run(command, capture_output=True, timeout=300)
+            check_youtube_refusal(result.stderr)
             made = [p for p in self.media.glob(marker.name + ".*") if p.is_file()]
             valid = next((p for p in made if p.suffix in (".m4a", ".mp4") and
                           (self._valid_audio(p) if audio else self._valid_video(p))), None)
             if result.returncode != 0 or not valid:
+                if audio:
+                    raise ThemeMusicError(theme_failure_reason(result.stderr) if result.returncode else 'theme_format_unavailable')
                 return None
             destination = self.media / (destination_stem + (".m4a" if audio else ".mp4"))
             if shutil.which("ffmpeg"):
                 if not self._ffmpeg_loop(valid, destination, preset, audio=audio, length=40 if audio else LOOP_SECONDS):
+                    if audio:
+                        raise ThemeMusicError('theme_encode_failed')
                     return None
             else:
                 duration = _bmff(valid, audio=audio)["duration"]
@@ -1251,12 +1333,10 @@ class MediaManager:
         if self._own_ytdlp() or not self.locate_ytdlp():
             self.install_ytdlp(True)
         store = self.store_data(appid, "english")
-        candidates = self.youtube_candidates(store.get("name") or name or str(appid), audio=True)
-        if not candidates:
-            raise RuntimeError("no theme-music candidate found")
+        candidates = self.theme_candidates(store.get("name") or name or str(appid))
         made = self._download_youtube(candidates[0]["url"], f"{int(appid)}_theme", settings, audio=True)
         if not made:
-            raise RuntimeError("theme-music download failed")
+            raise ThemeMusicError('theme_download_failed')
         return {"ok": True, "source": "theme", "file": self._relative(made)}
 
     # ---- Steam Background Recording --------------------------------------------------

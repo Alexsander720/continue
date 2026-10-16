@@ -1,0 +1,7 @@
+:root {
+    --chromahonControls__toggle-ON-rail: linear-gradient(to top, var(--chromahonControls__toggle-ON-rail-c1), var(--chromahonControls__toggle-ON-rail-c2), var(--chromahonControls__toggle-ON-rail-c3));
+}
+
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleSwitch_3__OD {
+        border: 3px solid var(--chromahonControls__toggle-ON-rail-c2);
+    }

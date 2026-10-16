@@ -1,0 +1,80 @@
+/* ---
+Chromahon (Input Controls)
+Sliders
+--- */
+
+/* Tick */
+.gamepadslider_SliderNotchTick_Fv1Ht {
+    height: 8px;
+    width: 8px;
+    min-width: 6px;
+    margin-top: -3.5px;
+    z-index: 100;
+    border-radius: 25px;
+    background: var(--chromahonControls__slider-empty);
+}
+
+/* Tick active */
+div .u8QEaEpjqBM8RuPzRLjMy.j418S4TEV2LS3JHn6an4s {
+    background: var(--chromahonControls__slider-fill);
+}
+
+/* Rail */
+.gamepadslider_SliderTrack_Mq25N {
+    background: var(--chromahonControls__slider-empty);
+}
+
+/* Rail filled */
+.gamepadslider_SliderTrack_Mq25N::before {
+    background: var(--chromahonControls__slider-fill);
+}
+
+/* Handle */
+.gamepadslider_SliderHandleContainer_1pQZi {
+    z-index: 150;
+}
+
+.gamepadslider_SliderHandle_2yVKj {
+    background: var(--chromahonControls__slider-handle);
+    transition: transform .05s ease;
+    box-shadow: none;
+}
+
+.gamepaddialog_Field_S-_La.gpfocus .gamepadslider_SliderHandle_2yVKj,
+.gamepaddialog_Field_S-_La.gpfocuswithin .gamepadslider_SliderHandle_2yVKj {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px var(--chromahonControls__slider-hl);
+}
+
+.gamepadslider_SliderNotchContainer_2N-a5 {
+    padding: 0 1px;
+}
+
+/* Selected */
+/* QAM -> soundtracks seekbar */
+.P_NVQ7KUOfqYaa_SwWOpS.gpfocus .gamepadslider_SliderHandle_2yVKj,
+.P_NVQ7KUOfqYaa_SwWOpS.gpfocuswithin .gamepadslider_SliderHandle_2yVKj {
+    box-shadow: 0 0 0 3px var(--chromahonControls__slider-hl);
+}
+
+/* Focused */
+.gamepadslider_SliderControlAndNotches_1Cccx:not(.gamepadslider_Disabled_1lI1N).gpfocus .gamepadslider_SliderHandle_2yVKj {
+    animation: gamepadslider_SliderHandleFocusPop_2lNxL 200ms ease-out;
+    /* this is vanilla */
+}
+
+@keyframes gamepadslider_SliderHandleFocusPop_2lNxL {
+    from {
+        transform: scale(0.6)
+    }
+}
+
+.gamepaddialog_Field_S-_La.gpfocus .gamepadslider_SliderHandle_2yVKj,
+.gamepaddialog_Field_S-_La.gpfocuswithin .gamepadslider_SliderHandle_2yVKj {
+    transform: scale(1.0);
+}
+
+/* CSS Loader Color Picker hotfix */
+.ColorPicker_Container .gamepadslider_SliderTrack_Mq25N::before {
+    background: none;
+}

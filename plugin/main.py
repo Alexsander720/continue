@@ -18,9 +18,9 @@ import ui_i18n
 from hltb import HLTB
 
 DATA = decky.DECKY_PLUGIN_RUNTIME_DIR
-DEFAULTS = {"home_installed_first": True, "home_live": True, "home_music": True, "live_bg": "always", "hub_music": True, "game_bg": {}, "brightness_bar": True,
+DEFAULTS = {"library_tabs": False, "home_installed_first": True, "home_live": True, "home_music": True, "live_bg": "always", "hub_music": True, "game_bg": {}, "brightness_bar": True,
             "hide_launch_notice": True, "music_provider": "continue"}
-STANDALONE_DEFAULTS = {"standalone": True, "preset": "light", "bg_source": "steam", "game_source": {},
+STANDALONE_DEFAULTS = {"library_tabs": False, "standalone": True, "preset": "light", "bg_source": "steam", "game_source": {},
                        "disk_limit_gb": 2, "youtube_consent": False, "recording_enabled": False,
                        "theme_music_consent": False, "home_music": False, "hub_music": False,
                        "home_installed_first": False, "hide_launch_notice": False, "music_provider": "auto"}
@@ -65,6 +65,9 @@ def _appid(value):
 class Plugin:
     async def _main(self):
         os.makedirs(DATA, exist_ok=True)
+        if self._is_standalone():
+            from public_game_assets import seed_game_icons
+            seed_game_icons(os.path.join(self._plugin_dir(), "assets", "game_icons"), DATA)
         self.hltb = HLTB(DATA)
         self._standalone_media = None
         self._standalone_lock = asyncio.Semaphore(1)
@@ -167,7 +170,7 @@ class Plugin:
     def _valid_setting(key, value, standalone):
         if not isinstance(key, str) or key == "standalone":
             return False
-        booleans = {"home_installed_first", "home_live", "home_music", "hub_music", "brightness_bar", "pdb_button", "pdb_tiles", "hide_launch_notice"}
+        booleans = {"library_tabs", "home_installed_first", "home_live", "home_music", "hub_music", "brightness_bar", "pdb_button", "pdb_tiles", "hide_launch_notice"}
         if key in booleans or (standalone and key == "recording_enabled"):
             return type(value) is bool
         if key in {"youtube_consent", "theme_music_consent"}:
@@ -898,3 +901,8 @@ class Plugin:
             except (OSError, ValueError):
                 pass
         return {"ac": bool(ac), "battery": pct}
+
+# Public standalone adapter; owner source and default behavior are unchanged.
+if os.name != "nt":
+    from deck_music_backend import with_music
+    Plugin = with_music(Plugin, DATA)

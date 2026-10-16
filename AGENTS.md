@@ -3,10 +3,21 @@
 This file is written for AI coding agents (Claude Code, Codex, Gemini CLI, …) and for the humans driving them.
 Read it fully before touching anything. The goal: **a new game shows real, proven progress on its Continue? card.**
 
-> Status: the public repository is being assembled. Paths below describe the v1 layout; the gate command
-> becomes available with v1. If something here does not exist yet, stop and say so instead of improvising.
+> Status: The runtime plugin (`plugin/py_modules/ddsaves/`), Windows backend (`pc/`), and contribution tools
+> (`tools/new_game.py`, `tools/run_game_tests.py`, `tools/gate/check_cards.py`) are present in this repository.
+> New game additions use the `games/<slug>/` layout described below. Note that `games/<slug>/` is a contribution
+> sandbox and does not integrate into the runtime plugin automatically; maintainers review and export verified
+> readers into release builds.
 
 ## What you deliver
+
+Start by scaffolding the contribution skeleton:
+
+```bash
+python tools/new_game.py <slug> <appid>
+```
+
+This creates:
 
 ```
 games/<slug>/
@@ -57,9 +68,17 @@ def read(path_or_dir=None) -> dict:
 4. **Encrypted or compressed?** Measure the entropy of the first ~200 KB: below ~6 bits/byte is an open format,
    above ~7.8 is compression or encryption (try zlib / zstd / lz4 / Oodle first).
 
-Then run the gate:
+Run reader unit tests:
 
+```bash
+python tools/run_game_tests.py <slug>
 ```
+
+(Note: this command requires an existing `games/<slug>` directory containing `test_reader.py`; it does not run against legacy readers in `plugin/py_modules/ddsaves/`).
+
+Then run the proof gate:
+
+```bash
 python tools/gate/check_cards.py <slug>
 ```
 
@@ -69,7 +88,7 @@ It runs your reader on every stage and checks mechanically:
 - every word shown on the card exists in the generated tables;
 - no display text is typed into the code.
 
-**A pull request without a passing gate is not reviewed.**
+**A pull request without passing tests and a passing gate is not reviewed.**
 
 ## Hard rules
 

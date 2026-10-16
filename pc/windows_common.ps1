@@ -11,7 +11,9 @@ function Write-ContinueJson([string]$Path, $Value) {
     $temp = "$Path.tmp-$([guid]::NewGuid().ToString('N'))"
     $backup = "$temp.previous"
     $encoded = ($Value | ConvertTo-Json -Depth 12) + "`n"
-    [IO.File]::WriteAllText($temp, $encoded, (New-Object Text.UTF8Encoding $false))
+    $bytes = (New-Object Text.UTF8Encoding $false).GetBytes($encoded)
+    $stream = [IO.File]::Open($temp,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+    try { $stream.Write($bytes,0,$bytes.Length); $stream.Flush($true) } finally { $stream.Dispose() }
     try {
         # Windows PowerShell 5 marshals a bare $null string argument as an empty
         # path. A real temporary backup keeps File.Replace atomic on that host.
@@ -71,6 +73,7 @@ function Initialize-ContinueContext([string]$FixtureProfile, [string]$FixtureSte
         Fixture = $fixture; Profile = $profile; Local = $local; Root = $root
         App = (Join-Path $root 'app'); Data = (Join-Path $root 'data'); Logs = (Join-Path $root 'logs')
         Manifest = (Join-Path $root 'install.json'); FixtureSteam = $FixtureSteam
+        Recovery = (Join-Path $root 'uninstall-recovery.json')
         FixturePython = $FixturePython; StatePath = $statePath; TaskName = 'ContinueBigPicture'
     }
     return $script:ContinueContext
@@ -87,6 +90,122 @@ function Get-ContinueFixtureState {
     }
     if (-not $state.PSObject.Properties['cdp']) { $state | Add-Member -NotePropertyName 'cdp' -NotePropertyValue 'closed' }
     return $state
+}
+
+function Remove-ContinueOwnedDebugFlag($Manifest) {
+    if (-not $Manifest.debug_flag_created -or -not (Test-Path -LiteralPath $Manifest.debug_flag)) { return }
+    [void](Assert-ContinueSafePath $Manifest.debug_flag $Manifest.steam)
+    $flag = Get-Item -LiteralPath $Manifest.debug_flag
+    if ($flag.PSIsContainer -or $flag.Length -ne 0) { Write-Host 'The Steam debug flag was changed after installation and has been preserved.'; return }
+    if ($Manifest.debug_flag_stamp -and $flag.LastWriteTimeUtc.Ticks.ToString() -ne $Manifest.debug_flag_stamp) {
+        Write-Host 'The Steam debug flag was replaced after installation and has been preserved.'; return
+    }
+    if (Test-ContinueSharedDebugConsumer) { Write-Host 'Steam debug flag preserved: active GameHubBigPicture also uses local Steam debugging.'; return }
+    Remove-Item -LiteralPath $Manifest.debug_flag -Force
+}
+
+function Remove-ContinueInstallFlagStage($Journal) {
+    if (-not $Journal.flag_stage) { return }
+    $candidate = Join-Path $Journal.next.steam $Journal.flag_stage
+    [void](Assert-ContinueSafePath $candidate $Journal.next.steam)
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+        $item = Get-Item -LiteralPath $candidate
+        if ($item.Length -eq 0 -and $item.LastWriteTimeUtc.Ticks.ToString() -eq $Journal.next.debug_flag_stamp) {
+            Remove-Item -LiteralPath $candidate -Force
+        }
+    }
+}
+
+function Restore-ContinueInstallTransaction([switch]$FromBootstrap, [switch]$PassThru) {
+    $ctx = $script:ContinueContext
+    $path = Join-Path $ctx.Root 'install-transaction.json'
+    [void](Assert-ContinueSafePath $path $ctx.Root)
+    if (-not (Test-Path -LiteralPath $path)) { return }
+    if ((Get-Item -LiteralPath $path).Length -gt 65536) { throw 'Invalid install transaction.' }
+    $journal = Read-ContinueJson $path
+    if ($journal.schema -ne 1 -or $journal.state -notin @('prepared','committed') -or
+        $journal.stage -notmatch '^app-stage-[a-f0-9]{32}$' -or $journal.backup -notmatch '^app-backup-[a-f0-9]{32}$') { throw 'Invalid install transaction.' }
+    Assert-ContinueManifest $journal.old
+    Assert-ContinueManifest $journal.next
+    if ($journal.state -eq 'committed' -and -not $journal.next) { throw 'Invalid committed install transaction.' }
+    if ($journal.flag_stage -and ($journal.flag_stage -notmatch '^\.continue-debug-[a-f0-9]{32}\.tmp$' -or
+        -not $journal.next -or $journal.next.debug_flag_stamp -notmatch '^\d{15,19}$')) { throw 'Invalid debugging-flag transaction.' }
+    $current = Read-ContinueJson $ctx.Manifest
+    Assert-ContinueManifest $current
+    if ($current -and -not ($journal.old -and $current.install_id -eq $journal.old.install_id) -and
+        -not ($journal.next -and $current.install_id -eq $journal.next.install_id)) { throw 'Install recovery found unrelated ownership; recovery files preserved.' }
+    $task = Get-ContinueTask
+    if ($task -and -not (Test-ContinueOwnedTask $task $journal.old) -and -not (Test-ContinueOwnedTask $task $journal.next)) {
+        throw 'Install recovery found an unrelated task; recovery files preserved.'
+    }
+    $stage = Join-Path $ctx.Root $journal.stage
+    $backup = Join-Path $ctx.Root $journal.backup
+    foreach ($item in @($stage,$backup,$ctx.App)) { [void](Assert-ContinueSafePath $item $ctx.Root) }
+    if ($journal.flag_stage) { [void](Assert-ContinueSafePath (Join-Path $journal.next.steam $journal.flag_stage) $journal.next.steam) }
+    if ((Test-Path -LiteralPath $backup) -and -not $journal.old) { throw 'Install backup has no previous owner; recovery files preserved.' }
+    if ($journal.state -eq 'committed') {
+        if (-not (Test-Path -LiteralPath (Join-Path $ctx.App 'pc\gamehub_bp.py') -PathType Leaf)) { throw 'Committed app is missing; recovery files preserved.' }
+        Remove-ContinuePath $backup
+    } elseif (Test-Path -LiteralPath $backup) {
+        # A prepared transaction never started its replacement service. When
+        # invoked by the stable task, stopping that task would kill the very
+        # recovery process holding this lock before it can restore the app.
+        if (-not $FromBootstrap) {
+            if ($journal.next -and (Test-ContinueOwnedTask $task $journal.next)) { Stop-ContinueService $journal.next; Stop-ContinueTask $journal.next }
+            elseif ($journal.old) { Stop-ContinueService $journal.old; Stop-ContinueTask $journal.old }
+        }
+        Remove-ContinuePath $ctx.App
+        Move-Item -LiteralPath $backup -Destination $ctx.App
+        Write-ContinueJson $ctx.Manifest $journal.old
+        Register-ContinueTask $journal.old
+    } elseif ($journal.old) {
+        if (-not (Test-Path -LiteralPath $ctx.App)) { throw 'Previous app and backup are both missing; recovery files preserved.' }
+        Write-ContinueJson $ctx.Manifest $journal.old
+    } else {
+        # First install can be interrupted after task registration. Retain an
+        # already complete, owned app so the stable task can finish starting it.
+        $current = Read-ContinueJson $ctx.Manifest
+        Assert-ContinueManifest $current
+        if (-not $current -or -not (Test-Path -LiteralPath (Join-Path $ctx.App 'pc\gamehub_bp.py'))) {
+            # Persist removal authority before clearing the sole install journal.
+            if ($journal.next) {
+                Write-ContinueJson $ctx.Recovery (New-ContinueRecovery $journal.next 'retained' $null)
+                Remove-ContinueOwnedDebugFlag $journal.next
+            }
+            Remove-ContinuePath $ctx.App
+        }
+    }
+    if ($journal.state -eq 'prepared' -and $journal.old -and $journal.flag_stage) {
+        # A repair can recreate a missing flag. Its new identity must not be
+        # left behind with the restored previous manifest's older receipt.
+        Remove-ContinueOwnedDebugFlag $journal.next
+    }
+    Remove-ContinueInstallFlagStage $journal
+    Remove-ContinuePath $stage
+    Remove-ContinuePath $path
+    if ($PassThru) { return $journal }
+}
+
+function Install-ContinueBootstrap([string]$SourceRoot) {
+    foreach ($pair in @(@('public_bootstrap.py','bootstrap.py'), @('recover-install.ps1','recover-install.ps1'), @('windows_common.ps1','windows_common.ps1'), @('public_update.py','update-helper.py'))) {
+        $source = Join-Path $SourceRoot ('pc\' + $pair[0])
+        if (-not (Test-Path -LiteralPath $source)) {
+            if ($script:ContinueContext.Fixture) { continue }
+            throw "Missing recovery file: $($pair[0])"
+        }
+        $target = Join-Path $script:ContinueContext.Root $pair[1]
+        [void](Assert-ContinueSafePath $target $script:ContinueContext.Root)
+        $temp = $target + '.new'
+        [void](Assert-ContinueSafePath $temp $script:ContinueContext.Root)
+        [IO.File]::WriteAllBytes($temp,[IO.File]::ReadAllBytes($source))
+        if ([IO.File]::Exists($target)) {
+            $previous = $temp + '.previous'
+            [void](Assert-ContinueSafePath $previous $script:ContinueContext.Root)
+            [IO.File]::Replace($temp,$target,$previous)
+            [IO.File]::Delete($previous)
+        }
+        else { [IO.File]::Move($temp,$target) }
+    }
 }
 
 function Add-ContinueFixtureOperation([string]$Operation, $Extra = @{}) {
@@ -120,7 +239,11 @@ function Confirm-ContinueChoice([string]$Message, [bool]$DefaultYes, [switch]$No
     return $answer.Trim().ToLowerInvariant() -in @('y', 'yes')
 }
 
-function Get-ContinueArguments([string]$App) { return '"' + (Join-Path $App 'pc\gamehub_bp.py') + '" run' }
+function Get-ContinueArguments([string]$App) {
+    $bootstrap = Join-Path ([IO.Path]::GetDirectoryName($App)) 'bootstrap.py'
+    if (Test-Path -LiteralPath $bootstrap -PathType Leaf) { return '"' + $bootstrap + '" run' }
+    return '"' + (Join-Path $App 'pc\gamehub_bp.py') + '" run'
+}
 
 function Get-ContinueTask {
     if ($script:ContinueContext.Fixture) { return (Get-ContinueFixtureState).task }
@@ -130,12 +253,13 @@ function Get-ContinueTask {
 function Test-ContinueOwnedTask($Task, $Manifest) {
     if (-not $Task -or -not $Manifest) { return $false }
     $expected = Get-ContinueArguments $script:ContinueContext.App
+    $legacy = '"' + (Join-Path $script:ContinueContext.App 'pc\gamehub_bp.py') + '" run'
     if ($script:ContinueContext.Fixture) {
-        return ($Task.name -eq $script:ContinueContext.TaskName -and $Task.execute -eq $Manifest.pythonw -and $Task.arguments -eq $expected)
+        return ($Task.name -eq $script:ContinueContext.TaskName -and $Task.execute -eq $Manifest.pythonw -and $Task.arguments -in @($expected,$legacy))
     }
     $actions = @($Task.Actions)
     return ($Task.TaskName -eq $script:ContinueContext.TaskName -and $actions.Count -eq 1 -and
-        $actions[0].Execute -eq $Manifest.pythonw -and $actions[0].Arguments -eq $expected)
+        $actions[0].Execute -eq $Manifest.pythonw -and $actions[0].Arguments -in @($expected,$legacy))
 }
 
 function Assert-ContinueManifest($Manifest) {
@@ -143,6 +267,15 @@ function Assert-ContinueManifest($Manifest) {
     if ($Manifest.root -ne $script:ContinueContext.Root -or $Manifest.app -ne $script:ContinueContext.App -or
         $Manifest.task_name -ne $script:ContinueContext.TaskName) { throw 'Install manifest contains unexpected paths or task name.' }
     [void](Assert-ContinueSafePath $Manifest.app $script:ContinueContext.Root)
+    if ($Manifest.install_id -notmatch '^[a-fA-F0-9]{32}$' -or $Manifest.schema -ne 1 -or
+        $Manifest.data -ne $script:ContinueContext.Data -or $Manifest.logs -ne $script:ContinueContext.Logs -or
+        $Manifest.python_created -isnot [bool] -or $Manifest.debug_flag_created -isnot [bool]) {
+        throw 'Install manifest does not prove ownership of this profile.'
+    }
+    if ($Manifest.debug_flag_stamp -and $Manifest.debug_flag_stamp -notmatch '^\d{15,19}$') { throw 'Invalid debugging-flag receipt.' }
+    if ($Manifest.python_created -and [IO.Path]::GetDirectoryName($Manifest.pythonw) -ne (Join-Path $script:ContinueContext.Root 'python')) {
+        throw 'Owned Python must be inside this Continue profile.'
+    }
     $steam = Get-ContinueSteamPath
     if ($Manifest.steam -ne $steam -or $Manifest.debug_flag -ne (Join-Path $steam '.cef-enable-remote-debugging')) {
         throw 'Steam location differs from the recorded installation. Restore the manifest before repairing or removing.'
@@ -208,7 +341,15 @@ function Assert-ContinueRuntimeHash([string]$Archive, [string]$Expected) {
     if (-not (Test-Path -LiteralPath $Archive -PathType Leaf) -or $Expected -notmatch '^[a-fA-F0-9]{64}$') {
         throw 'Python download failed SHA-256 verification. The downloaded archive will not be used.'
     }
-    $actual = (Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant()
+    $sha = [Security.Cryptography.SHA256]::Create()
+    $stream = [IO.File]::OpenRead($Archive)
+    try {
+        $hashBytes = $sha.ComputeHash($stream)
+        $actual = ([BitConverter]::ToString($hashBytes)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        $stream.Dispose()
+        $sha.Dispose()
+    }
     if ($actual -ne $Expected.ToLowerInvariant()) {
         throw 'Python download failed SHA-256 verification. The downloaded archive will not be used; run setup.cmd again.'
     }
@@ -324,7 +465,8 @@ function Get-ContinueService($Manifest) {
     }
     $exe = [regex]::Escape($Manifest.pythonw)
     $entry = [regex]::Escape((Join-Path $script:ContinueContext.App 'pc\gamehub_bp.py'))
-    $pattern = '^\s*(?:"' + $exe + '"|' + $exe + ')\s+(?:"' + $entry + '"|' + $entry + ')\s+run\s*$'
+    $bootstrap = [regex]::Escape((Join-Path $script:ContinueContext.Root 'bootstrap.py'))
+    $pattern = '^\s*(?:"' + $exe + '"|' + $exe + ')\s+(?:"' + $entry + '"|' + $entry + '|"' + $bootstrap + '"|' + $bootstrap + ')\s+run\s*$'
     return @(Get-CimInstance -ClassName Win32_Process -Filter "Name='pythonw.exe'" -ErrorAction SilentlyContinue |
         Where-Object { $_.ExecutablePath -eq $Manifest.pythonw -and $_.CommandLine -match $pattern })
 }
@@ -340,9 +482,16 @@ function Stop-ContinueService($Manifest) {
     if (@(Get-ContinueService $Manifest).Count -eq 0) { return }
     $command = '"' + (Join-Path $Manifest.app 'pc\gamehub_bp.py') + '" stop'
     $result = Invoke-ContinueCaptured $Manifest.python_console $command 15
-    if ($result.Code -ne 0) { throw 'Continue did not stop safely. Close only its own task and retry; Steam was not stopped.' }
     $deadline = (Get-Date).AddSeconds(15)
     while (@(Get-ContinueService $Manifest).Count -gt 0 -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 200 }
+    if (@(Get-ContinueService $Manifest).Count -gt 0) {
+        # Network workers can outlive the graceful stop. Task ownership is
+        # checked again before ending exactly this installation's task tree.
+        Write-Host 'Continue network work is still closing; stopping its owned task.'
+        Stop-ContinueTask $Manifest
+        $deadline = (Get-Date).AddSeconds(5)
+        while (@(Get-ContinueService $Manifest).Count -gt 0 -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 200 }
+    }
     if (@(Get-ContinueService $Manifest).Count -gt 0) { throw 'Continue is still running. Installation was left unchanged.' }
 }
 
@@ -365,14 +514,14 @@ function Register-ContinueTask($Manifest) {
             throw 'Fixture task registration failed.'
         }
         $state.task = [pscustomobject]@{ name = $script:ContinueContext.TaskName; execute = $Manifest.pythonw
-            arguments = (Get-ContinueArguments $Manifest.app); working_directory = (Join-Path $Manifest.app 'pc')
+            arguments = (Get-ContinueArguments $Manifest.app); working_directory = $script:ContinueContext.Root
             multiple_instances = 'IgnoreNew'; interval_minutes = 10; at_logon = $true; run_level = 'Limited' }
         Write-ContinueJson $script:ContinueContext.StatePath $state
         Add-ContinueFixtureOperation 'register_task' @{ task_name = $script:ContinueContext.TaskName }
         return
     }
     $user = [Security.Principal.WindowsIdentity]::GetCurrent().Name
-    $action = New-ScheduledTaskAction -Execute $Manifest.pythonw -Argument (Get-ContinueArguments $Manifest.app) -WorkingDirectory (Join-Path $Manifest.app 'pc')
+    $action = New-ScheduledTaskAction -Execute $Manifest.pythonw -Argument (Get-ContinueArguments $Manifest.app) -WorkingDirectory $script:ContinueContext.Root
     $logon = New-ScheduledTaskTrigger -AtLogOn -User $user
     $repeat = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 10)
     $settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
@@ -411,8 +560,99 @@ function Remove-ContinuePath([string]$Path) {
         foreach ($entry in @(Get-ChildItem -LiteralPath $Path -Force -Recurse -ErrorAction Stop)) {
             [void](Assert-ContinueSafePath $entry.FullName $script:ContinueContext.Root)
         }
+        if ($script:ContinueContext.Fixture) {
+            $state = Get-ContinueFixtureState
+            if ($state.PSObject.Properties['fail_remove'] -and $state.fail_remove -eq $Path) {
+                throw 'Fixture cleanup failure; recovery metadata was retained.'
+            }
+        }
         Remove-Item -LiteralPath $Path -Recurse -Force
     }
+}
+
+# The updater uses a nonblocking lock on byte zero of update.lock. Use the same
+# Windows byte-range lock; a second lock name would not serialize the lifecycle.
+function Enter-ContinueLifecycleLock {
+    [void](Assert-ContinueSafePath $script:ContinueContext.Root $script:ContinueContext.Local)
+    [void][IO.Directory]::CreateDirectory($script:ContinueContext.Root)
+    $path = Join-Path $script:ContinueContext.Root 'update.lock'
+    [void](Assert-ContinueSafePath $path $script:ContinueContext.Root)
+    $stream = $null
+    try {
+        $stream = [IO.File]::Open($path, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::ReadWrite)
+        $stream.Lock(0, 1)
+        if ($stream.Length -eq 0) { $stream.WriteByte(48); $stream.Flush() }
+        return $stream
+    } catch {
+        if ($stream) { $stream.Dispose() }
+        throw 'Continue lifecycle lock is busy or unsafe. Wait for the update/installation to finish, then retry. No task or application files were changed.'
+    }
+}
+
+function Exit-ContinueLifecycleLock($Stream) {
+    if ($Stream) { try { $Stream.Unlock(0, 1) } finally { $Stream.Dispose() } }
+}
+
+function Read-ContinueRecovery {
+    $path = $script:ContinueContext.Recovery
+    [void](Assert-ContinueSafePath $path $script:ContinueContext.Root)
+    if (-not (Test-Path -LiteralPath $path)) { return $null }
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path).Length -gt 65536) { throw 'Invalid Continue recovery metadata.' }
+    $recovery = Read-ContinueJson $path
+    if (-not $recovery -or $recovery.schema -ne 1 -or $recovery.state -notin @('cleaning', 'retained', 'pending')) { throw 'Invalid Continue recovery metadata.' }
+    Assert-ContinueManifest $recovery.owner
+    if (-not $recovery.owner) { throw 'Recovery metadata does not prove profile ownership.' }
+    return $recovery
+}
+
+function New-ContinueRecovery($Manifest, [string]$State, $StartupMovie = $null) {
+    # Only ownership and recovery values survive purge, never arbitrary settings,
+    # secrets, media, task XML, or an executable recovery command.
+    $owner = [ordered]@{}
+    foreach ($key in @('schema', 'install_id', 'version', 'root', 'app', 'data', 'logs', 'steam', 'debug_flag',
+        'debug_flag_created', 'debug_flag_stamp', 'task_name', 'pythonw', 'python_console', 'python_created')) { $owner[$key] = $Manifest.$key }
+    return [pscustomobject]@{ schema = 1; state = $State; owner = [pscustomobject]$owner; startup_movie = $StartupMovie }
+}
+
+function Get-ContinueStartupRecovery($PreviousRecovery) {
+    $path = Join-Path $script:ContinueContext.Root 'startup_movie.json'
+    [void](Assert-ContinueSafePath $path $script:ContinueContext.Root)
+    if (-not (Test-Path -LiteralPath $path)) {
+        return $(if ($PreviousRecovery) { $PreviousRecovery.startup_movie } else { $null })
+    }
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path).Length -gt 4096) { throw 'Invalid startup-movie recovery record; nothing was purged.' }
+    $record = Read-ContinueJson $path
+    if ($record.created -isnot [bool] -or $record.sha256 -notmatch '^[a-fA-F0-9]{64}$') { throw 'Invalid startup-movie recovery record; nothing was purged.' }
+    $settingsPath = Join-Path $script:ContinueContext.Root 'settings.json'
+    [void](Assert-ContinueSafePath $settingsPath $script:ContinueContext.Root)
+    $settings = Read-ContinueJson $settingsPath
+    $prev = if ($settings -and $settings.PSObject.Properties['startup_movie_prev']) { $settings.startup_movie_prev }
+        elseif ($PreviousRecovery -and $PreviousRecovery.startup_movie) { $PreviousRecovery.startup_movie.previous } else { $null }
+    if ($prev -and ($prev.id -isnot [string] -or $prev.id -notmatch '^\d{1,20}$' -or $prev.path -isnot [string] -or
+        $prev.path.Length -gt 2048 -or $prev.path -match '[\x00-\x1f]' -or $prev.shuffle -isnot [bool])) { throw 'Invalid previous startup-movie choice; settings were preserved for manual recovery.' }
+    $cleanPrevious = if ($prev) { [pscustomobject]@{ id = $prev.id; path = $prev.path; shuffle = $prev.shuffle } } else { $null }
+    return [pscustomobject]@{ previous = $cleanPrevious; created = $record.created; sha256 = $record.sha256 }
+}
+
+function Test-ContinueSharedDebugConsumer {
+    if ($script:ContinueContext.Fixture) {
+        $state = Get-ContinueFixtureState
+        if (-not $state.PSObject.Properties['gamehub_task']) { return $false }
+        $task = $state.gamehub_task
+        $name = $task.name; $status = $task.state; $execute = $task.execute; $arguments = $task.arguments
+    } else {
+        $task = Get-ScheduledTask -TaskName 'GameHubBigPicture' -TaskPath '\' -ErrorAction SilentlyContinue
+        if (-not $task -or @($task.Actions).Count -ne 1) { return $false }
+        $name = $task.TaskName; $status = [string]$task.State; $execute = $task.Actions[0].Execute; $arguments = $task.Actions[0].Arguments
+    }
+    # Inspect only the known consumer; never stop, launch, or rewrite it. The
+    # executable and script must still exist, with an exact service argument.
+    if ($name -ne 'GameHubBigPicture' -or $status -ne 'Running' -or
+        [IO.Path]::GetFileName($execute) -ne 'pythonw.exe' -or -not (Test-Path -LiteralPath $execute -PathType Leaf)) { return $false }
+    if ($arguments -notmatch '^"([^"\r\n]+[\\/]gamehub_bp\.py)" run$') { return $false }
+    $entry = $Matches[1]
+    return ([IO.Path]::IsPathRooted($entry) -and (Test-Path -LiteralPath $entry -PathType Leaf) -and
+        -not $entry.StartsWith($script:ContinueContext.Root + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase))
 }
 
 function Copy-ContinueApplication([string]$Source, [string]$Destination) {

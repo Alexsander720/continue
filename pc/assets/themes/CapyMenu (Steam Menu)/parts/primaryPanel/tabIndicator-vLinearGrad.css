@@ -1,0 +1,19 @@
+/* ---
+Chromahon (Steam Menu)
+
+Part: primaryPanel-tabIndicator
+Flavor: V-Linear Grad
+Dependencies (see theme.json):
+    Anim_vLinearGrad.css
+--- */
+
+:root {
+    --chromahonSM__primaryPanel-tabIndicator: linear-gradient(
+        to bottom,
+        var(--chromahonSM__primaryPanel-tabIndicator-c1),
+        var(--chromahonSM__primaryPanel-tabIndicator-c2),
+        var(--chromahonSM__primaryPanel-tabIndicator-c3)
+    );
+
+    --chromahonSM__Anim_primaryPanel-tabIndicator: chromahonSM__Anim_vLinearGrad 12s infinite ease-in-out alternate;
+}

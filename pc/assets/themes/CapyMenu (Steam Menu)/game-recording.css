@@ -1,0 +1,29 @@
+/* ---
+Chromahon (Steam Menu)
+Game Recording Page
+--- */
+
+/* Contents */
+._1rBjwru6vKnQD7tfRGRa5c ._3ESlaOMKmQxjHr9E7NDNq2 {
+    color: var(--chromahonSM__tertiaryPanel-fg);
+}
+
+/* Separator */
+._3uxju288OAPaHnHl8ViA-P {
+    display: none;
+}
+
+/* Controller Glyphs */
+._2-B4w1h_qnx1Du50bLkIwp {
+    mix-blend-mode: overlay;
+}
+
+/* Currently recording section */
+._1rBjwru6vKnQD7tfRGRa5c ._3ESlaOMKmQxjHr9E7NDNq2 ._2QlX6QNKs-aDF1dM9r8Ag7 {
+    font-weight: bold;
+    font-style: italic;
+
+    & svg {
+        display: none;
+    }
+}

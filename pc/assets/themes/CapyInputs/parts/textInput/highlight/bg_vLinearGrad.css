@@ -1,0 +1,12 @@
+:root {
+    --chromahonControls__textInput-bg-hl:
+        linear-gradient(to top,
+        var(--chromahonControls__textInput-bg-hl-c1),
+        var(--chromahonControls__textInput-bg-hl-c2),
+        var(--chromahonControls__textInput-bg-hl-c3));
+}
+
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus,
+._3ZR32BdxJUNwAA6Fu6n00p.gpfocus:hover {
+    background-size: 100% 150%;
+}

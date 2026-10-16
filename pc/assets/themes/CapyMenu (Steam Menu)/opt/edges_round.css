@@ -1,0 +1,77 @@
+/* Primary Panel */
+._23IDiI-F_FxXotrgpY71r8 {
+    padding: .5em 0;
+    border-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+    align-items: center;
+}
+
+/* App Icon */
+.BasicUI ._2E7G8grj_-tgxXbTXs1t2E {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+    overflow: hidden;
+}
+
+/* Primary Panel > Item */
+[class="_1BbM8Qq8OL5N8gL4PYH397"] {
+    border-radius: var(--chromahonSM__Opt_toggleRound_strong-radius);
+    width: calc(100% - 1em);
+}
+
+/* Secondary Panel */
+._12NNtyso3nbzJGi2XxHzcN {
+    border-top-left-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+    border-bottom-left-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+}
+
+/* Secondary Panel > Fix item placement when panel is collapsed */
+[class~="_23IDiI-F_FxXotrgpY71r8"]:not([class~="_1ABsh9UL8DKM0rWJXep1tc"]) > * {
+    transform: translateX(0) !important;
+}
+
+/* Secondary Panel > Item Container */
+.CaWZCcKv4eSVRs2Y8lacQ {
+    padding: 0 18px;
+}
+
+/* Secondary Panel > Item */
+._2b6L36XnXUqFHHkGE4_2mv {
+    border-radius: var(--chromahonSM__Opt_toggleRound_moderate-radius);
+    overflow: hidden;
+}
+
+/* Secondary Panel > Active Tab Indicator */
+._2b6L36XnXUqFHHkGE4_2mv ._3Il1BD4p9lccpjISQKhR1X {
+    left: -3px;
+}
+
+/* Tertiary Panel > Achievements > Tab List */
+._3eEbSktrstBdLk0dVpnKVI {
+    border-radius: var(--chromahonSM__Opt_toggleRound_hard-radius);
+}
+
+/* Tertiary Panel > Achievements > Progress Bar Rail */
+._1-nHjRywUoX7Mpyc6JOPaQ {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+}
+
+/* Tertiary Panel > Achievements > Progress Bar Fill */
+._1-nHjRywUoX7Mpyc6JOPaQ ._2_0JonK7eKEvh8IoOvq0-B {
+    border-radius: var(--chromahonSM__Opt_toggleRound_small-radius);
+}
+
+/* Tertiary Panel > Notes > Item List */
+.gNwozyl1BAcDyyhUKvx1Y {
+    padding: 12px 12px;
+}
+
+/* Tertiary Panel > Notes > Item */
+._4niDTAfIpKQoRx-CR_3K,
+._2mL2HfT5AkDXRi1YBnRWKa._1ELdDY5kb5jxjXe-FpWBo5 {
+    border-radius: var(--chromahonSM__Opt_toggleRound_moderate-radius);
+    clip-path: none;
+}
+
+/* Tertiary Panel > Notes > Textarea */
+._1Ve4VFO2EEkeNZdel_Asky {
+    border-radius: var(--chromahonSM__Opt_toggleRound_moderate-radius);
+}

@@ -21,7 +21,7 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parent)]
 from _card import Facts, empty, finish
-from ddsaves._common import documents_dirs, newest, proton_user, select, steam_userdata, ui
+from ddsaves._common import documents_dirs, newest, proton_user, read_bytes, select, steam_userdata, ui
 
 APPID = 108710
 DUMPS = HERE / "data" / "alan_wake"
@@ -101,6 +101,13 @@ def _named_ids(raw: bytes, name: str) -> Optional[bytes]:
 
 
 def read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return {**empty(f"Сохранение Alan Wake не прочитано: {e}"), "proven": [], "fact_sources": {}}
+
+
+def _read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
     target = find(path_or_dir)
     if target is None:
         return {**empty("Сохранение Alan Wake не найдено"), "proven": [], "fact_sources": {}}
@@ -120,7 +127,7 @@ def read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
     level_id = None
     diff_id: Optional[int] = None
     if aws_file and aws_file.exists():
-        raw = aws_file.read_bytes()
+        raw = read_bytes(aws_file)
         if len(raw) >= 12:
             slen = struct.unpack("<I", raw[8:12])[0]
             if 0 < slen < 100 and 12 + slen <= len(raw):
@@ -133,7 +140,7 @@ def read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
     collectibles: Dict[str, int] = {}
 
     if config_file and config_file.exists():
-        craw = config_file.read_bytes()
+        craw = read_bytes(config_file)
         for k in [
             "THERMOS", "CHESTS", "CANPYRAMIDS", "TVSHOWS", "RADIOSHOWS",
             "SIGNS", "DLC1_ALARMCLOCKS", "DLC1_CARDBOARDCUTOUTS", "DLC2_NIGHTSPRINGSVIDEOGAMES"

@@ -15,12 +15,15 @@ def targets():
 
 def call(sub, method, params=None, timeout=20):
     target = next(t for t in targets() if sub.lower() in t.get('title', '').lower())
-    with websocket.create_connection(target['webSocketDebuggerUrl'], timeout=timeout, suppress_origin=True) as ws:
+    ws = websocket.create_connection(target['webSocketDebuggerUrl'], timeout=timeout, suppress_origin=True)
+    try:
         ws.send(json.dumps({'id': 1, 'method': method, 'params': params or {}}))
         while True:
             result = json.loads(ws.recv())
             if result.get('id') == 1:
                 return result
+    finally:
+        ws.close()
 
 
 if __name__ == '__main__':

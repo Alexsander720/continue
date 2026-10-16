@@ -1,0 +1,93 @@
+/* ---
+Chromahon (Input Controls)
+Toggle Switches
+--- */
+
+.gamepaddialog_ToggleRail_2JtC3::before {
+    background: none;
+}
+
+/* Selected */
+.gamepaddialog_Toggle_24G4g.gpfocus:after {
+    background: none;
+    /* disables the default cursor outline */
+}
+
+/*
+the following is a "redesign" of toggles' behavior,
+but for that redesign to completely work, e.g. when toggles are contained within a row as seen in Settings > Notifications, we need to separate states using new selectors
+*/
+
+/* -- Case 1: Row is selected -- */
+/* -- Note: ON toggle = extra class .gamepaddialog_On_3ld7T -- */
+
+    /* Unselected toggle, OFF */
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g:not(.gamepaddialog_Disabled_1pmyx) .gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-OFF-rail);
+        border: 2px solid var(--chromahonControls__toggle-OFF-rail);
+    }
+
+    /* Selected toggle, OFF */
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx) .gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-OFF-rail);
+        border: 2px solid var(--chromahonControls__toggle-OFF-rail);
+    }
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx) .gamepaddialog_ToggleSwitch_3__OD {
+        transform: scale(0.8) translateX(0px) !important;
+    }
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx) .gamepaddialog_ToggleSwitch_3__OD {
+        border: solid 3px var(--chromahonControls__toggle-OFF-rail);
+    }
+
+    /* Unselected toggle, ON */
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-ON-rail);
+        border: none;
+    }
+
+    /* Selected toggle, ON */
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-ON-rail);
+        border: none;
+    }
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleSwitch_3__OD {
+        transform: scale(0.8) translateX(20px) !important;
+    }
+    .gamepaddialog_Field_S-_La.gpfocuswithin .gamepaddialog_Toggle_24G4g.gpfocus:not(.gamepaddialog_Disabled_1pmyx).gamepaddialog_On_3ld7T .gamepaddialog_ToggleSwitch_3__OD {
+        border: 3px solid var(--chromahonControls__toggle-ON-rail);
+    }
+
+/* -- Case 2: Row is not selected -- */
+
+    /* OFF */
+    .gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-OFF-rail);
+        border: 2px solid var(--chromahonControls__toggle-OFF-rail);
+        transform: scale(0.8);
+    }
+    .gamepaddialog_ToggleSwitch_3__OD {
+        background: var(--chromahonControls__toggle-OFF-handle);
+        box-shadow: none;
+        transform: scale(0.8) translateX(0px) !important;
+    }
+
+    /* ON */
+    .gamepaddialog_On_3ld7T>.gamepaddialog_ToggleRail_2JtC3 {
+        background: var(--chromahonControls__toggle-ON-rail);
+        border: none;
+        transform: scale(1);
+    }
+    .gamepaddialog_On_3ld7T>.gamepaddialog_ToggleSwitch_3__OD {
+        background: var(--chromahonControls__toggle-ON-handle);
+        transform: scale(0.8) translateX(20px) !important;
+    }
+
+/* Disabled */
+.gamepaddialog_Toggle_24G4g.gamepaddialog_Disabled_1pmyx .gamepaddialog_ToggleRail_2JtC3 {
+    background: var(--chromahonControls__toggle-OFF-rail);
+    border: 2px solid var(--chromahonControls__toggle-OFF-rail);
+    opacity: .8;
+}
+.gamepaddialog_Toggle_24G4g.gamepaddialog_Disabled_1pmyx .gamepaddialog_ToggleSwitch_3__OD {
+    background: var(--chromahonControls__toggle-OFF-rail);
+}

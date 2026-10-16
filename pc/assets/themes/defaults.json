@@ -1,0 +1,467 @@
+{
+  "CapyMenu (Steam Menu)": {
+    "active": true,
+    "➤ USAGE NOTES": "_",
+    "Primary Panel = Home, Library, etc.": "_",
+    "Secondary Panel = Resume game, Controller settings, etc. (In Game Only)": "_",
+    "Tertiary Panel = Paged content (In Game Only)": "_",
+    "➤ Global Settings": "_",
+    "Edges": "Semi-Round",
+    "Item Focus Grow Anim": "No",
+    "Active Tab Indicator Type": "None",
+    "➤ Primary Panel": "_",
+    "Primary Panel > Background": {
+      "value": "Halos",
+      "components": {
+        "Solid Color": "#0f0f0f",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb",
+        "Radial Grad 1": "#eb506f",
+        "Radial Grad 2": "#50eb79",
+        "Halo 1": "#171717",
+        "Halo 2": "#1f1f1f",
+        "Halo 3": "#171717",
+        "Halo 4": "#121212",
+        "Halo 5": "#141414",
+        "Stripe 1": "#eb506f",
+        "Stripe 2": "#50eb79",
+        "Stripe 3": "#50baeb",
+        "Image Picker": ""
+      }
+    },
+    "Primary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": "No",
+    "Primary Panel > Collapse Bg": "No",
+    "Primary Panel > Item Label": {
+      "value": "_",
+      "components": {
+        "Color": "#f0f0f0"
+      }
+    },
+    "Primary Panel > Item Icon": {
+      "value": "Solid Color",
+      "components": {
+        "Color": "#f0f0f0"
+      }
+    },
+    "Primary Panel > Item Focus Background": {
+      "value": "Solid Colors",
+      "components": {
+        "Color 1": "#0f0f0f",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50eb79",
+        "H-Linear Grad 3": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "Halo 1": "#eb506f",
+        "Halo 2": "#50eb79",
+        "Halo 3": "#50baeb",
+        "Halo 4": "#dff261",
+        "Halo 5": "#b161f2",
+        "Stripe 1": "#eb506f",
+        "Stripe 2": "#50eb79",
+        "Stripe 3": "#50baeb"
+      }
+    },
+    "Primary Panel > Item Focus Bg Anim (Not on Stripes)": "No",
+    "Primary Panel > Item Focus Label": {
+      "value": "_",
+      "components": {
+        "Color": "#f5f5f5"
+      }
+    },
+    "Primary Panel > Item Focus Icon": {
+      "value": "_",
+      "components": {
+        "Color": "#f5f5f5"
+      }
+    },
+    "Primary Panel > Item Focus Underline": {
+      "value": "H-Linear Grad",
+      "components": {
+        "Color 1": "#d1d1d1",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "H-Linear Grad 1": "#40dce7",
+        "H-Linear Grad 2": "#ffe666",
+        "H-Linear Grad 3": "#ca1c67"
+      }
+    },
+    "Primary Panel > Item Focus Underline Anim": "Yes",
+    "Primary Panel > Active Tab Indicator": {
+      "value": "Solid Colors",
+      "components": {
+        "Color 1": "#d1d1d1",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb"
+      }
+    },
+    "Primary Panel > Active Tab Indicator Anim": "No",
+    "➤ Secondary Panel": "_",
+    "Secondary Panel > Background": {
+      "value": "Halos",
+      "components": {
+        "Solid Color": "#0f0f0f",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb",
+        "Radial Grad 1": "#eb506f",
+        "Radial Grad 2": "#50eb79",
+        "Halo 1": "#80fff0",
+        "Halo 2": "#fdffa3",
+        "Halo 3": "#ec51a3",
+        "Halo 4": "#fffaad",
+        "Halo 5": "#000000",
+        "Stripe 1": "#eb506f",
+        "Stripe 2": "#50eb79",
+        "Stripe 3": "#50baeb",
+        "Image Picker": ""
+      }
+    },
+    "Secondary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": "No",
+    "Secondary Panel > Item Label": {
+      "value": "_",
+      "components": {
+        "Color": "#202020"
+      }
+    },
+    "Secondary Panel > Item Focus Background": {
+      "value": "Solid Colors",
+      "components": {
+        "Color 1": "#121212",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50eb79",
+        "H-Linear Grad 3": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "Halo 1": "#eb506f",
+        "Halo 2": "#50eb79",
+        "Halo 3": "#50baeb",
+        "Halo 4": "#dff261",
+        "Halo 5": "#b161f2",
+        "Stripe 1": "#eb506f",
+        "Stripe 2": "#50eb79",
+        "Stripe 3": "#50baeb"
+      }
+    },
+    "Secondary Panel > Item Focus Bg Anim (Not on Stripes)": "No",
+    "Secondary Panel > Item Focus Label": {
+      "value": "_",
+      "components": {
+        "Color": "#f5f5f5"
+      }
+    },
+    "Secondary Panel > Item Focus Underline": {
+      "value": "None",
+      "components": {
+        "Color 1": "#d1d1d1",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50eb79",
+        "H-Linear Grad 3": "#50baeb"
+      }
+    },
+    "Secondary Panel > Item Focus Underline Anim": "No",
+    "Secondary Panel > Active Tab Indicator": {
+      "value": "V-Linear Grad",
+      "components": {
+        "Color 1": "#d1d1d1",
+        "Color 2 (Anim Only)": "#eb506f",
+        "Color 3 (Anim Only)": "#50eb79",
+        "Color 4 (Anim Only)": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb"
+      }
+    },
+    "Secondary Panel > Active Tab Indicator Anim": "No",
+    "➤ Tertiary Panel": "_",
+    "Tertiary Panel > Background": {
+      "value": "Solid Color",
+      "components": {
+        "Solid Color": "#121212",
+        "H-Linear Grad 1": "#eb506f",
+        "H-Linear Grad 2": "#50baeb",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb",
+        "Radial Grad 1": "#eb506f",
+        "Radial Grad 2": "#50eb79",
+        "Halo 1": "#eb506f",
+        "Halo 2": "#50eb79",
+        "Halo 3": "#50baeb",
+        "Halo 4": "#dff261",
+        "Halo 5": "#b161f2",
+        "Stripe 1": "#eb506f",
+        "Stripe 2": "#50eb79",
+        "Stripe 3": "#50baeb",
+        "Image Picker": ""
+      }
+    },
+    "Tertiary Panel > Bg Anim (Not on Solid Color, Stripes, IMG)": "No",
+    "Tertiary Panel > Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#e3e3e3"
+      }
+    }
+  },
+  "Clean Gameview": {
+    "active": false,
+    "Play Bar Style": "Transparent",
+    "Alignment": "Zoom-Center",
+    "Show Steam Cloud": "No",
+    "Ignore Footer": "Yes",
+    "Lock Logo": "Yes"
+  },
+  "No Home Edge Fade": {
+    "active": false
+  },
+  "Round": {
+    "active": true,
+    "Intensity": "10px",
+    "Outlines": "Round"
+  },
+  "Switch Like Home": {
+    "active": true,
+    "No Friends": "Yes",
+    "Lift Hero": "0"
+  },
+  "CapyInputs": {
+    "active": true,
+    "Light Scheme Adjustments": "Apply to both menus",
+    "Gradient Animations (Limited to Toggles & Sliders)": "Disabled",
+    "➤ Quick Access Menu": "_",
+    "QAM > Non-Round Toggles": "No",
+    "QAM > Toggle Handle Animation": "Yes",
+    "QAM > Toggle Rail 'Enabled'": {
+      "value": "H-Linear Grad",
+      "components": {
+        "Color": "#50eb79",
+        "H-Linear Grad 1": "#ccdb76",
+        "H-Linear Grad 2": "#76dbda",
+        "H-Linear Grad 3": "#db7689",
+        "V-Linear Grad 1": "#eb506f",
+        "V-Linear Grad 2": "#50eb79",
+        "V-Linear Grad 3": "#50baeb"
+      }
+    },
+    "QAM > Toggle Handle 'Enabled'": {
+      "value": "_",
+      "components": {
+        "Color": "#fff"
+      }
+    },
+    "QAM > Toggle Rail 'Disabled'": {
+      "value": "_",
+      "components": {
+        "Color": "#292929"
+      }
+    },
+    "QAM > Toggle Handle 'Disabled'": {
+      "value": "_",
+      "components": {
+        "Color": "#363636"
+      }
+    },
+    "QAM > Non-Round Sliders": "No",
+    "QAM > Slider Fill": {
+      "value": "Gradient",
+      "components": {
+        "Color": "#50eb79",
+        "Gradient Color 1": "#ccdb76",
+        "Gradient Color 2": "#76dbda",
+        "Gradient Color 3": "#db7689"
+      }
+    },
+    "QAM > Slider Empty": {
+      "value": "_",
+      "components": {
+        "Color": "#ffffff4D"
+      }
+    },
+    "QAM > Slider Handle": {
+      "value": "_",
+      "components": {
+        "Color": "#fff"
+      }
+    },
+    "QAM > Slider Highlight": {
+      "value": "_",
+      "components": {
+        "Color": "#1C1C1C"
+      }
+    },
+    "QAM > Button Decoration": "Underline",
+    "QAM > Button Background": {
+      "value": "Solid Color",
+      "components": {
+        "Color": "#161616",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#14af90",
+        "Radial Grad 2": "#af1486",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514",
+        "Cutoff 1": "#14af90",
+        "Cutoff 2": "#af1486",
+        "Cutoff 3": "#af4514"
+      }
+    },
+    "QAM > Button Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#ccc"
+      }
+    },
+    "QAM > Button Highlight Background": {
+      "value": "Solid Color",
+      "components": {
+        "Color": "#d6d6d6",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#14af90",
+        "Radial Grad 2": "#af1486",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514",
+        "Cutoff 1": "#14af90",
+        "Cutoff 2": "#af1486",
+        "Cutoff 3": "#af4514"
+      }
+    },
+    "QAM > Button Highlight Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#121212"
+      }
+    },
+    "➤ Steam Menu": "_",
+    "Steam Menu > Button Decoration": "None",
+    "Steam Menu > Button Background": {
+      "value": "Solid Color",
+      "components": {
+        "Color": "#0f0f0f",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#14af90",
+        "Radial Grad 2": "#af1486",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514",
+        "Cutoff 1": "#14af90",
+        "Cutoff 2": "#af1486",
+        "Cutoff 3": "#af4514"
+      }
+    },
+    "Steam Menu > Button Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#bababa"
+      }
+    },
+    "Steam Menu > Button Highlight Background": {
+      "value": "Radial Grad",
+      "components": {
+        "Color": "#d6d6d6",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#e8e8e8",
+        "Radial Grad 2": "#b3b3b3",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514",
+        "Cutoff 1": "#14af90",
+        "Cutoff 2": "#af1486",
+        "Cutoff 3": "#af4514"
+      }
+    },
+    "Steam Menu > Button Highlight Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#121212"
+      }
+    },
+    "Steam Menu > Text Input Decoration": "None",
+    "Steam Menu > Text Input Background": {
+      "value": "Solid Color",
+      "components": {
+        "Color": "#0f0f0f",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#14af90",
+        "Radial Grad 2": "#af1486",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514"
+      }
+    },
+    "Steam Menu > Text Input Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#bababa"
+      }
+    },
+    "Steam Menu > Text Input Highlight Background": {
+      "value": "Radial Grad",
+      "components": {
+        "Color": "#d6d6d6",
+        "H-Linear Grad 1": "#14af90",
+        "H-Linear Grad 2": "#af1486",
+        "H-Linear Grad 3": "#af4514",
+        "V-Linear Grad 1": "#14af90",
+        "V-Linear Grad 2": "#af1486",
+        "V-Linear Grad 3": "#af4514",
+        "Radial Grad 1": "#e8e8e8",
+        "Radial Grad 2": "#b3b3b3",
+        "Stripes 1": "#14af90",
+        "Stripes 2": "#af1486",
+        "Stripes 3": "#af4514"
+      }
+    },
+    "Steam Menu > Text Input Highlight Foreground": {
+      "value": "_",
+      "components": {
+        "Color": "#121212"
+      }
+    }
+  }
+}

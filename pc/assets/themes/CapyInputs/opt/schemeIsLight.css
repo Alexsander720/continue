@@ -1,0 +1,10 @@
+/* some cosmetics may be changed depending on whether the user uses a dark or light color scheme. since there's no way to verify it directly, I made it a togglable option
+this may not be noticeable
+
+currently affected:
+    - button decoration: faint outline (../custom/buttons/button-Type-faintOutline.css)
+*/
+
+:root {
+    --chromahonControls__tweakOn-isLight-buttonType-faintOutline: #00000015;
+}

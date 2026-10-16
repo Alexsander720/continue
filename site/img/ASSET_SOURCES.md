@@ -1,5 +1,11 @@
 # Website asset sources
 
+## Project SVG glyphs
+
+The 53 white SVG glyphs in `plugin/assets/icons/` were created specifically for Continue?. The project owner confirmed
+this provenance on 2026-10-13. These original project glyphs are covered by the project's GPL-3.0-or-later license and
+its notices. No origin or license from Feather, Lucide or another icon library is claimed.
+
 ## steam-deck-oled.png
 
 - Creator: Valve Corporation.
@@ -23,7 +29,7 @@ The thirteen added demo games reuse cached library art and local trailer loops. 
 
 ## README banners, tours and screenshots
 
-The three `docs/img/banner-<lang>.jpg` headers were refreshed on 2026-10-08 as 1280 x 440 browser-rendered compositions
+The three `docs/img/banner-<lang>.jpg` headers were refreshed on 2026-10-13 with the public alpha 0.1 status, as 1280 x 440 browser-rendered compositions
 of the project's interface and the original Valve Steam Deck OLED body above. EN/RU show Until Dawn; UK shows Nine Sols
 with its verified Ukrainian localization. The three tours and nine highlight captures were refreshed on 2026-10-07
 with the same original device rendering. These compositions illustrate the interface; the hardware rendering and

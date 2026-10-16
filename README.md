@@ -4,7 +4,7 @@
 
 **English** · [Українська](README.uk.md) · [Русский](README.ru.md)
 
-![Status](https://img.shields.io/badge/status-public%20alpha%200.1.0-c8a96a)
+![Status](https://img.shields.io/badge/status-public%20alpha-c8a96a)
 ![Targets](https://img.shields.io/badge/target-Steam%20Deck-2a475e?logo=steam&logoColor=white)
 ![License](https://img.shields.io/badge/code-GPL--3.0-59bf40)
 
@@ -12,11 +12,11 @@
 
 </div>
 
-> **Public alpha 0.1.0 · Steam Deck: install from ZIP/URL through Decky · PC / Big Picture comes later; the package has not yet passed acceptance on a clean Windows PC.**
+> **Public alpha · Steam Deck: install from ZIP/URL through Decky · PC / Big Picture comes later; the package has not yet passed acceptance on a clean Windows PC.**
 
 Continue? puts the last proven chapter, location, objective and useful facts from your save on the Steam game page. Come back after a week and see where you stopped before pressing Continue. Choose a Steam trailer, a YouTube trailer with your consent, your own Steam Game Recording clip or a still image as the background.
 
-[Install on Steam Deck](docs/install-deck.md) · [Release v0.1.0](https://github.com/Alexsander720/continue/releases/tag/v0.1.0) · [Alpha tester checklist](docs/alpha-testers.md) · [Try the browser showcase](docs/preview.md)
+[Install on Steam Deck](docs/install-deck.md) · [Latest release](https://github.com/Alexsander720/continue/releases/latest) · [Alpha tester checklist](docs/alpha-testers.md) · [Try the browser showcase](docs/preview.md)
 
 <div align="center">
 
@@ -32,7 +32,7 @@ Continue? puts the last proven chapter, location, objective and useful facts fro
 <summary>On this page</summary>
 
 - [Why Continue?](#why)
-- [What is in alpha 0.1.0](#capabilities)
+- [What is in the public alpha](#capabilities)
 - [Highlights](#screenshots)
 - [Supported save readers](#games)
 - [Languages](#languages)
@@ -62,7 +62,7 @@ Steam tells you which game you own and when you last played. Continue? adds the 
 
 <a id="capabilities"></a>
 
-## What is in alpha 0.1.0
+## What is in the public alpha
 
 - A self-contained Decky plugin; no PC helper is required on Deck.
 - EN, UK, and RU interface text. Save labels and chapter names come from the game or save where proven; if a game has no Ukrainian text, that reader falls back to its verified English text.
@@ -140,11 +140,11 @@ The plugin interface is translated directly to English, Ukrainian, and Russian. 
 
 ## Install, update, and remove
 
-**Steam Deck:** download `continue-deck-0.1.0.zip` and its matching `.sha256` from [release v0.1.0](https://github.com/Alexsander720/continue/releases/tag/v0.1.0). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
+**Steam Deck:** download `continue-deck-<version>.zip` and its matching `.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
 
 In Decky’s plugin list the name is **Continue** (Decky cannot load a plugin name containing `?`); inside the interface it is **Continue?**.
 
-**Windows / Big Picture comes later.** A separate `continue-pc-<version>.zip` package and `setup.cmd` installer have been tested with fixtures: per-user setup without administrator rights, repair, status, update rollback and uninstall. Acceptance with real Steam, SmartScreen and antivirus on a clean Windows PC is still pending. It is not part of the Deck 0.1.0 release. The [PC guide](docs/install-pc.md) explains the local Steam debugging flag, consent, setup and removal.
+**Windows / Big Picture comes later.** A separate `continue-pc-<version>.zip` package and `setup.cmd` installer have been tested with fixtures: per-user setup without administrator rights, repair, status, update rollback and uninstall. Acceptance with real Steam, SmartScreen and antivirus on a clean Windows PC is still pending. It is not part of the Deck release. The [PC guide](docs/install-pc.md) explains the local Steam debugging flag, consent, setup and removal.
 
 <a id="report"></a>
 
@@ -236,7 +236,7 @@ The [roadmap](docs/ROADMAP.md) lists the remaining checks, and the [changelog](C
 <details>
 <summary><b>Can I install Continue? now?</b></summary>
 
-Yes, on Steam Deck: install the [0.1.0 release ZIP](https://github.com/Alexsander720/continue/releases/tag/v0.1.0) through Decky. Follow the [Deck guide](docs/install-deck.md). Windows / Big Picture comes later; its separate package has not passed clean Windows acceptance.
+Yes, on Steam Deck: install the [latest release ZIP](https://github.com/Alexsander720/continue/releases/latest) through Decky. Follow the [Deck guide](docs/install-deck.md). Windows / Big Picture comes later; its separate package has not passed clean Windows acceptance.
 
 </details>
 
@@ -306,7 +306,7 @@ every donation goes into development and the AI subscription that helps build it
 
 Code is **GNU GPL v3** with the existing section 7 terms in [NOTICE.md](NOTICE.md): retain author attribution, identify modifications, and use a different name/logo for a distributed fork. See [LICENSE](LICENSE).
 
-Game names, logos, artwork and footage retain their owners' rights; the code license does not license those media. The showcase uses the official Valve Steam Deck OLED rendering as a device frame. [Asset sources](site/img/ASSET_SOURCES.md) · [Demo sources](site/DEMO_SOURCES.md). Continue? is independent and is not affiliated with Valve.
+Game names, logos, artwork and footage retain their owners' rights; the code license does not license those media. Game icons and character portraits identify games for informational, non-commercial purposes (removal requests can be submitted via the issue tracker). YouTube trailers and theme music are fetched only with your consent, locally on your device; the project ships no third-party audio or video. The showcase uses the official Valve Steam Deck OLED rendering as a device frame. [Asset sources](site/img/ASSET_SOURCES.md) · [Demo sources](site/DEMO_SOURCES.md). Continue? is independent and is not affiliated with Valve.
 
 **Continue? by Doctor_Nerd — https://github.com/Alexsander720/continue**
 

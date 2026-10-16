@@ -4,7 +4,7 @@
 
 [English](README.md) · [Українська](README.uk.md) · **Русский**
 
-![Status](https://img.shields.io/badge/status-public%20alpha%200.1.0-c8a96a)
+![Status](https://img.shields.io/badge/status-public%20alpha-c8a96a)
 ![Targets](https://img.shields.io/badge/target-Steam%20Deck-2a475e?logo=steam&logoColor=white)
 ![License](https://img.shields.io/badge/code-GPL--3.0-59bf40)
 
@@ -12,11 +12,11 @@
 
 </div>
 
-> **Публичная альфа 0.1.0 · Steam Deck: установка из ZIP/URL через Decky · ПК/Big Picture — позже, пакет ещё не принят на чистой Windows.**
+> **Публичная альфа · Steam Deck: установка из ZIP/URL через Decky · ПК/Big Picture — позже, пакет ещё не принят на чистой Windows.**
 
 Continue? добавляет на страницу игры в Steam последнюю доказанную главу, место, цель и полезные факты из сохранения. Вернулся через неделю? Вспомни, где остановился, прежде чем нажать «Продолжить». Фоном можно выбрать трейлер Steam, трейлер YouTube с твоего согласия, свою запись Steam Game Recording или статичную иллюстрацию.
 
-[Установка на Steam Deck](docs/install-deck.ru.md) · [Релиз v0.1.0](https://github.com/Alexsander720/continue/releases/tag/v0.1.0) · [Памятка альфа-тестера](docs/alpha-testers.ru.md) · [Запустить витрину](docs/preview.ru.md)
+[Установка на Steam Deck](docs/install-deck.ru.md) · [Последний релиз](https://github.com/Alexsander720/continue/releases/latest) · [Памятка альфа-тестера](docs/alpha-testers.ru.md) · [Запустить витрину](docs/preview.ru.md)
 
 <div align="center">
 
@@ -32,7 +32,7 @@ Continue? добавляет на страницу игры в Steam после�
 <summary>На этой странице</summary>
 
 - [Ради чего Continue?](#why)
-- [Что есть в альфе 0.1.0](#capabilities)
+- [Что умеет публичная альфа](#capabilities)
 - [Главное](#screenshots)
 - [Поддерживаемые читатели сохранений](#games)
 - [Языки](#languages)
@@ -62,7 +62,7 @@ Steam показывает, какая игра у тебя есть и когд
 
 <a id="capabilities"></a>
 
-## Что есть в альфе 0.1.0
+## Что умеет публичная альфа
 
 - Самодостаточный плагин Decky: для работы на Деке помощник на ПК не нужен.
 - Интерфейс на EN, UK и RU. Названия из сохранений берутся из игры или сейва, если это доказано; когда в игре нет подтверждённого украинского текста, читатель оставляет проверенный английский.
@@ -140,11 +140,11 @@ Sally Face и Alice: Madness Returns не зарегистрированы: им
 
 ## Установка, обновление и удаление
 
-**Steam Deck:** скачай `continue-deck-0.1.0.zip` и соответствующий `.sha256` из [релиза v0.1.0](https://github.com/Alexsander720/continue/releases/tag/v0.1.0). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
+**Steam Deck:** скачай `continue-deck-<версия>.zip` и соответствующий `.sha256` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
 
 В списке плагинов Decky имя — **Continue** (Decky не загружает имя с `?`); внутри интерфейса — **Continue?**.
 
-**Windows / Big Picture — позже.** Отдельный пакет `continue-pc-<версия>.zip` и установщик `setup.cmd` проверены на фикстурах: установка в профиль без прав администратора, ремонт, status, откат обновления и удаление. Приёмка на чистой Windows с настоящим Steam, SmartScreen и антивирусом ещё впереди. В релиз Deck 0.1.0 этот пакет не входит. В [инструкции для ПК](docs/install-pc.ru.md) описаны локальный отладочный флаг Steam, согласие на него, установка и удаление.
+**Windows / Big Picture — позже.** Отдельный пакет `continue-pc-<версия>.zip` и установщик `setup.cmd` проверены на фикстурах: установка в профиль без прав администратора, ремонт, status, откат обновления и удаление. Приёмка на чистой Windows с настоящим Steam, SmartScreen и антивирусом ещё впереди. В релиз для Deck этот пакет не входит. В [инструкции для ПК](docs/install-pc.ru.md) описаны локальный отладочный флаг Steam, согласие на него, установка и удаление.
 
 <a id="report"></a>
 
@@ -234,7 +234,7 @@ python tools/preview.py
 <details>
 <summary><b>Можно уже установить Continue?</b></summary>
 
-Да, на Steam Deck: установи ZIP [релиза 0.1.0](https://github.com/Alexsander720/continue/releases/tag/v0.1.0) через Decky по [инструкции](docs/install-deck.ru.md). Windows / Big Picture — позже: отдельный пакет ещё не принят на чистой Windows.
+Да, на Steam Deck: установи ZIP [последнего релиза](https://github.com/Alexsander720/continue/releases/latest) через Decky по [инструкции](docs/install-deck.ru.md). Windows / Big Picture — позже: отдельный пакет ещё не принят на чистой Windows.
 
 </details>
 
@@ -304,7 +304,7 @@ Continue? бесплатен и останется бесплатным. Есл�
 
 Код — **GNU GPL v3** с существующими условиями раздела 7 в [NOTICE.md](NOTICE.md): сохранять авторство, обозначать изменения и использовать другое имя/логотип для распространяемого форка. Текст лицензии: [LICENSE](LICENSE).
 
-Названия, логотипы, иллюстрации и видео игр сохраняют права их владельцев; лицензия кода не передаёт права на эти медиа. Корпус в витрине — официальный рендер Steam Deck OLED от Valve. [Источники ресурсов](site/img/ASSET_SOURCES.md) · [Источники демо](site/DEMO_SOURCES.md). Continue? — независимый проект, не связанный с Valve.
+Названия, логотипы, иллюстрации и видео игр сохраняют права их владельцев; лицензия кода не передаёт права на эти медиа. Игровые значки и портреты персонажей используются в информационных некоммерческих целях (запросы на удаление принимаются через issue tracker). Трейлеры YouTube и музыка тем загружаются только с твоего согласия, локально на твоём устройстве; проект не поставляет сторонние аудио и видео. Корпус в витрине — официальный рендер Steam Deck OLED от Valve. [Источники ресурсов](site/img/ASSET_SOURCES.md) · [Источники демо](site/DEMO_SOURCES.md). Continue? — независимый проект, не связанный с Valve.
 
 **Continue? by Doctor_Nerd — https://github.com/Alexsander720/continue**
 

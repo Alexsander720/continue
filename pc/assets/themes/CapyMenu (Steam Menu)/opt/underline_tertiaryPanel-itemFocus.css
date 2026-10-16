@@ -1,0 +1,39 @@
+/* ---
+Notes Page
+--- */
+
+._2mL2HfT5AkDXRi1YBnRWKa:focus {
+    position: relative;
+    overflow: hidden;
+}
+
+._2mL2HfT5AkDXRi1YBnRWKa:focus::after {
+    position: absolute;
+    content: "";
+    bottom: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--chromahonSM__secondaryPanel-itemFocus-underline);
+    animation:
+        var(--chromahonSM__Opt_toggleAnim_secondaryPanel-itemFocus-underline, none);
+}
+
+/* ---
+Achievements Page
+--- */
+
+/* Tab Item Active */
+._3eEbSktrstBdLk0dVpnKVI._3Gp1bACHx__POxmy6Gd3kG {
+    position: relative;
+    overflow: hidden;
+}
+
+._3eEbSktrstBdLk0dVpnKVI._3Gp1bACHx__POxmy6Gd3kG::after {
+    position: absolute;
+    content: "";
+    bottom: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--chromahonSM__primaryPanel-itemFocus-underline);
+    animation:
+        var(--chromahonSM__Opt_toggleAnim_primaryPanel-itemFocus-underline, none),
+        chromahonSM__Anim_underlineSlide .1s ease-in forwards;
+}

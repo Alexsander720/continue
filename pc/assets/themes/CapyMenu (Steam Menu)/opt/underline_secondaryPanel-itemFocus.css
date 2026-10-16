@@ -1,0 +1,13 @@
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus {
+    position: relative;
+}
+
+._2b6L36XnXUqFHHkGE4_2mv.gpfocus::after {
+    position: absolute;
+    content: "";
+    bottom: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--chromahonSM__secondaryPanel-itemFocus-underline);
+    animation:
+        var(--chromahonSM__Opt_toggleAnim_secondaryPanel-itemFocus-underline, none);
+}

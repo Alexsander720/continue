@@ -20,4 +20,6 @@ jobs:
         with:
           node-version: '22'
       - name: Reader and plugin tests, frontend syntax, private scan, proof gate, ZIP readback
-        run: python tools/local_ci.py --version 0.1.0
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run offline checks
+        run: python tools/local_ci.py

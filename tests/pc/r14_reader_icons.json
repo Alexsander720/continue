@@ -1,0 +1,787 @@
+{
+  "108710": {
+    "slug": "alan_wake",
+    "reader_sha256": "ad997d74aad287e2678eac4731be8ab6d698d5d5dd34e4bed95656dcbdb37334",
+    "facts": [
+      {
+        "id": "coffee_thermos",
+        "label": "Найдено термосов с кофе (профиль)",
+        "icon": "cup"
+      },
+      {
+        "id": "chests",
+        "label": "Найдено ящиков (профиль)",
+        "icon": "box"
+      },
+      {
+        "id": "can_pyramids",
+        "label": "Сбито пирамид из банок (профиль)",
+        "icon": "target"
+      },
+      {
+        "id": "tv_shows",
+        "label": "Найдено телепрограмм (профиль)",
+        "icon": "tv"
+      },
+      {
+        "id": "radio_shows",
+        "label": "Найдено радиопрограмм (профиль)",
+        "icon": "radio"
+      },
+      {
+        "id": "signs",
+        "label": "Найдено знаков (профиль)",
+        "icon": "sign"
+      }
+    ],
+    "stages": 12,
+    "positive": 10
+  },
+  "367520": {
+    "slug": "hollow_knight",
+    "reader_sha256": "ec2eb6e5b52708341b3ad3253790eef0205e985d463b0406f7e8bd14c31c774f",
+    "facts": [
+      {
+        "id": "completed",
+        "label": "Пройдено",
+        "icon": "pie"
+      },
+      {
+        "id": "masks",
+        "label": "Маски",
+        "icon": "mask"
+      },
+      {
+        "id": "nail",
+        "label": "Гвоздь",
+        "icon": "sword"
+      },
+      {
+        "id": "geo",
+        "label": "Гео",
+        "icon": "gem"
+      },
+      {
+        "id": "charms",
+        "label": "Амулеты",
+        "icon": "shield"
+      },
+      {
+        "id": "abilities",
+        "label": "Способности",
+        "icon": "sword"
+      },
+      {
+        "id": "spells",
+        "label": "Заклинания",
+        "icon": "eye"
+      },
+      {
+        "id": "dreamers",
+        "label": "Грезящие",
+        "icon": "eye"
+      },
+      {
+        "id": "grubs",
+        "label": "Гусенички",
+        "icon": "smile"
+      },
+      {
+        "id": "save_time",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 20,
+    "positive": 20
+  },
+  "391540": {
+    "slug": "undertale",
+    "reader_sha256": "7af960ff045d171e1865275278fc32c6853f0b4b27715e02befbddf9ac7195d7",
+    "facts": [
+      {
+        "id": "lv",
+        "label": "LV",
+        "icon": "level"
+      },
+      {
+        "id": "max_hp",
+        "label": "Макс. HP",
+        "icon": "heart"
+      },
+      {
+        "id": "g",
+        "label": "G",
+        "icon": "coins"
+      },
+      {
+        "id": "weapons",
+        "label": "Оружие",
+        "icon": "sword"
+      },
+      {
+        "id": "armor",
+        "label": "Броня",
+        "icon": "shield"
+      },
+      {
+        "id": "save_time",
+        "label": "В этом сейве",
+        "icon": "clock"
+      },
+      {
+        "id": "kills",
+        "label": "Убийства",
+        "icon": "skull"
+      }
+    ],
+    "stages": 21,
+    "positive": 21
+  },
+  "424840": {
+    "slug": "little_nightmares",
+    "reader_sha256": "569b3d267eed067edd86b98538b45004b5eae9fd92343ac4c81bfd96207536ed",
+    "facts": [
+      {
+        "id": "nomes",
+        "label": "Номы",
+        "icon": "smile"
+      },
+      {
+        "id": "statues",
+        "label": "Статуэтки",
+        "icon": "gem"
+      },
+      {
+        "id": "dlc_items",
+        "label": "Предметы DLC",
+        "icon": "star"
+      }
+    ],
+    "stages": 24,
+    "positive": 13
+  },
+  "524220": {
+    "slug": "nier_automata",
+    "reader_sha256": "67ae1dbb73f971fa628ec3f03350076f9c047db9a12f5d1af4d13fa53dbff436",
+    "facts": [
+      {
+        "id": "player_level",
+        "label": "Уровень",
+        "icon": "star"
+      },
+      {
+        "id": "story_route",
+        "label": "Ветка сюжета",
+        "icon": "compass"
+      },
+      {
+        "id": "active_character",
+        "label": "Персонаж",
+        "icon": "user"
+      },
+      {
+        "id": "endings_unlocked",
+        "label": "Концовки",
+        "icon": "trophy"
+      },
+      {
+        "id": "quests_completed",
+        "label": "Побочные задания",
+        "icon": "check"
+      },
+      {
+        "id": "weapons_owned",
+        "label": "Оружие",
+        "icon": "crosshair"
+      },
+      {
+        "id": "gold",
+        "label": "Деньги (G)",
+        "icon": "coin"
+      }
+    ],
+    "stages": 22,
+    "positive": 22
+  },
+  "532210": {
+    "slug": "life_is_strange_2",
+    "reader_sha256": "8598bae3a6360b7d8b7aa449fdd2ed53bf86ddc3dab6ce8d5cf8a448b859a05c",
+    "facts": [
+      {
+        "id": "episode",
+        "label": "Эпизод",
+        "icon": "book"
+      },
+      {
+        "id": "episodes_completed",
+        "label": "Пройдено эпизодов",
+        "icon": "check"
+      },
+      {
+        "id": "collectibles_count",
+        "label": "Сувениры",
+        "icon": "star"
+      },
+      {
+        "id": "journal_pages",
+        "label": "Страницы дневника",
+        "icon": "pencil"
+      },
+      {
+        "id": "brotherhood",
+        "label": "Отношения братьев",
+        "icon": "heart"
+      },
+      {
+        "id": "morality",
+        "label": "Мораль Даниэля",
+        "icon": "shield"
+      }
+    ],
+    "stages": 11,
+    "positive": 11
+  },
+  "646570": {
+    "slug": "slay_the_spire",
+    "reader_sha256": "8950d7f7861d4480583d47fafa8fee1b3783c8c4dec3e4ccafbb510e37870192",
+    "facts": [
+      {
+        "id": "act_floor",
+        "label": "Акт / этаж",
+        "icon": "flag"
+      },
+      {
+        "id": "hp",
+        "label": "ОЗ",
+        "icon": "heart"
+      },
+      {
+        "id": "gold",
+        "label": "Золото",
+        "icon": "gem"
+      },
+      {
+        "id": "ascension",
+        "label": "Возвышение",
+        "icon": "star"
+      },
+      {
+        "id": "wins",
+        "label": "Побед",
+        "icon": "trophy"
+      },
+      {
+        "id": "unlocked_ascension",
+        "label": "Открытое Возвышение",
+        "icon": "star"
+      },
+      {
+        "id": "character",
+        "label": "Персонаж",
+        "icon": "sword"
+      }
+    ],
+    "stages": 16,
+    "positive": 14
+  },
+  "860510": {
+    "slug": "little_nightmares_2",
+    "reader_sha256": "7d95a2552c0697ff6b330a921ce7e08b2b513c862019b23adc721f62c4705549",
+    "facts": [
+      {
+        "id": "save_time",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 13,
+    "positive": 13
+  },
+  "990080": {
+    "slug": "hogwarts_legacy",
+    "reader_sha256": "3847f50f8a5a36a0862282cdabc48fc05e974562865a81328693ba122c8491d7",
+    "facts": [
+      {
+        "id": "level",
+        "label": "Уровень",
+        "icon": "badge"
+      },
+      {
+        "id": "house",
+        "label": "Факультет",
+        "icon": "shield"
+      },
+      {
+        "id": "merlin_trials",
+        "label": "Испытания Мерлина",
+        "icon": "puzzle"
+      },
+      {
+        "id": "collections",
+        "label": "Коллекции",
+        "icon": "book"
+      },
+      {
+        "id": "gold",
+        "label": "Золото",
+        "icon": "coin"
+      },
+      {
+        "id": "healing_potions",
+        "label": "Рябиновый отвар",
+        "icon": "potion"
+      }
+    ],
+    "stages": 11,
+    "positive": 11
+  },
+  "1092790": {
+    "slug": "inscryption",
+    "reader_sha256": "9bccb04eb218f6a37d6ed622541cea7f7f3a0c14db5f2da2a2c2fdeaeb111596",
+    "facts": [
+      {
+        "id": "deck",
+        "label": "Колода",
+        "icon": "book"
+      },
+      {
+        "id": "teeth",
+        "label": "Зубы",
+        "icon": "coin"
+      },
+      {
+        "id": "lives",
+        "label": "Жизни",
+        "icon": "heart"
+      },
+      {
+        "id": "most_damage_dealt",
+        "label": "Макс. урон за 1 ход",
+        "icon": "sword"
+      }
+    ],
+    "stages": 20,
+    "positive": 16
+  },
+  "1426210": {
+    "slug": "it_takes_two",
+    "reader_sha256": "f152a9b5fa3b0d485978f32f9e2ba2f1831bff9614adb923024ec40ac3f63cb1",
+    "facts": [
+      {
+        "id": "chapter",
+        "label": "Глава",
+        "icon": "flag"
+      },
+      {
+        "id": "minigames",
+        "label": "Мини-игры",
+        "icon": "trophy"
+      }
+    ],
+    "stages": 8,
+    "positive": 6
+  },
+  "1659420": {
+    "slug": "uncharted_lot",
+    "reader_sha256": "95c5e54e262ed4328944cb02b929132a0eaab1655daa4f441bed270880bfc001",
+    "facts": [
+      {
+        "id": "completion_percent",
+        "label": "Прохождение",
+        "icon": "pie"
+      },
+      {
+        "id": "treasures_collected",
+        "label": "Найдено сокровищ",
+        "icon": "gem"
+      },
+      {
+        "id": "play_time_minutes",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 11,
+    "positive": 9
+  },
+  "1809540": {
+    "slug": "nine_sols",
+    "reader_sha256": "fdaed179375ddbb97abde841266424f566e6794011bff8b82d7d05e33f0e66f2",
+    "facts": [
+      {
+        "id": "seals",
+        "label": "Печати Солов",
+        "icon": "sun"
+      },
+      {
+        "id": "obtained_seals",
+        "label": "Полученные печати",
+        "icon": "sun"
+      },
+      {
+        "id": "level",
+        "label": "Уровень",
+        "icon": "level"
+      },
+      {
+        "id": "save_time",
+        "label": "В этом сейве",
+        "icon": "clock"
+      },
+      {
+        "id": "jades",
+        "label": "Нефриты",
+        "icon": "gem"
+      },
+      {
+        "id": "skills",
+        "label": "Навыки",
+        "icon": "bolt"
+      },
+      {
+        "id": "encyclopedia",
+        "label": "Энциклопедия",
+        "icon": "book"
+      },
+      {
+        "id": "equipped_jades",
+        "label": "Надеты нефриты",
+        "icon": "gem"
+      },
+      {
+        "id": "deaths",
+        "label": "Смертей",
+        "icon": "skull"
+      },
+      {
+        "id": "last_node",
+        "label": "Последний узел",
+        "icon": "map-pin"
+      }
+    ],
+    "stages": 16,
+    "positive": 16
+  },
+  "1874000": {
+    "slug": "life_is_strange_double_exposure",
+    "reader_sha256": "54d79a8c69ddc5da1fc19812ac2656f656336b8c83b8b1431cfeffbbcf6e827b",
+    "facts": [
+      {
+        "id": "episode",
+        "label": "Эпизод",
+        "icon": "flag"
+      },
+      {
+        "id": "photos_taken",
+        "label": "Снимки",
+        "icon": "camera"
+      }
+    ],
+    "stages": 7,
+    "positive": 7
+  },
+  "1903340": {
+    "slug": "expedition_33",
+    "reader_sha256": "aa6686e6cf858b15d9510093b28f267433d3714300bd285df0b703770936db8b",
+    "facts": [
+      {
+        "id": "story",
+        "label": "Сюжет",
+        "icon": "scroll"
+      },
+      {
+        "id": "levels",
+        "label": "Уровни",
+        "icon": "level"
+      },
+      {
+        "id": "save_time",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 89,
+    "positive": 89
+  },
+  "2124490": {
+    "slug": "silent_hill_2",
+    "reader_sha256": "46a9d27e0c773f6bce258ed34f4dd3641043be7dd59d888f44158e59f7d5bc58",
+    "facts": [
+      {
+        "id": "health",
+        "label": "Здоровье",
+        "icon": "heart"
+      },
+      {
+        "id": "healing_drinks",
+        "label": "Лечебные напитки",
+        "icon": "bottle"
+      },
+      {
+        "id": "healing_syringes",
+        "label": "Шприцы",
+        "icon": "syringe"
+      },
+      {
+        "id": "ammo_handgun",
+        "label": "Патроны для пистолета",
+        "icon": "sword"
+      },
+      {
+        "id": "ammo_shotgun",
+        "label": "Патроны для дробовика",
+        "icon": "sword"
+      },
+      {
+        "id": "weapons",
+        "label": "Оружие",
+        "icon": "sword"
+      },
+      {
+        "id": "kills_total",
+        "label": "Убито врагов",
+        "icon": "skull"
+      },
+      {
+        "id": "investigated",
+        "label": "Изучено на картах",
+        "icon": "search"
+      },
+      {
+        "id": "memos_count",
+        "label": "Подобрано записок",
+        "icon": "book"
+      },
+      {
+        "id": "last_memo",
+        "label": "Последняя записка",
+        "icon": "book"
+      },
+      {
+        "id": "maps_count",
+        "label": "Карт в инвентаре",
+        "icon": "map-pin"
+      },
+      {
+        "id": "maps_by_building",
+        "label": "Карты по зданиям",
+        "icon": "map-pin"
+      },
+      {
+        "id": "ammo_rifle",
+        "label": "Патроны для винтовки",
+        "icon": "sword"
+      }
+    ],
+    "stages": 19,
+    "positive": 19
+  },
+  "2129530": {
+    "slug": "reanimal",
+    "reader_sha256": "b4aa0d87dcaa76712c8f9224c0315c587cf29653a416c176f58dd80ac61581aa",
+    "facts": [
+      {
+        "id": "chapter_num",
+        "label": "Глава",
+        "icon": "flag"
+      },
+      {
+        "id": "collected",
+        "label": "Находки",
+        "icon": "gem"
+      },
+      {
+        "id": "masks",
+        "label": "Маски",
+        "icon": "mask"
+      },
+      {
+        "id": "posters",
+        "label": "Плакаты",
+        "icon": "scroll"
+      },
+      {
+        "id": "active_gameplay_seconds",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 19,
+    "positive": 19
+  },
+  "2149010": {
+    "slug": "little_nightmares",
+    "reader_sha256": "569b3d267eed067edd86b98538b45004b5eae9fd92343ac4c81bfd96207536ed",
+    "facts": [
+      {
+        "id": "nomes",
+        "label": "Номы",
+        "icon": "smile"
+      },
+      {
+        "id": "statues",
+        "label": "Статуэтки",
+        "icon": "gem"
+      },
+      {
+        "id": "dlc_items",
+        "label": "Предметы DLC",
+        "icon": "star"
+      }
+    ],
+    "stages": 24,
+    "positive": 13
+  },
+  "2172010": {
+    "slug": "until_dawn",
+    "reader_sha256": "787d11c42f02b62a2c9c5a7b6343aa2a44d3aea37f43dcbd601c51deb3c68c84",
+    "facts": [
+      {
+        "id": "totems",
+        "label": "Тотемы",
+        "icon": "eye"
+      },
+      {
+        "id": "clues",
+        "label": "Улики",
+        "icon": "book"
+      },
+      {
+        "id": "butterflies",
+        "label": "Эффекты бабочки",
+        "icon": "leaf"
+      },
+      {
+        "id": "alive_count",
+        "label": "Живы сейчас",
+        "icon": "heart",
+        "people": [
+          {
+            "key": "Chris"
+          },
+          {
+            "key": "Ashley"
+          },
+          {
+            "key": "Emily"
+          },
+          {
+            "key": "Matt"
+          },
+          {
+            "key": "Mike"
+          },
+          {
+            "key": "Jessica"
+          },
+          {
+            "key": "Sam"
+          },
+          {
+            "key": "Josh"
+          }
+        ]
+      }
+    ],
+    "stages": 16,
+    "positive": 15
+  },
+  "2322010": {
+    "slug": "god_of_war_ragnarok",
+    "reader_sha256": "1fef38dd459584d7a4738381749cc04c7f7df3aeaf54c64c92f008b28330507e",
+    "facts": [
+      {
+        "id": "raven",
+        "label": "Вороны Одина",
+        "icon": "raven"
+      },
+      {
+        "id": "silver",
+        "label": "Серебро",
+        "icon": "coins"
+      },
+      {
+        "id": "play_time",
+        "label": "Время игры",
+        "icon": "clock"
+      }
+    ],
+    "stages": 1,
+    "positive": 1
+  },
+  "2420110": {
+    "slug": "horizon_forbidden_west",
+    "reader_sha256": "e3f1b1ef24c82160ace298b4db725cf1f4a7f9f2cbec72bacaa236d0e1be3217",
+    "facts": [
+      {
+        "id": "aloy_level",
+        "label": "Уровень",
+        "icon": "hero"
+      },
+      {
+        "id": "play_time_seconds",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 14,
+    "positive": 14
+  },
+  "2531310": {
+    "slug": "the_last_of_us_part_ii",
+    "reader_sha256": "c89b19bac2bbdcb5d94857695293fc436dd77778cfeb6bec56bd98039c80274b",
+    "facts": [
+      {
+        "id": "collected",
+        "label": "Находки",
+        "icon": "gem"
+      },
+      {
+        "id": "play_time_seconds",
+        "label": "В этом сейве",
+        "icon": "clock"
+      }
+    ],
+    "stages": 1,
+    "positive": 1
+  },
+  "2651280": {
+    "slug": "spider_man_2",
+    "reader_sha256": "f6366e4ac9ccad096029c3294bab49723aa692628403bf2e3abea6eb7c6e8c0e",
+    "facts": [
+      {
+        "id": "game_percent",
+        "label": "Прохождение",
+        "icon": "pie"
+      },
+      {
+        "id": "story_done",
+        "label": "Сюжет",
+        "icon": "sword"
+      },
+      {
+        "id": "level",
+        "label": "Уровень",
+        "icon": "shield"
+      },
+      {
+        "id": "spiderbots_done",
+        "label": "Паукоботы",
+        "icon": "gem"
+      },
+      {
+        "id": "photos_done",
+        "label": "Фототочки",
+        "icon": "eye"
+      },
+      {
+        "id": "prowler_done",
+        "label": "Тайники Бродяги",
+        "icon": "mask"
+      }
+    ],
+    "stages": 28,
+    "positive": 27
+  }
+}

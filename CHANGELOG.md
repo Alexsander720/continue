@@ -2,6 +2,25 @@
 
 All notable public changes are recorded here. Continue? follows semantic versioning once the public alpha starts.
 
+## 0.1.4 — 2026-10-16
+
+Steam Deck update. Tested on a real Steam Deck OLED.
+
+### Changed
+
+- Theme music plays as exactly one track: no overlapping or doubled audio across page changes.
+- Music pauses when a game starts or the Deck goes to sleep, and resumes when you come back.
+- Volume and **No music** in Quick Access now apply instantly to the track that is already playing.
+- Battery care on Steam Deck: the first music setup asks for a charger at 30% or below.
+- Revoking media consent stops active downloads immediately and removes temporary files.
+- Fact icons and portraits restored for NieR:Automata, Horizon Forbidden West, and Alan Wake.
+- Clear theme statuses: when YouTube temporarily rejects a request, the plugin says so and lets you retry later.
+- More reliable media helper on Steam Deck: it runs with a clean environment under Decky.
+
+### Not included
+
+- The Windows / Steam Big Picture package. It is prepared and will ship separately after hands-on acceptance.
+
 ## 0.1.0-alpha — 2026-10-10
 
 First installable public alpha for Steam Deck testers.

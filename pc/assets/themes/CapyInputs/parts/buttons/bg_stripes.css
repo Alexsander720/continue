@@ -1,0 +1,12 @@
+:root {
+    --chromahonControls__button-bg:
+        linear-gradient(
+            -45deg,
+            var(--chromahonControls__button-bg-c1) 0%,
+            var(--chromahonControls__button-bg-c1) 33%,
+            var(--chromahonControls__button-bg-c2) 33%,
+            var(--chromahonControls__button-bg-c2) 66%,
+            var(--chromahonControls__button-bg-c3) 66%,
+            var(--chromahonControls__button-bg-c3) 100%
+        );
+}

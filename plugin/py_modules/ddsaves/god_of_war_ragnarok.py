@@ -17,7 +17,7 @@ import struct
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from ddsaves._common import dur, empty, fact, finish, num, proton_user
+from ddsaves._common import dur, empty, fact, finish, num, proton_user, read_bytes
 
 APPID = 2322010
 MAGIC_VERSION = 0x00660404
@@ -115,10 +115,17 @@ def find(path_or_dir: Optional[Union[str, Path]] = None) -> Optional[Path]:
 
 
 def read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
+    try:
+        return _read(path_or_dir)
+    except Exception as e:
+        return empty(f"сохранение God of War Ragnarök не прочитано: {e}")
+
+
+def _read(path_or_dir: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
     path = find(path_or_dir)
     if not path:
         return empty("сохранения God of War Ragnarök не найдены")
-    data = path.read_bytes()
+    data = read_bytes(path)
     h = header(data)
     if not h:
         return empty("заголовок сейва не распознан")
