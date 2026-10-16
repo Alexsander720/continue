@@ -8,7 +8,7 @@ Provides:
 - Strict music gating requiring both theme_music_consent AND hub_music/home_music toggles.
 - Automatic theme downloads per visited game, suppressed by explicit "none" choice.
 - Canonical English title resolution for localized Steam titles.
-- Strict PC storage budgets (2, 4, 8, 16 GB).
+- Strict PC storage budgets (2, 4, 8, 16, 64 GB).
 - Shared lock synchronization for manual and automatic music downloads.
 - Structured, actionable UI state helpers for frontend consumption.
 """
@@ -48,7 +48,7 @@ PC_PRESETS = {
     "maximum": {"height": 1080, "crf": 20, "min_free_gb": 1.0, "max_games": 40},
 }
 PC_DEFAULT_QUALITY = "1080"
-PC_DISK_BUDGETS_GB = (2, 4, 8, 16)
+PC_DISK_BUDGETS_GB = (2, 4, 8, 16, 64)
 PC_DEFAULT_DISK_BUDGET_GB = 2
 
 
@@ -258,7 +258,7 @@ class PCMediaManager(MediaManager):
     - Fallback from Steam to YouTube ONLY when youtube_consent is True.
     - Gated automatic music on visit, suppressed by "none" per-game choices.
     - Canonical English title resolution for localized Steam titles.
-    - Strict PC storage budgets (2/4/8/16 GB).
+    - Strict PC storage budgets (2/4/8/16/64 GB).
     - Shared music lock preventing file races between auto build and manual picker.
     """
 
@@ -359,7 +359,7 @@ class PCMediaManager(MediaManager):
         self._max_games = max(1, min(40, _sm._safe_int(settings.get("max_cached_games"), profile["max_games"])))
 
     def enforce_limit(self, limit_gb):
-        """Enforce strict PC storage limit (2/4/8/16 GB)."""
+        """Enforce strict PC storage limit (2/4/8/16/64 GB)."""
         try:
             limit_val = float(limit_gb)
             if limit_val not in PC_DISK_BUDGETS_GB:

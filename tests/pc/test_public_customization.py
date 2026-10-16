@@ -827,7 +827,7 @@ def test_settings_lock_shared(tmp_path):
     pc.close()
 
 
-def test_none_scoped_delete_and_suppress(test_env):
+def test_none_preserves_automatic_cache_and_suppresses(test_env):
     backend = test_env["backend"]
     media = test_env["media"]
     root = test_env["root"]
@@ -835,7 +835,7 @@ def test_none_scoped_delete_and_suppress(test_env):
     (media.media / "500_theme.m4a").write_bytes(b"b")
     (media.media / "400_steam.mp4").write_bytes(b"c")
     backend.call("music_choose", [400, "none"])
-    assert not (media.media / "400_theme.m4a").exists()
+    assert (media.media / "400_theme.m4a").read_bytes() == b"a"
     assert (media.media / "500_theme.m4a").exists()
     assert (media.media / "400_steam.mp4").exists()
     settings = json.loads((root / "settings.json").read_text(encoding="utf-8"))
@@ -952,7 +952,7 @@ def test_music_search_and_query_intent(test_env):
 
 
 def test_music_choose_auto_and_none(test_env):
-    """music_choose auto/none operates locally, clears asset on none, preserves unrelated settings."""
+    """music_choose auto/none operates locally, retains automatic cache and unrelated settings."""
     backend = test_env["backend"]
     root = test_env["root"]
     media = test_env["media"]
@@ -969,9 +969,9 @@ def test_music_choose_auto_and_none(test_env):
         job_res = backend.call("customization_job", [res["job"]])
         assert job_res.get("done") is True
 
-    # Asset removed
-    assert not theme_file.exists()
-    assert "400" not in media.music_files()
+    # Automatic asset retained; the choice setting suppresses playback.
+    assert theme_file.read_bytes() == b"dummy_theme"
+    assert "400" in media.music_files()
 
     # Settings updated
     settings = json.loads((root / "settings.json").read_text(encoding="utf-8"))

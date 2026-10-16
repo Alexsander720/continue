@@ -421,14 +421,16 @@ class Backend:
 
             @staticmethod
             def _valid_setting(key, value, standalone):
-                if key in ('pc_glyphs', 'pc_home', 'pc_pads'):
+                if key in ('pc_glyphs', 'pc_pads'):
+                    return isinstance(value, str) and value in ('owner', 'native', 'xbox', 'playstation', 'steam')
+                if key == 'pc_home':
                     return value in ('owner', 'native') and isinstance(value, str)
                 if key == 'music_volume':
                     return type(value) in (int, float) and 0 <= value <= 1
                 if key == 'media_quality':
                     return type(value) is int and value in (720, 1080, 2160)
                 if key == 'disk_limit_gb':
-                    return type(value) is int and value in (2, 4, 8, 16)
+                    return type(value) is int and value in (2, 4, 8, 16, 64)
                 if key == 'media_fallback':
                     return type(value) is bool
                 return main.Plugin._valid_setting(key, value, standalone)
@@ -440,7 +442,7 @@ class Backend:
                 saved = read_json(config.root / 'settings.json')
                 if not isinstance(saved, dict):
                     saved = {}
-                settings['disk_limit_gb'] = saved.get('disk_limit_gb') if type(saved.get('disk_limit_gb')) is int and saved['disk_limit_gb'] in (2,4,8,16) else 2
+                settings['disk_limit_gb'] = saved.get('disk_limit_gb') if type(saved.get('disk_limit_gb')) is int and saved['disk_limit_gb'] in (2,4,8,16,64) else 2
                 settings['media_quality'] = saved.get('media_quality') if type(saved.get('media_quality')) is int and saved['media_quality'] in (720,1080,2160) else 1080
                 settings.setdefault('media_fallback', False)
                 settings['preset'] = 'maximum'  # PC quality/location controls own playback policy.

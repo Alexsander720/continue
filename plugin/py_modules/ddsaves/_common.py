@@ -153,8 +153,9 @@ def aes_ecb_decrypt(key: bytes, data: bytes) -> Optional[bytes]:
     except ImportError:
         bits = len(key) * 8
         env = {**os.environ, "LD_LIBRARY_PATH": "/usr/lib:/usr/lib64:/lib:/lib64"}  # Decky подменяет библиотеки
+        options = {'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt' else {}
         r = subprocess.run(["openssl", "enc", "-d", f"-aes-{bits}-ecb", "-K", key.hex(), "-nosalt", "-nopad"],
-                           input=data, capture_output=True, timeout=20, env=env)
+                           input=data, capture_output=True, timeout=20, env=env, **options)
         if r.returncode != 0:
             return None
         out = r.stdout

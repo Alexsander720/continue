@@ -3,6 +3,56 @@ Object.assign(I18N.en, {"pc_art": "Artwork", "pc_music": "Music", "pc_themes": "
 Object.assign(I18N.ru, {"pc_art": "Картинки", "pc_music": "Музыка", "pc_themes": "Темы", "pc_grid": "Обложка", "pc_hero": "Фон", "pc_logo": "Логотип", "pc_wide": "Широкая", "pc_reset_art": "Вернуть стандартную", "pc_art_loading": "Загружаю из SteamGridDB…", "pc_applying": "Ставлю…", "pc_empty": "Ничего не нашлось", "pc_auto": "Авто", "pc_no_music": "Без музыки", "pc_search": "Найти", "pc_search_for": "Искать: ", "pc_menu_music": "Главное меню", "pc_song_query": "Своя песня или запрос", "pc_youtube_search": "Ищу на YouTube…", "pc_downloading": " — скачиваю…", "pc_on": "Вкл", "pc_off": "Выкл", "pc_collapse": "Свернуть", "pc_configure": "Настроить", "pc_loading": "Загружаю…", "pc_required": "Нужна для: ", "pc_builtin": "На ПК это уже делает Continue?", "pc_themes_desc": "Те же темы, что в CSS Loader на Деке. Меняются сразу, настройки ПК свои.", "pc_key_setup": "Введите свой API-ключ SteamGridDB", "pc_key_save": "Сохранить ключ", "pc_music_setup": "Разрешить музыку из YouTube и установить yt-dlp", "pc_music_consent": "Поиск и загрузка музыки используют YouTube. Включайте, если согласны.", "pc_wait_game": "Доступно после закрытия игры"});
 Object.assign(I18N.uk, {"pc_art": "Зображення", "pc_music": "Музика", "pc_themes": "Теми", "pc_grid": "Обкладинка", "pc_hero": "Тло", "pc_logo": "Логотип", "pc_wide": "Широка", "pc_reset_art": "Відновити стандартну", "pc_art_loading": "Завантажую зі SteamGridDB…", "pc_applying": "Застосовую…", "pc_empty": "Нічого не знайдено", "pc_auto": "Авто", "pc_no_music": "Без музики", "pc_search": "Знайти", "pc_search_for": "Шукати: ", "pc_menu_music": "Головне меню", "pc_song_query": "Власна пісня або запит", "pc_youtube_search": "Шукаю на YouTube…", "pc_downloading": " — завантажую…", "pc_on": "Увімк", "pc_off": "Вимк", "pc_collapse": "Згорнути", "pc_configure": "Налаштувати", "pc_loading": "Завантажую…", "pc_required": "Потрібна для: ", "pc_builtin": "На ПК це вже робить Continue?", "pc_themes_desc": "Ті самі теми, що в CSS Loader на Деці. Зміни одразу, налаштування ПК окремі.", "pc_key_setup": "Введіть власний API-ключ SteamGridDB", "pc_key_save": "Зберегти ключ", "pc_music_setup": "Дозволити музику з YouTube та встановити yt-dlp", "pc_music_consent": "Пошук і завантаження музики використовують YouTube. Увімкніть, якщо згодні.", "pc_wait_game": "Доступно після закриття гри"});
 const HUB_GLYPHS = (typeof __PC_GLYPHS__ === 'undefined' ? {} : __PC_GLYPHS__);
+// Original geometric SVGs: white paths, no fonts, downloaded art or backgrounds.
+const PC_BUTTON_PATHS = {
+  a:'M10 23L16 9L22 23M12 19H20', b:'M11 9V23H17C24 23 24 16 17 16H11M17 16C23 16 23 9 17 9H11',
+  x:'M10 10L22 22M22 10L10 22', y:'M10 9L16 16L22 9M16 16V23',
+  cross:'M10 10L22 22M22 10L10 22',circle:'M24 16A8 8 0 1 0 8 16A8 8 0 1 0 24 16',
+  square:'M9 9H23V23H9Z',triangle:'M16 8L25 24H7Z',
+  menu:'M9 10H23M9 16H23M9 22H23',view:'M8 8H19V19H8ZM19 13H24V24H13V19',
+  options:'M10 11H22M10 16H22M10 21H22',share:'M16 23V9M11 14L16 9L21 14M10 20V24H22V20',
+  steam_menu:'M10 11H22M10 16H22M10 21H22',steam_view:'M10 16H10.1M16 16H16.1M22 16H22.1',
+  l:'M5 11V22H11',r:'M5 22V11H9C15 11 15 17 9 17H5M9 17L13 22',
+  bumper:'M19 11V22H23C29 22 29 16 23 16H19M23 16C28 16 28 11 23 11H19',
+  one:'M20 13L23 11V22M20 22H26',two:'M19 13C20 9 27 10 26 14L19 22H27',
+  trigger:'M18 11H28M23 11V22',
+};
+function pcControllerSvg(paths,frame=true) {
+  return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+(frame?'<circle cx="16" cy="16" r="14"/>':'')+'<path d="'+paths+'"/></svg>');
+}
+function pcControllerGlyph(source,family) {
+  if(!['xbox','playstation','steam'].includes(family)||typeof source!=='string')return null;
+  let file;
+  try { const u=new URL(source);if(u.hostname!=='steamloopback.host'||!u.pathname.startsWith('/steaminputglyphs/'))return null;file=u.pathname.split('/').pop().replace(/\.svg$/,''); }catch{return null;}
+  const match=/^(?:xbox|ps|ps4|ps5|shared|steam|steamdeck|steam_controller)_button_(a|b|x|y|cross|circle|square|triangle|start|back|menu|view|options|share|lb|rb|lt|rt|l1|r1|l2|r2)$/.exec(file);
+  if(!match)return null;
+  let key=match[1];
+  if(/^ps/.test(file)&&key==='x')key='a';
+  key=({cross:'a',circle:'b',square:'x',triangle:'y',menu:'start',view:'back',options:'start',share:'back',l1:'lb',r1:'rb',l2:'lt',r2:'rt'})[key]||key;
+  if(['lb','rb','lt','rt'].includes(key))return pcControllerSvg(PC_BUTTON_PATHS[key[0]]+PC_BUTTON_PATHS[family==='playstation'?(key[1]==='t'?'two':'one'):(key[1]==='t'?'trigger':'bumper')]);
+  if(key==='start'||key==='back')key=family==='playstation'?(key==='start'?'options':'share'):family==='steam'?(key==='start'?'steam_menu':'steam_view'):(key==='start'?'menu':'view');
+  else if(family==='playstation')key=({a:'cross',b:'circle',x:'square',y:'triangle'})[key]||key;
+  return PC_BUTTON_PATHS[key]?pcControllerSvg(PC_BUTTON_PATHS[key]):null;
+}
+const pcGlyphOriginals=new Map();
+function pcRefreshControllerGlyphs(restore=false) {
+  const doc=typeof uiDocument==='function'?uiDocument():null;
+  if(doc)for(const img of doc.querySelectorAll('img')){
+    const record=pcGlyphOriginals.get(img);
+    const attribute=img.getAttribute('data-continue-glyph-source');
+    const fromJsx=attribute&&['xbox','playstation','steam'].some(family=>img.src===pcControllerGlyph(attribute,family));
+    const original=fromJsx?attribute:record&&img.src===record.injected?record.original:img.src;
+    if(attribute&&attribute!==original)img.setAttribute('data-continue-glyph-source',original);
+    const src=restore?null:pcControllerGlyph(original,pluginSettings.pc_glyphs);
+    if(src){pcGlyphOriginals.set(img,{original,injected:src});if(img.src!==src)img.src=src;}
+    else if(record||attribute){if(img.src!==original)img.src=original;pcGlyphOriginals.delete(img);}
+  }
+  for(const [img,record]of pcGlyphOriginals)if(restore||!img.isConnected){if(restore&&img.src===record.injected)img.src=record.original;pcGlyphOriginals.delete(img);}
+}
+function pcSupportGlyph(family) {
+  const shape=family==='playstation'?'M6 11Q8 8 12 11H20Q24 8 26 11L29 24Q28 28 24 24L21 21H11L8 24Q4 28 3 24Z':family==='steam'?'M4 7H28V25H4ZM12 10H20V22H12M7 13V19M25 13V19':'M7 10Q10 8 13 11H19Q22 8 25 10L29 24Q28 28 24 24L21 20H11L8 24Q4 28 3 24Z';
+  return pcControllerSvg(shape+'M7 15H11M9 13V17M23 14H23.1M25 17H25.1',false);
+}
 const HUB_ICON = { trophy: "ach", camera: "cam", sun: "star", moon: "star", shrine: "target", beast: "shield", leaf: "bookmark",
   mask: "heart", wheel: "bolt", hourglass: "stopwatch", jump: "trend", bag: "backpack", tooth: "sword" };
 const __deckIcon = Icon;

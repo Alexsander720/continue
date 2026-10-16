@@ -1097,7 +1097,11 @@ $acl.AddAccessRule($rule);if ([IO.Directory]::Exists($p)) {[IO.Directory]::SetAc
                 invalidate(appid_int)
             with self._job_lock:
                 self._music_generation[appid_int] = self._music_generation.get(appid_int,0) + 1
-            self._delete_theme_files(appid_int)
+            # None suppresses playback through music_choices. Retain automatic
+            # audio for an immediate local Auto resume; discard custom overrides
+            # before their provenance is replaced by the None setting.
+            if self.music_current(appid_int) not in ('auto', 'none'):
+                self._delete_theme_files(appid_int)
             # settings_lock only; job_lock separately (no nesting).
             with self._settings_lock:
                 settings = _read_json(self._settings_path())
@@ -1127,9 +1131,11 @@ $acl.AddAccessRule($rule);if ([IO.Directory]::Exists($p)) {[IO.Directory]::SetAc
                 invalidate(appid_int)
             with self._job_lock:
                 self._music_generation[appid_int] = self._music_generation.get(appid_int,0) + 1
-            # Remove prior custom file so it is not claimed as automatic,
-            # then permit normal manager generation on next refresh.
-            self._delete_theme_files(appid_int)
+            # Only a custom choice makes this committed file a custom override.
+            # None already removes custom files, so None -> Auto can reuse the
+            # prepared automatic theme without an external download.
+            if self.music_current(appid_int) not in ('auto', 'none'):
+                self._delete_theme_files(appid_int)
             with self._settings_lock:
                 settings = _read_json(self._settings_path())
                 if not isinstance(settings, dict):

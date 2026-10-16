@@ -112,6 +112,15 @@ const PC_SETTINGS_CSS = `
 .cps-row{display:flex;gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}.cps-label{flex:1;min-width:0}.cps-row .cps-btn{flex-shrink:0}.cps-row.choices{display:block}.cps-choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.cps-choices .cps-btn{min-width:60px}.cps-scope{margin-bottom:20px}.cps-scope .cps-btn{flex:1}.cps-pill{padding:7px 11px;border:1px solid #45627b;border-radius:4px;font-size:13px;color:#c8dbed}.cps-status{margin:16px 0;padding:12px 16px;background:#223448;border-left:3px solid #83a7c8;color:#d4e2ef}.cps-status.error{border-color:#dda78d}.cps-footer{padding:14px 28px;border-top:1px solid #34414d;display:flex;align-items:center;gap:20px}.cps-footer small{flex:1;margin:0}
 @media(max-width:800px){.cps-layout{grid-template-columns:160px minmax(0,1fr)}.cps-content{padding:18px}.cps-header{padding:18px}.cps-row{gap:10px}.cps-choices .cps-btn{min-width:40px}}
 `;
+Object.assign(PC_SETTINGS_TEXT.en,{gb:'GB',glyph_detail:'Choose the button symbols manually. Steam default follows Steam Input.',glyph_preview:'Button symbols preview',pads_detail:'Changes the icon style. Support information still comes from Steam.'});
+Object.assign(PC_SETTINGS_TEXT.ru,{gb:'ГБ',glyph_detail:'Выберите символы кнопок вручную. Стандарт Steam следует Steam Input.',glyph_preview:'Образцы символов кнопок',pads_detail:'Меняется вид значков. Сведения о поддержке по-прежнему берём из Steam.'});
+Object.assign(PC_SETTINGS_TEXT.uk,{gb:'ГБ',glyph_detail:'Оберіть символи кнопок вручну. Стандарт Steam відповідає Steam Input.',glyph_preview:'Зразки символів кнопок',pads_detail:'Змінюється вигляд значків. Відомості про підтримку й надалі беремо зі Steam.'});
+PC_SETTINGS_TEXT.en.cache_detail+=' This is a ceiling, not reserved disk space. Downloads stop while free space is low.';
+PC_SETTINGS_TEXT.ru.cache_detail+=' Это предел, место заранее не резервируется. При нехватке свободного места загрузки останавливаются.';
+PC_SETTINGS_TEXT.uk.cache_detail+=' Це межа, місце заздалегідь не резервується. Якщо вільного місця замало, завантаження зупиняються.';
+function pcControllerChoices() {
+  return [['owner',psText('custom')],['native',psText('steam')],['xbox','Xbox'],['playstation','PlayStation'],['steam','Steam Deck / Steam Controller']];
+}
 function PcSettingsButton({ children, onClick, selected, disabled, primary, label }) {
   const activate = disabled ? undefined : onClick;
   return h(DFL.Focusable, {className:'cps-btn'+(selected?' selected':'')+(primary?' primary':''), role:'button', tabIndex:0,
@@ -223,14 +232,14 @@ function PcSettings({closeModal, initialSection='start', initialScope='global'})
     h('div',{className:'cps-row'},h('div',{className:'cps-label'},psText(s.theme_music_consent&&s.hub_music?'music_ready':'setup_optional'),h('small',null,psText('no_manual'))),B(psText('music'),()=>setSection('music'),{primary:true})),
     h('div',{className:'cps-row'},h('div',{className:'cps-label'},psText('art_optional'),h('small',null,'SteamGridDB')),B(psText('connections'),()=>setSection('connections'))));
   else if(section==='card')content=h(React.Fragment,null,h('h2',null,psText('card')),scopePicker(),
-    ...['story','description','facts','characters','achievements','latest_achievement','playtime'].map(k=>toggle(psText(k),selected?.[k]!==false,v=>pref(k,v),scope==='game'&&prefs?.game?.[k]===undefined?psText('inherited'):null)),
+    ...['story','description','facts','characters','achievements','latest_achievement','playtime'].filter(k=>k!=='characters'||fields.some(f=>f.has_characters)).map(k=>toggle(psText(k),selected?.[k]!==false,v=>pref(k,v),scope==='game'&&prefs?.game?.[k]===undefined?psText('inherited'):null)),
     appid?h(React.Fragment,null,h('h3',null,psText('individual')),fields.length?fields.map(f=>toggle(f.label,!selected?.hidden_fact_ids?.includes(f.id),v=>pref('hidden_fact_ids',v?(selected?.hidden_fact_ids||[]).filter(x=>x!==f.id):[...new Set([...(selected?.hidden_fact_ids||[]),f.id])]))):note(psText('no_facts'))):note(psText('no_game')),
     h('div',{className:'cps-choices'},B(psText(scope==='game'?'inherit':'reset'),()=>run(async()=>{await call('reset_card_preferences',scope==='game'?appid:null);await publishPcSettings(await call('get_settings'));}))));
   else if(section==='backgrounds')content=h(React.Fragment,null,h('h2',null,psText('backgrounds')),
     toggle(psText('live'),s.live_bg!=='off',v=>update('live_bg',v?'always':'off'),psText('live_detail')),
     toggle(psText('home_video'),s.home_live!==false,v=>update('home_live',v),psText('home_video_detail'),s.live_bg==='off'),
     choices(psText('quality'),s.media_quality||1080,[[720,'720p'],[1080,'1080p'],[2160,'4K']],v=>update('media_quality',v),psText('quality_detail')),
-    choices(psText('cache'),s.disk_limit_gb||2,[2,4,8,16].map(v=>[v,v+' GB']),v=>update('disk_limit_gb',v),psText('cache_detail')),
+    choices(psText('cache'),s.disk_limit_gb||2,[2,4,8,16,64].map(v=>[v,v+' '+psText('gb')]),v=>update('disk_limit_gb',v),psText('cache_detail')),
     toggle(psText('fallback'),!!s.media_fallback&&!!s.youtube_consent,v=>v&&!s.youtube_consent?setConsent('video'):update('media_fallback',v),psText('fallback_detail')),
     appid?h(React.Fragment,null,h('h3',null,name),choices(psText('mode'),s.game_bg?.[appid]||'auto',[['auto',psText('automatic')],['image',psText('still')],['steam',psText('native')]],v=>run(async()=>{await call('set_game_bg',appid,v);bgListeners.forEach(f=>f(appid,v));})),mediaState('background'),B(psText('request'),()=>run(async()=>{const r=await refreshMediaLatest(appid,name,null,()=>mounted.current);sourceListeners.forEach(f=>f(appid));return r;}))):null,
     h('div',{className:'cps-row'},h('div',{className:'cps-label'},psText('storage')+': '+Math.round((status?.bytes||0)/1048576)+' MB'),B(psText('clear'),()=>run(async()=>{const r=await call('clear_media_cache');homeLiveRefresh();sourceListeners.forEach(f=>f(appid));return r;}))));
@@ -245,8 +254,9 @@ function PcSettings({closeModal, initialSection='start', initialScope='global'})
     toggle(psText('installed'),!!s.home_installed_first,v=>update('home_installed_first',v)),h('div',{className:'cps-row'},h(UpdateRow)));
   else if(section==='appearance')content=h(React.Fragment,null,h('h2',null,psText('appearance')),
     toggle(psText('rounded'),!!themes.find(x=>x.name==='Round')?.active,v=>run(async()=>setThemes(await call('themes_set','Round',null,v)))),
-    choices(psText('glyphs'),s.pc_glyphs||'owner',[['owner',psText('custom')],['native',psText('steam')]],v=>update('pc_glyphs',v)),
-    choices(psText('pads'),s.pc_pads||'owner',[['owner',psText('custom')],['native',psText('steam')]],v=>update('pc_pads',v)),
+    choices(psText('glyphs'),s.pc_glyphs||'owner',pcControllerChoices(),v=>update('pc_glyphs',v),psText('glyph_detail')),
+    ['xbox','playstation','steam'].includes(s.pc_glyphs)?h('div',{className:'cps-choices','aria-label':psText('glyph_preview')},...['a','b','x','y','back','start','lb','rb','lt','rt'].map(k=>h('img',{key:k,alt:k.toUpperCase(),src:pcControllerGlyph('https://steamloopback.host/steaminputglyphs/xbox_button_'+k+'.svg',s.pc_glyphs),style:{width:32,height:32}}))):null,
+    choices(psText('pads'),s.pc_pads||'owner',pcControllerChoices(),v=>update('pc_pads',v),psText('pads_detail')),
     toggle(psText('movie'),movie,v=>run(async()=>setMovie(await setStartupMovie(v)))),
     h('div',{className:'cps-row'},h('div',{className:'cps-label'},psText('advanced'),h('small',null,psText('advanced_detail'))),B(psText('settings'),openThemes)));
   else if(section==='connections')content=h(React.Fragment,null,h('h2',null,psText('connections')),

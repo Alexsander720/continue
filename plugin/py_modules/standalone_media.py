@@ -429,6 +429,10 @@ class MediaManager:
     def _run(self, command, *, capture_output=True, text=False, timeout=180, **kwargs):
         self._checkpoint()
         kwargs['env'] = self._child_env(kwargs.get('env'))
+        if os.name == 'nt':
+            # The Windows service runs under pythonw: redirected output alone
+            # still allocates a console (including Windows Terminal delegation).
+            kwargs['creationflags'] = kwargs.get('creationflags', 0) | subprocess.CREATE_NO_WINDOW
         if self._injected_run:
             result = self._injected_run(command, capture_output=capture_output, text=text, timeout=timeout, **kwargs)
             self._checkpoint()

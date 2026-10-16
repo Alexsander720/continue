@@ -162,13 +162,32 @@ HubAppButtons = function () {
 };
 
 const PAD_PS = new Set([16, 18]), PAD_FULL = 1;
+const pcVisualSubscribers=new Set();
+function pcSubscribeVisualSettings(listener) {
+  pcVisualSubscribers.add(listener);settingsListeners.add(listener);
+  return()=>{pcVisualSubscribers.delete(listener);settingsListeners.delete(listener);};
+}
+function pcRestoreVisualSettings() {
+  for(const listener of pcVisualSubscribers){
+    settingsListeners.delete(listener);
+    try{listener({...pluginSettings,pc_glyphs:'native',pc_pads:'native'});}catch{}
+  }
+  pcVisualSubscribers.clear();
+}
 function isPadFeature(c) { return c && c.props && typeof c.props.feature === "number" && "minimode" in c.props && "overview" in c.props; }
 function padShown(c) {   // компонент Steam сам решает, поддерживает ли игра признак: render() → null, если нет
   try { return c.type?.prototype?.render ? c.type.prototype.render.call({ props: c.props }) != null : true; } catch (e) { return true; }
 }
-function pcPadIcons(kids) {
+function pcPadIcons(kids,family=pluginSettings.pc_pads) {
+  if(family==='native')return kids;
+  if(['xbox','playstation','steam'].includes(family))return kids.filter(padShown).map((c,i)=>h('span',{key:'continue-support-'+i,style:{position:'relative',display:'inline-flex'}},h('span',{style:{opacity:0}},c),h('img',{src:pcSupportGlyph(family),alt:'',style:{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}})));
   const ps = kids.filter(c => PAD_PS.has(c.props.feature) && padShown(c));
   return ps.length ? ps : kids.filter(c => c.props.feature === PAD_FULL && padShown(c)).slice(0, 1);
+}
+function PcSupportFeatures({kids}) {
+  const [settings,setSettings]=useState(pluginSettings);
+  useEffect(()=>pcSubscribeVisualSettings(setSettings),[]);
+  return h(React.Fragment,null,...pcPadIcons(kids,settings.pc_pads));
 }
 
 // Страница игры открывается сверху. Steam помнит прокрутку каждой страницы: один раз ушли вниз (к «Активности»,
@@ -242,9 +261,8 @@ function useContinueLabel(appid, anchorRef) {
 function patchAppPagePC() {
   return keepJsxLayer('pc-page', (fn, type, props, key) => {
     const inner = DFL.appDetailsClasses?.InnerContainer, text = DFL.appActionButtonClasses?.ButtonText;
-    if (props && Array.isArray(props.children) && props.children.length > 1 && props.children.every(isPadFeature)
-        && pluginSettings.pc_pads !== 'native') {
-      props = { ...props, children: pcPadIcons(props.children) };
+    if (props && Array.isArray(props.children) && props.children.length > 1 && props.children.every(isPadFeature)) {
+      props = { ...props, children: [h(PcSupportFeatures,{kids:props.children})] };
     } else if (props && PC_PLAY_LABELS.has(props.children) && text && typeof props.className === 'string'
         && props.className.split(' ').includes(text) && __ghContinue.has(currentAppId())) {
       props = { ...props, children: t('pc_continue') };
@@ -260,16 +278,28 @@ function patchAppPagePC() {
   });
 }
 const PS_TYPES = new Set([33, 34, 45, 48]), PS5 = 45;
+function PcControllerSymbols({component,original}) {
+  const [settings,setSettings]=useState(pluginSettings);
+  useEffect(()=>pcSubscribeVisualSettings(setSettings),[]);
+  let props=original;
+  if(settings.pc_glyphs==='owner')try{
+    const find=typeof __ghBoot!=='undefined'&&__ghBoot.glyphFind;
+    if(!PS_TYPES.has(original.controllerType)&&(!find||find(original.controllerSource,original.controllerModeInput,PS5,original.controllerStyle,original.knockout)))props={...original,controllerType:PS5};
+  }catch(error){log('glyph',error);}
+  return h(component,props);
+}
 const HOME_TABS = new Set(['WhatsNew', 'Friends', 'Recommended']);
 function patchPcVisuals() {
   return keepJsxLayer('pc-visuals', (fn, type, props, key) => {
-    if (props && pluginSettings.pc_glyphs !== 'native') {
+    if(props&&typeof props.controllerType==='number'&&props.controllerSource!==undefined&&props.controllerModeInput!==undefined)
+      return fn.call(this,PcControllerSymbols,{component:type,original:props},key);
+    if(type==='img'&&typeof props?.src==='string'){
+      const src=pcControllerGlyph(props.src,pluginSettings.pc_glyphs);
+      if(src)props={...props,src,'data-continue-glyph-source':props.src};
+    }
+    if (props && pluginSettings.pc_glyphs === 'owner') {
       try {
-        const find = typeof __ghBoot !== 'undefined' && __ghBoot.glyphFind;
-        if (typeof props.controllerType === 'number' && props.controllerSource !== undefined && props.controllerModeInput !== undefined
-            && !PS_TYPES.has(props.controllerType) && (!find || find(props.controllerSource, props.controllerModeInput, PS5, props.controllerStyle, props.knockout)))
-          props = { ...props, controllerType: PS5 };
-        else if (type === 'img' && typeof props.src === 'string' && props.src.includes('/steaminputglyphs/xbox_button_logo.svg'))
+        if (type === 'img' && typeof props.src === 'string' && props.src.includes('/steaminputglyphs/xbox_button_logo.svg'))
           props = { ...props, src: props.src.replace('xbox_button_logo.svg', 'ps4_button_logo.svg') };
       } catch (error) { log('glyph', error); }
     }
@@ -289,7 +319,9 @@ function patchPcVisuals() {
 try { window.__ghPC?.unload?.(PcPage); } catch (error) { log('unload', error); }
 const __stopTab = patchLibraryDefaultTab(), __stopPage = patchAppPagePC(), __stopButtons = patchAppButtons(), __stopVisuals = patchPcVisuals(), __stopBattery = patchPadBattery(), __stopLaunchNotice = ensureLaunchNoticeHidden();
 ensureGlobalStyle();
-const __globalStyleTimer = setInterval(ensureGlobalStyle, 2000);
+const __pcGlyphSettingsChanged=()=>pcRefreshControllerGlyphs();
+settingsListeners.add(__pcGlyphSettingsChanged);
+const __globalStyleTimer = setInterval(()=>{ensureGlobalStyle();pcRefreshControllerGlyphs();}, 2000);
 let __pcMounted = true;
 call('get_settings').then(settings => {
   if (!__pcMounted) return;
@@ -304,6 +336,10 @@ window.__ghPC = {
   debug: { FIT, settings: openPcSettings, art: openArtPicker, music: openMusicPicker, themes: openThemes,
     movie: setStartupMovie, movieState: () => { const s = steamSettingsApi()?.store.m_ClientSettings || {}; return {id:String(s.startup_movie_id ?? '0'),path:s.startup_movie_local_path || '',shuffle:!!s.startup_movie_shuffle}; } },
   unload(next) {
+    __stopVisuals();
+    settingsListeners.delete(__pcGlyphSettingsChanged);
+    pcRestoreVisualSettings();
+    pcRefreshControllerGlyphs(true);
     __pcMounted = false;
     if (unpatchHomeLive) { unpatchHomeLive(); unpatchHomeLive = null; }
     clearInterval(__globalStyleTimer);
@@ -313,7 +349,7 @@ window.__ghPC = {
     __ghGlobalStyle?.remove();
     for (const [node, original] of __pcOriginalLabels) { if (node.textContent === t('pc_continue')) node.textContent = original; }
     __pcOriginalLabels.clear();
-    __stopLaunchNotice(); __stopBattery(); __stopVisuals(); __stopButtons(); __stopPage(); __stopTab();
+    __stopLaunchNotice(); __stopBattery(); __stopButtons(); __stopPage(); __stopTab();
     if (next) __ghSwap.forEach(update => update(next));
     __ghPending.forEach(p => p.reject(new Error('Continue? unloaded'))); __ghPending.clear();
     return next ? Promise.resolve(true) : restorePcStartupMovie();
