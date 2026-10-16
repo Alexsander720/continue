@@ -12,11 +12,11 @@
 
 </div>
 
-> **Публічна альфа · Steam Deck: встановлення із ZIP/URL через Decky · ПК/Big Picture — згодом, пакет ще не пройшов приймання на чистій Windows.**
+> **Публічна альфа · Steam Deck (`continue-deck-0.1.4.zip`) через Decky · Windows / Big Picture (`continue-pc-0.1.4-r19.zip`): альфа перевірена на Windows 11 на одному комп'ютері власника та в автотестах; на чистій Windows 10/ARM64 і з різними антивірусами не перевірялася. Див. [інструкцію для ПК](docs/install-pc.uk.md) та [останній реліз](https://github.com/Alexsander720/continue/releases/latest).**
 
 Continue? додає на сторінку гри у Steam останні підтверджені розділ, місце, мету та корисні факти зі збереження. Повернувся за тиждень? Пригадай, де зупинився, перш ніж натиснути «Продовжити». Для тла можна обрати трейлер Steam, трейлер YouTube за твоєю згодою, власний запис Steam Game Recording або статичне зображення.
 
-[Встановлення на Steam Deck](docs/install-deck.uk.md) · [Останній реліз](https://github.com/Alexsander720/continue/releases/latest) · [Пам’ятка альфа-тестувальника](docs/alpha-testers.uk.md) · [Запустити вітрину](docs/preview.uk.md)
+[Встановлення на Steam Deck](docs/install-deck.uk.md) · [Встановлення на Windows ПК](docs/install-pc.uk.md) · [Швидке встановлення](docs/quick-install.uk.md) · [Останній реліз](https://github.com/Alexsander720/continue/releases/latest) · [Пам’ятка альфа-тестувальника](docs/alpha-testers.uk.md) · [Запустити вітрину](docs/preview.uk.md)
 
 <div align="center">
 
@@ -140,11 +140,11 @@ Sally Face та Alice: Madness Returns не зареєстровані: наяв
 
 ## Встановлення, оновлення та видалення
 
-**Steam Deck:** завантаж `continue-deck-<версія>.zip` і відповідний `.sha256` із [останнього релізу](https://github.com/Alexsander720/continue/releases/latest). ZIP не потрібно розпаковувати. Альфи ще немає в магазині Decky. Встанови ZIP або пряме посилання на цей файл через **Decky → Налаштування → Розробник → Встановити з URL/ZIP**. Під час поширення релізу контрольна сума має бути поруч із ZIP. Встановлення, відновлення, оновлення й видалення описано в [інструкції для Steam Deck](docs/install-deck.uk.md).
+**Steam Deck:** завантаж `continue-deck-0.1.4.zip` і відповідний `.sha256` із [останнього релізу](https://github.com/Alexsander720/continue/releases/latest). ZIP не потрібно розпаковувати. Альфи ще немає в магазині Decky. Встанови ZIP або пряме посилання на цей файл через **Decky → Налаштування → Розробник → Встановити з URL/ZIP**. Під час поширення релізу контрольна сума має бути поруч із ZIP. Встановлення, відновлення, оновлення й видалення описано в [інструкції для Steam Deck](docs/install-deck.uk.md).
 
 У списку плагінів Decky назва — **Continue** (Decky не завантажує назви з `?`); у самому інтерфейсі — **Continue?**.
 
-**Windows / Big Picture — згодом.** Окремий пакет `continue-pc-<версія>.zip` та встановлювач `setup.cmd` перевірено на фікстурах: встановлення у профіль без прав адміністратора, відновлення, status, відкат оновлення й видалення. Приймання на чистій Windows зі справжнім Steam, SmartScreen та антивірусом ще попереду. До релізу для Deck цей пакет не входить. В [інструкції для ПК](docs/install-pc.uk.md) описано локальний налагоджувальний прапорець Steam, згоду на нього, встановлення та видалення.
+**Windows / Big Picture:** ПК-пакет випущено як `continue-pc-0.1.4-r19.zip` (разом із `.sha256`) у [релізі v0.1.4](https://github.com/Alexsander720/continue/releases/latest). Для Steam Deck випускається окремий пакет `continue-deck-0.1.4.zip`. Це публічна альфа: перевірено на Windows 11 на одному комп'ютері власника та в автотестах, на чистій Windows 10/ARM64 і з різними антивірусами поки не перевірялося. Встановлення потребує встановленого Python 3.10+ та Steam із увімкненим локальним налагоджувальним портом (це робить `setup.cmd` за вашою згодою). Чесні обмеження: YouTube із домашньої IP-адреси іноді тимчасово відхиляє запити; SmartScreen або антивірус можуть показувати попередження для непідписаних скриптів. Подробиці, перевірка статусу, відкат і видалення — в [інструкції для ПК](docs/install-pc.uk.md) та [шпаргалці швидкого встановлення](docs/quick-install.uk.md).
 
 <a id="report"></a>
 
@@ -223,7 +223,7 @@ python tools/preview.py
 
 ## Що далі
 
-Далі — приймання на чистих Deck LCD та OLED: встановлення, оновлення й видалення, фокус контролера, сон і пробудження, робота без мережі, статичне тло у разі збоїв та ліміти кешу. Windows / Big Picture перед випуском потребує окремого приймання на чистому ПК зі справжнім Steam.
+Далі — зворотний зв'язок від гравців і перевірка на чистих Deck LCD та OLED, а також ширше тестування ПК-версії на чистих інсталяціях Windows 10, ARM64 та з різноманітними антивірусами.
 
 Решту перевірок наведено в [дорожній карті](docs/ROADMAP.md), випущені зміни — у [журналі](CHANGELOG.md). Строків і сумісності наперед не обіцяємо.
 
@@ -234,7 +234,7 @@ python tools/preview.py
 <details>
 <summary><b>Можна вже встановити Continue?</b></summary>
 
-Так, на Steam Deck: встанови ZIP [останнього релізу](https://github.com/Alexsander720/continue/releases/latest) через Decky за [інструкцією](docs/install-deck.uk.md). Windows / Big Picture — згодом: окремий пакет ще не пройшов приймання на чистій Windows.
+Так. Для Steam Deck завантаж `continue-deck-0.1.4.zip` з [останнього релізу](https://github.com/Alexsander720/continue/releases/latest) і дотримуйся [інструкції для Steam Deck](docs/install-deck.uk.md). Для Windows / Big Picture завантаж `continue-pc-0.1.4-r19.zip` із того самого [релізу v0.1.4](https://github.com/Alexsander720/continue/releases/latest) і скористайся [інструкцією для ПК](docs/install-pc.uk.md) або [шпаргалкою швидкого встановлення](docs/quick-install.uk.md). ПК-версія — це альфа: перевірена на Windows 11 на одному комп'ютері власника та в автотестах; на чистій Windows 10/ARM64 і з різними антивірусами не перевірялася. Потрібен встановлений Python 3.10+, `setup.cmd` за згодою вмикає локальний налагоджувальний порт Steam, а SmartScreen може попереджати про непідписані скрипти.
 
 </details>
 

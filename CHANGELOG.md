@@ -4,7 +4,11 @@ All notable public changes are recorded here. Continue? follows semantic version
 
 ## 0.1.4 — 2026-10-16
 
-Steam Deck update. Tested on a real Steam Deck OLED.
+Steam Deck and Windows Big Picture release. Tested on a real Steam Deck OLED and Windows 11 x64.
+
+### Added
+
+- Public Windows / Steam Big Picture package (`continue-pc-0.1.4-r19.zip` with `.sha256`), tested on Windows 11 x64 and automated test suites.
 
 ### Changed
 
@@ -16,10 +20,6 @@ Steam Deck update. Tested on a real Steam Deck OLED.
 - Fact icons and portraits restored for NieR:Automata, Horizon Forbidden West, and Alan Wake.
 - Clear theme statuses: when YouTube temporarily rejects a request, the plugin says so and lets you retry later.
 - More reliable media helper on Steam Deck: it runs with a clean environment under Decky.
-
-### Not included
-
-- The Windows / Steam Big Picture package. It is prepared and will ship separately after hands-on acceptance.
 
 ## 0.1.0-alpha — 2026-10-10
 

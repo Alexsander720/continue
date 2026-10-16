@@ -2,7 +2,7 @@
 
 **English** · [Українська](install-deck.uk.md) · [Русский](install-deck.ru.md)
 
-> This is an alpha for testers, not a Decky Store release. Windows and Steam Big Picture support comes later.
+> This is an alpha for testers, not a Decky Store release. For Windows / Big Picture, see the [PC guide](install-pc.md) and [quick install](quick-install.md).
 
 ## Before you install
 

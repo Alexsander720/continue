@@ -16,4 +16,4 @@ Descriptions use your Steam language. An untranslated original is marked. No Goo
 
 **Appearance** keeps the existing Big Picture style. Detailed themes are under **More appearance options**. Changes apply immediately; B / Esc closes settings.
 
-**Status:** local alpha test candidate; not published. Tested on Windows 11 x64. Windows 10, ARM64, and a clean system without Python are experimental — feedback is welcome. See [Windows installation](install-pc.md).
+**Status:** public alpha (`continue-pc-0.1.4-r19.zip`), published in release v0.1.4. Tested on Windows 11 x64 on the owner's PC. Windows 10, ARM64, and a clean system without Python are experimental — feedback is welcome. See [Windows installation](install-pc.md) and [quick install](quick-install.md).

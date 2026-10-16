@@ -12,11 +12,11 @@
 
 </div>
 
-> **Public alpha · Steam Deck: install from ZIP/URL through Decky · PC / Big Picture comes later; the package has not yet passed acceptance on a clean Windows PC.**
+> **Public alpha · Steam Deck (`continue-deck-0.1.4.zip`) through Decky · Windows / Big Picture (`continue-pc-0.1.4-r19.zip`): alpha tested on Windows 11 on the owner's PC and in automated tests; clean Windows 10/ARM64 and diverse antiviruses are untested. See [PC guide](docs/install-pc.md) and [latest release](https://github.com/Alexsander720/continue/releases/latest).**
 
 Continue? puts the last proven chapter, location, objective and useful facts from your save on the Steam game page. Come back after a week and see where you stopped before pressing Continue. Choose a Steam trailer, a YouTube trailer with your consent, your own Steam Game Recording clip or a still image as the background.
 
-[Install on Steam Deck](docs/install-deck.md) · [Latest release](https://github.com/Alexsander720/continue/releases/latest) · [Alpha tester checklist](docs/alpha-testers.md) · [Try the browser showcase](docs/preview.md)
+[Install on Steam Deck](docs/install-deck.md) · [Install on Windows PC](docs/install-pc.md) · [Quick install](docs/quick-install.md) · [Latest release](https://github.com/Alexsander720/continue/releases/latest) · [Alpha tester checklist](docs/alpha-testers.md) · [Try the browser showcase](docs/preview.md)
 
 <div align="center">
 
@@ -140,11 +140,11 @@ The plugin interface is translated directly to English, Ukrainian, and Russian. 
 
 ## Install, update, and remove
 
-**Steam Deck:** download `continue-deck-<version>.zip` and its matching `.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
+**Steam Deck:** download `continue-deck-0.1.4.zip` and its matching `.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
 
 In Decky’s plugin list the name is **Continue** (Decky cannot load a plugin name containing `?`); inside the interface it is **Continue?**.
 
-**Windows / Big Picture comes later.** A separate `continue-pc-<version>.zip` package and `setup.cmd` installer have been tested with fixtures: per-user setup without administrator rights, repair, status, update rollback and uninstall. Acceptance with real Steam, SmartScreen and antivirus on a clean Windows PC is still pending. It is not part of the Deck release. The [PC guide](docs/install-pc.md) explains the local Steam debugging flag, consent, setup and removal.
+**Windows / Big Picture:** the package is released as `continue-pc-0.1.4-r19.zip` (with `continue-pc-0.1.4-r19.zip.sha256`) in the [v0.1.4 release](https://github.com/Alexsander720/continue/releases/latest). Steam Deck uses a separate `continue-deck-0.1.4.zip`. This is a public alpha: verified on Windows 11 on the owner's single computer and in automated tests; testing on clean Windows 10, ARM64, and with diverse antivirus suites has not been performed yet. Installation requires Steam with the local debugging port enabled (`127.0.0.1:8080`), which `setup.cmd` configures with your consent. Honest limits: Python 3.10+ must be installed; Windows SmartScreen or antivirus may show an unsigned-script warning; and YouTube may occasionally and temporarily reject requests from home IP addresses. See the [PC installation guide](docs/install-pc.md) and [quick install cheat sheet](docs/quick-install.md) for setup, status verification, updates, and removal.
 
 <a id="report"></a>
 
@@ -225,7 +225,7 @@ Reader changes are reviewed through deterministic JSON golden snapshots. Updatin
 
 ## What is next
 
-Next comes acceptance on clean Deck LCD and OLED devices: installation, update/removal, controller focus, suspend/resume, offline behavior, media fallback and cache limits. Windows / Big Picture needs separate acceptance on a clean PC with real Steam before release.
+Next comes acceptance on clean Deck LCD and OLED devices, as well as broader Windows acceptance across clean Windows 10 setups, ARM64 hardware, and diverse antivirus configurations.
 
 The [roadmap](docs/ROADMAP.md) lists the remaining checks, and the [changelog](CHANGELOG.md) records released changes. Dates and compatibility are not promised.
 
@@ -236,7 +236,7 @@ The [roadmap](docs/ROADMAP.md) lists the remaining checks, and the [changelog](C
 <details>
 <summary><b>Can I install Continue? now?</b></summary>
 
-Yes, on Steam Deck: install the [latest release ZIP](https://github.com/Alexsander720/continue/releases/latest) through Decky. Follow the [Deck guide](docs/install-deck.md). Windows / Big Picture comes later; its separate package has not passed clean Windows acceptance.
+Yes. For Steam Deck: download `continue-deck-0.1.4.zip` from the [latest release](https://github.com/Alexsander720/continue/releases/latest) and follow the [Deck guide](docs/install-deck.md). For Windows / Big Picture: download `continue-pc-0.1.4-r19.zip` from the same [v0.1.4 release](https://github.com/Alexsander720/continue/releases/latest) and follow the [PC guide](docs/install-pc.md) or [quick install cheat sheet](docs/quick-install.md). The PC build is an alpha tested on Windows 11 on the owner's single machine and in automated tests; clean Windows 10, ARM64, and diverse antiviruses are untested. Python 3.10+ must be installed, `setup.cmd` enables Steam's local debugging port with your consent, and SmartScreen or antivirus may warn about unsigned scripts.
 
 </details>
 

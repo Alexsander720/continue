@@ -12,11 +12,11 @@
 
 </div>
 
-> **Публичная альфа · Steam Deck: установка из ZIP/URL через Decky · ПК/Big Picture — позже, пакет ещё не принят на чистой Windows.**
+> **Публичная альфа · Steam Deck (`continue-deck-0.1.4.zip`) через Decky · Windows / Big Picture (`continue-pc-0.1.4-r19.zip`): альфа проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. См. [инструкцию для ПК](docs/install-pc.ru.md) и [последний релиз](https://github.com/Alexsander720/continue/releases/latest).**
 
 Continue? добавляет на страницу игры в Steam последнюю доказанную главу, место, цель и полезные факты из сохранения. Вернулся через неделю? Вспомни, где остановился, прежде чем нажать «Продолжить». Фоном можно выбрать трейлер Steam, трейлер YouTube с твоего согласия, свою запись Steam Game Recording или статичную иллюстрацию.
 
-[Установка на Steam Deck](docs/install-deck.ru.md) · [Последний релиз](https://github.com/Alexsander720/continue/releases/latest) · [Памятка альфа-тестера](docs/alpha-testers.ru.md) · [Запустить витрину](docs/preview.ru.md)
+[Установка на Steam Deck](docs/install-deck.ru.md) · [Установка на Windows ПК](docs/install-pc.ru.md) · [Быстрая установка](docs/quick-install.ru.md) · [Последний релиз](https://github.com/Alexsander720/continue/releases/latest) · [Памятка альфа-тестера](docs/alpha-testers.ru.md) · [Запустить витрину](docs/preview.ru.md)
 
 <div align="center">
 
@@ -140,11 +140,11 @@ Sally Face и Alice: Madness Returns не зарегистрированы: им
 
 ## Установка, обновление и удаление
 
-**Steam Deck:** скачай `continue-deck-<версия>.zip` и соответствующий `.sha256` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
+**Steam Deck:** скачай `continue-deck-0.1.4.zip` и соответствующий `.sha256` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
 
 В списке плагинов Decky имя — **Continue** (Decky не загружает имя с `?`); внутри интерфейса — **Continue?**.
 
-**Windows / Big Picture — позже.** Отдельный пакет `continue-pc-<версия>.zip` и установщик `setup.cmd` проверены на фикстурах: установка в профиль без прав администратора, ремонт, status, откат обновления и удаление. Приёмка на чистой Windows с настоящим Steam, SmartScreen и антивирусом ещё впереди. В релиз для Deck этот пакет не входит. В [инструкции для ПК](docs/install-pc.ru.md) описаны локальный отладочный флаг Steam, согласие на него, установка и удаление.
+**Windows / Big Picture:** ПК-пакет выпущен как `continue-pc-0.1.4-r19.zip` (вместе с `.sha256`) в [релизе v0.1.4](https://github.com/Alexsander720/continue/releases/latest). Для Steam Deck выпускается отдельный пакет `continue-deck-0.1.4.zip`. Это публичная альфа: проверен на Windows 11 на одном компьютере владельца и в автотестах, на чистой Windows 10/ARM64 и с разными антивирусами пока не проверялся. Установка требует установленный Python 3.10+ и Steam с включённым локальным отладочным портом (это делает `setup.cmd` с вашего согласия). Честные ограничения: YouTube с домашнего IP иногда временно отклоняет запросы; SmartScreen или антивирус могут показывать предупреждение для неподписанных скриптов. Подробности, проверка статуса, откат и удаление — в [инструкции для ПК](docs/install-pc.ru.md) и [шпаргалке быстрой установки](docs/quick-install.ru.md).
 
 <a id="report"></a>
 
@@ -223,7 +223,7 @@ python tools/preview.py
 
 ## Что дальше
 
-Дальше — приёмка на чистых Deck LCD и OLED: установка, обновление и удаление, фокус контроллера, сон и пробуждение, работа без сети, статичный фон при сбоях и лимиты кэша. Windows / Big Picture перед выпуском требует отдельной приёмки на чистом ПК с настоящим Steam.
+Дальше — обратная связь от игроков и проверка на чистых Deck LCD и OLED, а также расширенное тестирование ПК-версии на чистых установках Windows 10, ARM64 и с различными антивирусами.
 
 Оставшиеся проверки перечислены в [дорожной карте](docs/ROADMAP.md), выпущенные изменения — в [журнале](CHANGELOG.md). Сроки и совместимость заранее не обещаем.
 
@@ -234,7 +234,7 @@ python tools/preview.py
 <details>
 <summary><b>Можно уже установить Continue?</b></summary>
 
-Да, на Steam Deck: установи ZIP [последнего релиза](https://github.com/Alexsander720/continue/releases/latest) через Decky по [инструкции](docs/install-deck.ru.md). Windows / Big Picture — позже: отдельный пакет ещё не принят на чистой Windows.
+Да. Для Steam Deck скачай `continue-deck-0.1.4.zip` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для Steam Deck](docs/install-deck.ru.md). Для Windows / Big Picture скачай `continue-pc-0.1.4-r19.zip` из того же [релиза v0.1.4](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для ПК](docs/install-pc.ru.md) или [шпаргалке быстрой установки](docs/quick-install.ru.md). ПК-версия — это альфа: проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. Требуется установленный Python 3.10+, `setup.cmd` с согласия включает локальный отладочный порт Steam, а SmartScreen может предупреждать о неподписанных скриптах.
 
 </details>
 

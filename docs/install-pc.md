@@ -2,9 +2,9 @@
 
 **English** · [Українська](install-pc.uk.md) · [Русский](install-pc.ru.md)
 
-This guide is for a **separately provided Windows Steam Big Picture test package** (`continue-pc-<version>.zip`).
-The installer and runtime code are present in the repository under `pc/`, but **a public PC package has passed real-Steam checks on Windows 11 x64, is still awaiting clean-device acceptance, and is not published in GitHub Releases yet**.
-The installer and service have been verified with an isolated fake Steam/CDP server and temporary Windows profiles. On 2026-10-13, installation, repair, a game card, native library tabs, settings, refusal and removal were also checked with real Steam Big Picture on Windows 11 x64, with Python and Steam debugging already available. A clean account without Python, Windows 10 and ARM64 are experimental; physical controller use is still pending. Treat this test package as an alpha and close games before restarting Steam.
+This guide covers the Windows Steam Big Picture package (`continue-pc-0.1.4-r19.zip`) released in [v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
+The installer and runtime code are present in the repository under `pc/`. The package has passed real-Steam checks on Windows 11 x64 on the owner's PC and in automated tests, while acceptance on clean Windows 10, ARM64, and with diverse antivirus suites is ongoing.
+On 2026-10-13, installation, repair, a game card, native library tabs, settings, refusal and removal were also checked with real Steam Big Picture on Windows 11 x64, with Python and Steam debugging already available. A clean account without Python, Windows 10 and ARM64 are experimental; physical controller use is still pending. Treat this package as an alpha and close games before restarting Steam.
 
 Requirements: Windows 10 or 11, Steam installed for the current Windows user, and Steam Big Picture. Administrator
 rights are neither requested nor needed. Continue? uses only Python's standard library. If Python 3.10 or newer with
@@ -13,14 +13,19 @@ checks its published SHA-256, and installs it only under your user profile. It d
 
 ## Install: double-click, consent, restart Steam
 
-1. Take the separately provided test package `continue-pc-<version>.zip` together with its checksum file
-   `continue-pc-<version>.zip.sha256`, or build a local test candidate from repository source:
+1. Download `continue-pc-0.1.4-r19.zip` together with its checksum file `continue-pc-0.1.4-r19.zip.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest).
+   Verify the checksum in PowerShell:
+   ```powershell
+   (Get-FileHash .\continue-pc-0.1.4-r19.zip).Hash -eq ((Get-Content .\continue-pc-0.1.4-r19.zip.sha256) -split '\s+')[0]
+   ```
+   If it outputs `True`, extract the whole ZIP to an ordinary local folder.
+   Alternatively, you can build a local test candidate from repository source:
    ```bash
    python tools/build_pc_zip.py
    # or with an explicit version:
-    python tools/build_pc_zip.py 0.1.4
+   python tools/build_pc_zip.py 0.1.4
    ```
-   This creates `dist/continue-pc-<version>.zip` and `dist/continue-pc-<version>.zip.sha256`. Building produces a local test candidate for verification, not a published release or clean-device acceptance. Verify the checksum if you received the files from another person, then extract the whole ZIP to an ordinary local folder.
+   This creates `dist/continue-pc-<version>.zip` and `dist/continue-pc-<version>.zip.sha256`.
 2. Double-click `Continue\setup.cmd` (or `Continue\pc\setup.cmd`). Windows may show a warning because the package is
    readable `.cmd`, `.ps1`, `.py`, and JavaScript rather than a signed installer EXE. Inspect the scripts if desired;
    do not grant administrator rights. `setup.cmd` uses `-ExecutionPolicy Bypass` only for its own local PowerShell script.
@@ -92,7 +97,7 @@ A public installation checks GitHub Releases no more than once per day. It accep
 the directory atomically, starts the new service, and waits for a fresh version/nonce health record. If startup fails, it
 restores and restarts the previous app. Development checkouts without `RELEASE.json` do not update.
 
-No public PC release is currently published on GitHub Releases. Public automatic updates will become operational once an official PC release is published after clean Windows/Steam acceptance. Automatic update must still be exercised against an actual draft/test release before the PC alpha is announced publicly.
+The public PC alpha package is published on GitHub Releases starting with v0.1.4 (`continue-pc-0.1.4-r19.zip`). Future updates will be checked automatically against subsequent releases once published.
 
 ## Remove
 
@@ -124,4 +129,4 @@ memory until Steam restarts, so close games and accept the offered normal restar
 | SmartScreen/antivirus warning | Alpha scripts are not code-signed; embedded Python itself is signed by python.org | Inspect the readable source and checksum. Do not disable protection globally or run as administrator |
 | Uninstall says another installation owns the task | A task with the same name does not match `install.json` | Preserve it; restore the correct manifest or remove that unrelated task manually only after identifying it |
 
-[Steam Deck installation](install-deck.md) · [Alpha tester checklist](alpha-testers.md) · [README](../README.md)
+[Steam Deck installation](install-deck.md) · [Quick install](quick-install.md) · [Alpha tester checklist](alpha-testers.md) · [README](../README.md)

@@ -2,7 +2,7 @@
 
 [English](install-deck.md) · [Українська](install-deck.uk.md) · **Русский**
 
-> Это альфа для тестеров, а не релиз в магазине Decky. Windows и Steam Big Picture — позже.
+> Это альфа для тестеров, а не релиз в магазине Decky. Для Windows / Big Picture см. [инструкцию для ПК](install-pc.ru.md) и [быструю установку](quick-install.ru.md).
 
 ## Перед установкой
 
