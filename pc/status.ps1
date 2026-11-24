@@ -12,7 +12,13 @@ try {
     $manifest = Read-ContinueJson $context.Manifest
     if ($manifest) { Assert-ContinueManifest $manifest; $steam = $manifest.steam } else { $steam = Get-ContinueSteamPath }
     $cdp = Get-ContinueCdpState
-    $media = Get-ContinueMediaState
+    $mode = if ($manifest -and $manifest.mode -eq 'owner-theme') { 'owner-theme' } else { 'full' }
+    $controlPort = 8793
+    if ($mode -eq 'owner-theme') {
+        $ready = Read-ContinueJson (Join-Path $context.Root 'service_ready.json')
+        $controlPort = if ($ready -and $ready.media_port -ge 1024 -and $ready.media_port -le 65535) { [int]$ready.media_port } else { 0 }
+    }
+    $media = if ($controlPort -gt 0) { Get-ContinueMediaState $controlPort } else { 'closed' }
     $running = @(Get-ContinueService $manifest).Count -gt 0
     $steamRunning = Test-ContinueSteamRunning $steam
     $flag = Test-Path -LiteralPath (Join-Path $steam '.cef-enable-remote-debugging') -PathType Leaf
@@ -26,18 +32,20 @@ try {
     }
     $hint = if (-not $manifest) { 'Continue is not installed. Extract the PC ZIP and double-click pc\setup.cmd.' }
         elseif (-not $steamRunning) { 'Steam is not running. Start Steam, then open Big Picture.' }
-        elseif ($media -eq 'other') { 'Port 8793 is occupied by another program. Close that program, then run setup.cmd to start Continue.' }
+        elseif ($media -eq 'other' -and $mode -eq 'full') { 'Port 8793 is occupied by another program. Close that program, then run setup.cmd to start Continue.' }
         elseif ($cdp -eq 'other') { 'Port 8080 is occupied by another program or an unrecognized Steam context. Close that program and restart Steam.' }
         elseif (-not $flag) { 'The local debug flag is missing. Run setup.cmd to repair, then restart Steam.' }
         elseif ($cdp -eq 'closed') { 'The flag exists, but the debug port is closed. Close open games and restart Steam; the flag is loaded only at startup.' }
         elseif (-not $ownedTask) { 'The Continue task is missing or points elsewhere. Run setup.cmd to repair it.' }
         elseif (-not $running) { 'The Continue service is not running. Run setup.cmd to repair and inspect the last log for errors.' }
+        elseif ($mode -eq 'owner-theme' -and $media -ne 'continue') { 'The visual service control socket is not answering. Run setup.cmd to repair; keep your personal card service running.' }
+        elseif ($mode -eq 'owner-theme') { 'Continue visuals are available alongside your personal card service. Open Big Picture to see them.' }
         else { 'Steam debugging and Continue are available. Open Big Picture to see Continue.' }
     $status = [ordered]@{
         installed = [bool]$manifest; version = $(if ($manifest) { $manifest.version } else { $null })
         app = $context.App; service_running = [bool]$running; task_owned = [bool]$ownedTask
         steam_running = [bool]$steamRunning; debug_flag = [bool]$flag; cdp = $cdp
-        cdp_port = 8080; media_port = 8793; media = $media; cache_bytes = (Get-ContinueCacheBytes)
+        cdp_port = 8080; media_port = $(if ($mode -eq 'full') { 8793 } else { $null }); media = $media; mode = $mode; control_port = $controlPort; cache_bytes = (Get-ContinueCacheBytes)
         last_log = $(if ($latest) { $latest.FullName } else { $null }); last_log_line = $lastLine
         hint = $hint
     }
@@ -45,7 +53,7 @@ try {
     else {
         Write-Host "Continue version: $($status.version)"
         Write-Host "Service running: $($status.service_running); task matches installation: $($status.task_owned)"
-        Write-Host "Steam running: $steamRunning; debug flag: $flag; port 8080: $cdp; port 8793: $media"
+        Write-Host "Steam running: $steamRunning; debug flag: $flag; port 8080: $cdp; control port $controlPort`: $media; mode: $mode"
         Write-Host "Cache: $($status.cache_bytes) bytes; app: $($status.app)"
         Write-Host "Last log: $($status.last_log)"
         if ($lastLine) { Write-Host "Last log line: $lastLine" }

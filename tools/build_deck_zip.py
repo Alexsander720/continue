@@ -20,10 +20,12 @@ def _write_entry(zipped, name, data):
     zipped.writestr(info, data, compress_type=zipfile.ZIP_STORED)
 
 
-def build(root: Path, version: str) -> tuple[Path, Path]:
+def build(root: Path, version: str, candidate: str = "") -> tuple[Path, Path]:
     version = version.removeprefix("v")
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("Version must have the form 0.1.0 or v0.1.0")
+    if candidate and not re.fullmatch(r"r[1-9][0-9]*", candidate):
+        raise ValueError("Candidate must have the form r2")
     root = root.resolve()
     source = root / "plugin"
     for required in ("main.py", "dist/index.js", "plugin.json", "package.json", "py_modules/deck_saves.py"):
@@ -37,7 +39,8 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
         raise ValueError(f"Plugin private scan failed: {len(findings)} findings (run tools/scan_private.py)")
     destination = root / "dist"
     destination.mkdir(exist_ok=True)
-    archive = destination / f"continue-deck-{version}.zip"
+    label = version + ("-" + candidate if candidate else "")
+    archive = destination / f"continue-deck-{label}.zip"
     checksum = archive.with_name(archive.name + ".sha256")
     with tempfile.NamedTemporaryFile(dir=destination, suffix=".tmp", delete=False) as stream:
         temporary = Path(stream.name)
@@ -45,7 +48,7 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
         entries = {}
         with zipfile.ZipFile(temporary, "w", zipfile.ZIP_STORED) as zipped:
             for path in sorted(source.rglob("*")):
-                if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc":
+                if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc" or path.name.endswith((".bak-rails", ".bak-railsfix", ".bak-design", ".bak-r5", ".bak-r6", ".bak-r7", ".bak-ud")):
                     continue
                 relative = path.relative_to(source).as_posix()
                 if relative == "RELEASE.json":
@@ -89,10 +92,11 @@ def get_package_version(root: Path = ROOT) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", nargs="?", default=None, help="Release version (defaults to plugin/package.json version)")
+    parser.add_argument("--candidate", default="", help="Local archive suffix such as r2; embedded version stays semantic")
     args = parser.parse_args()
     version = args.version or get_package_version(ROOT)
     try:
-        build(ROOT, version)
+        build(ROOT, version, args.candidate)
     except (OSError, ValueError) as error:
         parser.exit(1, f"Build failed: {error}\n")
     return 0

@@ -334,6 +334,8 @@ class PCMediaManager(MediaManager):
     def get_preset(self, preset_or_quality: Any) -> dict:
         """Resolve preset configuration from PC_PRESETS without mutating global PRESETS."""
         key = str(preset_or_quality or PC_DEFAULT_QUALITY).lower()
+        if key == "recording":  # the owner's own Steam footage: source resolution up to 4K
+            key = "2160"
         if key in PC_PRESETS:
             return copy.deepcopy(PC_PRESETS[key])
         return copy.deepcopy(PC_PRESETS[PC_DEFAULT_QUALITY])
@@ -415,7 +417,7 @@ class PCMediaManager(MediaManager):
         try:
             for command in commands:
                 try:
-                    result = self.run(command, capture_output=True, timeout=180)
+                    result = self.run(command, capture_output=True, timeout=600 if preset == "recording" else 180)
                 except subprocess.TimeoutExpired:
                     if audio:
                         raise _sm.ThemeMusicError('theme_timeout')

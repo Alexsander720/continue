@@ -532,12 +532,66 @@ class Plugin:
                 if inside and os.path.isfile(fp):
                     return "img:icons/%s?v=%d" % (rel.replace("\\", "/"), os.path.getmtime(fp))
             return None
+        def resolve_rel(rel):
+            if not isinstance(rel, str):
+                return None
+            norm = rel.replace("\\", "/").lstrip("/")
+            if not norm.startswith("ddsaves/data/") or ".." in norm.split("/"):
+                return None
+            sub = norm[len("ddsaves/data/"):]
+            if not sub or os.path.splitext(sub)[1].lower() not in (".png", ".jpg", ".jpeg", ".webp", ".svg"):
+                return None
+            pdir_fn = getattr(self, "_plugin_dir", None)
+            if not callable(pdir_fn):
+                return None
+            src_root = os.path.realpath(os.path.join(pdir_fn(), "py_modules", "ddsaves", "data"))
+            src_fp = os.path.realpath(os.path.join(src_root, sub))
+            try:
+                inside = os.path.commonpath((src_root, src_fp)) == src_root
+            except ValueError:
+                inside = False
+            if not inside or not os.path.isfile(src_fp):
+                return None
+            dst_root = os.path.realpath(os.path.join(DATA, "icons", "_ddsaves"))
+            dst_fp = os.path.realpath(os.path.join(dst_root, sub))
+            try:
+                dst_inside = os.path.commonpath((dst_root, dst_fp)) == dst_root
+            except ValueError:
+                dst_inside = False
+            if not dst_inside:
+                return None
+            try:
+                st = os.stat(src_fp)
+                if not os.path.isfile(dst_fp) or os.path.getsize(dst_fp) != st.st_size:
+                    import shutil
+                    os.makedirs(os.path.dirname(dst_fp), exist_ok=True)
+                    shutil.copyfile(src_fp, dst_fp)
+                return "img:icons/_ddsaves/%s?v=%d" % (sub, int(os.path.getmtime(dst_fp)))
+            except OSError:
+                return None
+
+        def resolve_person(p, prefix_person=False):
+            p = dict(p)
+            rel = p.pop("icon_rel", None)
+            if prefix_person:
+                icon = pick("Персонаж: " + str(p.get("key")), "person:" + str(p.get("key")))
+            else:
+                icon = pick(p.get("key"), p.get("key")) if p.get("key") else None
+            if not icon and rel:
+                icon = resolve_rel(rel)
+            if icon:
+                p["icon"] = icon
+            return p
+
         facts = []
         for f in card.get("facts") or []:
             img = pick(f.get("label"), f.get("id"))
             f = dict(f, icon=img) if img else f
             if f.get("people"):   # портреты персонажей («Персонаж: <ключ>»)
-                f = dict(f, people=[dict(p, icon=pick("Персонаж: " + str(p.get("key")), "person:" + str(p.get("key")))) for p in f["people"]])
+                f = dict(f, people=[resolve_person(p, prefix_person=True) for p in f["people"]])
+            if f.get("groups"):   # ряды значков (просьбы GoW, состояние/арсенал SH2, предметы/достижения Sally Face)
+                f = dict(f, groups=[dict(g, people=[resolve_person(p) for p in g.get("people") or []])
+                                    for g in f["groups"]])
             facts.append(f)
         card["facts"] = facts
         ach = pick("Достижения", "achievements")
@@ -563,6 +617,8 @@ class Plugin:
                 "media": dict((hub or {}).get("media") or {}), "accent": (hub or {}).get("accent"), "source": None}
         settings = await self.get_settings()
         if self._is_standalone():
+            from game_visuals import game_visual
+            card["visual"] = game_visual(os.path.join(self._plugin_dir(), "assets"), appid)
             media = await asyncio.get_running_loop().run_in_executor(None, self._media().media_for, appid, settings)
             card["media"].update(media)
             card["standalone"] = True

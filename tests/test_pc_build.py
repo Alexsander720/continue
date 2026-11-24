@@ -27,6 +27,7 @@ PC_ALLOWLIST = (
     "ws_min.py",
     "bp_public_controls.js", "public_customization.py", "public_themes.py", "public_theme_cdp.py", "public_visuals.py",
     "bp_public_settings.js", "public_game_assets.py", "public_preferences.py", "public_media_policy.py", "public_media_runtime.py",
+    "public_owner_theme.py", "bp_owner_theme.js", "public_owner_recordings.py",
 )
 
 

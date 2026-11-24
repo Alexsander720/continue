@@ -12,7 +12,7 @@
 
 </div>
 
-> **Публичная альфа · Steam Deck (`continue-deck-0.1.4.zip`) через Decky · Windows / Big Picture (`continue-pc-0.1.4-r19.zip`): альфа проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. См. [инструкцию для ПК](docs/install-pc.ru.md) и [последний релиз](https://github.com/Alexsander720/continue/releases/latest).**
+> **Публичная альфа · Steam Deck (`continue-deck-0.1.5.zip`) через Decky · Windows / Big Picture (`continue-pc-0.1.5.zip`): альфа проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. См. [инструкцию для ПК](docs/install-pc.ru.md) и [последний релиз](https://github.com/Alexsander720/continue/releases/latest).**
 
 Continue? добавляет на страницу игры в Steam последнюю доказанную главу, место, цель и полезные факты из сохранения. Вернулся через неделю? Вспомни, где остановился, прежде чем нажать «Продолжить». Фоном можно выбрать трейлер Steam, трейлер YouTube с твоего согласия, свою запись Steam Game Recording или статичную иллюстрацию.
 
@@ -104,7 +104,7 @@ Steam показывает, какая игра у тебя есть и когд
 | :-: |---|---|
 | — | Alan Wake | место, глава; термосы, сундуки, пирамиды из банок, ТВ, радио и знаки |
 | <img src="site/media/1903340/cover.jpg" width="40" alt=""> | Clair Obscur: Expedition 33 | место, глава, цель; уровни группы, сюжет и время сейва |
-| <img src="site/media/2322010/cover.jpg" width="40" alt=""> | God of War Ragnarök† | читатель включён; локальной фикстуры для этого golden-прогона не было |
+| <img src="site/media/2322010/cover.jpg" width="40" alt=""> | God of War Ragnarök† | место, задание; серебро, время игры, сундуки Норн и ряд «Просьбы Девяти миров» (включая Воронов Одина из журнала) |
 | <img src="site/media/367520/cover.jpg" width="40" alt=""> | Hollow Knight | место; завершение, время, гео, маски, гвоздь, заклинания, способности, амулеты, гусеницы и грезящие |
 | <img src="site/media/2420110/cover.jpg" width="40" alt=""> | Horizon Forbidden West | текст задания как место/глава; уровень Элой и время игры |
 | <img src="site/media/1092790/cover.jpg" width="40" alt=""> | Inscryption | колода, жизни, зубы и максимальный урон |
@@ -117,7 +117,8 @@ Steam показывает, какая игра у тебя есть и когд
 | <img src="site/media/524220/cover.jpg" width="40" alt=""> | NieR:Automata | место, глава; персонаж, маршрут, уровень, золото, задания, оружие и концовки |
 | <img src="site/media/1809540/cover.jpg" width="40" alt=""> | Nine Sols | место; время, уровень, смерти, печати, навыки, нефриты и энциклопедия |
 | <img src="site/media/2129530/cover.jpg" width="40" alt=""> | REANIMAL | место, глава; номер главы, время, находки, маски и плакаты |
-| <img src="site/media/2124490/cover.jpg" width="40" alt=""> | SILENT HILL 2 | место; здоровье, патроны, лечение, убийства, оружие, карты и записки |
+| <img src="site/media/541570/cover.jpg" width="40" alt=""> | Sally Face | эпизод, текущая цель; предметы в кармане со значками и оставшиеся достижения эпизода |
+| <img src="site/media/2124490/cover.jpg" width="40" alt=""> | SILENT HILL 2 | место; состояние, напитки и шприцы, арсенал и патроны, предметы в кармане со значками, странные фото, отголоски прошлого, записки и убийства |
 | <img src="site/media/646570/cover.jpg" width="40" alt=""> | Slay the Spire | акт/этаж, персонаж, возвышение, победы, здоровье и золото |
 | <img src="site/media/2531310/cover.jpg" width="40" alt=""> | The Last of Us Part II Remastered† | читатель включён; локальной фикстуры для этого golden-прогона не было |
 | <img src="site/media/391540/cover.jpg" width="40" alt=""> | UNDERTALE | область; LV, HP, G, время, убийства, оружие и броня |
@@ -128,7 +129,7 @@ Steam показывает, какая игра у тебя есть и когд
 
 † Golden-тест намеренно пропускает читателя, когда исследовательской фикстуры нет. Оба читателя входят в сборку, но таблица не обещает поля, которых не было в текущем golden-прогоне.
 
-Sally Face и Alice: Madness Returns не зарегистрированы: имеющиеся материалы не подтверждают работу читателя на требуемых этапах. Читатели ENSLAVED, LEGO Harry Potter и Bleach также исключены из публичной сборки.
+Alice: Madness Returns не зарегистрирована: имеющиеся материалы не подтверждают работу читателя на требуемых этапах. Читатели ENSLAVED, LEGO Harry Potter и Bleach также исключены из публичной сборки.
 
 <a id="languages"></a>
 
@@ -140,11 +141,11 @@ Sally Face и Alice: Madness Returns не зарегистрированы: им
 
 ## Установка, обновление и удаление
 
-**Steam Deck:** скачай `continue-deck-0.1.4.zip` и соответствующий `.sha256` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
+**Steam Deck:** скачай `continue-deck-0.1.5.zip` и соответствующий `.sha256` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest). ZIP распаковывать не нужно. Альфы ещё нет в магазине Decky. Установи ZIP или прямую ссылку на этот файл через **Decky → Настройки → Разработчик → Установить из URL/ZIP**. При распространении релиза контрольная сумма должна лежать рядом с ZIP. Установка, восстановление, обновление и удаление описаны в [инструкции для Steam Deck](docs/install-deck.ru.md).
 
 В списке плагинов Decky имя — **Continue** (Decky не загружает имя с `?`); внутри интерфейса — **Continue?**.
 
-**Windows / Big Picture:** ПК-пакет выпущен как `continue-pc-0.1.4-r19.zip` (вместе с `.sha256`) в [релизе v0.1.4](https://github.com/Alexsander720/continue/releases/latest). Для Steam Deck выпускается отдельный пакет `continue-deck-0.1.4.zip`. Это публичная альфа: проверен на Windows 11 на одном компьютере владельца и в автотестах, на чистой Windows 10/ARM64 и с разными антивирусами пока не проверялся. Если Python 3.10+ нет, `setup.cmd` сам скачает официальный embeddable Python в профиль пользователя. Нужен Steam с включённым локальным отладочным портом (это делает `setup.cmd` с вашего согласия). Честные ограничения: YouTube с домашнего IP иногда временно отклоняет запросы; SmartScreen или антивирус могут показывать предупреждение для неподписанных скриптов. Подробности, проверка статуса, откат и удаление — в [инструкции для ПК](docs/install-pc.ru.md) и [шпаргалке быстрой установки](docs/quick-install.ru.md).
+**Windows / Big Picture:** ПК-пакет выпущен как `continue-pc-0.1.5.zip` (вместе с `.sha256`) в [релизе v0.1.5](https://github.com/Alexsander720/continue/releases/latest). Для Steam Deck выпускается отдельный пакет `continue-deck-0.1.5.zip`. Это публичная альфа: проверен на Windows 11 на одном компьютере владельца и в автотестах, на чистой Windows 10/ARM64 и с разными антивирусами пока не проверялся. Если Python 3.10+ нет, `setup.cmd` сам скачает официальный embeddable Python в профиль пользователя. Нужен Steam с включённым локальным отладочным портом (это делает `setup.cmd` с вашего согласия). Честные ограничения: YouTube с домашнего IP иногда временно отклоняет запросы; SmartScreen или антивирус могут показывать предупреждение для неподписанных скриптов. Подробности, проверка статуса, откат и удаление — в [инструкции для ПК](docs/install-pc.ru.md) и [шпаргалке быстрой установки](docs/quick-install.ru.md).
 
 <a id="report"></a>
 
@@ -164,7 +165,7 @@ Sally Face и Alice: Madness Returns не зарегистрированы: им
 python tools/preview.py
 ```
 
-Открой <http://127.0.0.1:8811/>. Аккаунт Steam и установленные игры не нужны. В витрине 20 интерактивных снимков; в каталоге публичной альфы 22 читателя.
+Открой <http://127.0.0.1:8811/>. Аккаунт Steam и установленные игры не нужны. В витрине 20 интерактивных снимков; в каталоге публичной альфы 23 читателя.
 
 <a id="evidence"></a>
 
@@ -234,7 +235,7 @@ python tools/preview.py
 <details>
 <summary><b>Можно уже установить Continue?</b></summary>
 
-Да. Для Steam Deck скачай `continue-deck-0.1.4.zip` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для Steam Deck](docs/install-deck.ru.md). Для Windows / Big Picture скачай `continue-pc-0.1.4-r19.zip` из того же [релиза v0.1.4](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для ПК](docs/install-pc.ru.md) или [шпаргалке быстрой установки](docs/quick-install.ru.md). ПК-версия — это альфа: проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. Если Python 3.10+ нет, `setup.cmd` скачает официальный embeddable Python; он же с согласия включает локальный отладочный порт Steam, а SmartScreen может предупреждать о неподписанных скриптах.
+Да. Для Steam Deck скачай `continue-deck-0.1.5.zip` из [последнего релиза](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для Steam Deck](docs/install-deck.ru.md). Для Windows / Big Picture скачай `continue-pc-0.1.5.zip` из того же [релиза v0.1.4](https://github.com/Alexsander720/continue/releases/latest) и следуй [инструкции для ПК](docs/install-pc.ru.md) или [шпаргалке быстрой установки](docs/quick-install.ru.md). ПК-версия — это альфа: проверена на Windows 11 на одном компьютере владельца и в автотестах; на чистой Windows 10/ARM64 и с разными антивирусами не проверялась. Если Python 3.10+ нет, `setup.cmd` скачает официальный embeddable Python; он же с согласия включает локальный отладочный порт Steam, а SmartScreen может предупреждать о неподписанных скриптах.
 
 </details>
 

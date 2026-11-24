@@ -36,7 +36,7 @@ ${HUB_LOOK_CSS}
  background:linear-gradient(to bottom,transparent,rgba(214,224,234,.38),transparent)}
 `;
   if (g) css += `
-.gh-root{zoom:${g.s};height:${g.rootH}px!important}
+.gh-root{zoom:${g.s};height:${g.rootH}px!important;--gh-rail-limit:${48 / g.s}px}
 .gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}
 `;
   return css;
@@ -49,7 +49,7 @@ function pcGlobalCss() {
   const c = k => "." + (ab[k] || "gh-none");
   return `
 ${ft.BasicFooter ? `.${ft.BasicFooter}{display:none!important}` : ""}
-${c("PlayButtonContainer")} ${c("ButtonChild")}{background:linear-gradient(135deg,rgba(238,244,251,.94) 0%,rgba(202,219,240,.9) 100%)!important;
+${c("PlayButtonContainer")} ${c("ButtonChild")}{background:#fff!important;
  color:#0b1016!important;border-radius:3px!important;box-shadow:0 4px 16px rgba(0,0,0,.55),0 0 14px rgba(142,180,227,.25)!important;
  transition:background .18s,box-shadow .18s,transform .18s}
 ${c("PlayButtonContainer")} ${c("ButtonChild")} svg{color:#0b1016!important;fill:currentColor}
@@ -180,7 +180,7 @@ function padShown(c) {   // компонент Steam сам решает, под
 }
 function pcPadIcons(kids,family=pluginSettings.pc_pads) {
   if(family==='native')return kids;
-  if(['xbox','playstation','steam'].includes(family))return kids.filter(padShown).map((c,i)=>h('span',{key:'continue-support-'+i,style:{position:'relative',display:'inline-flex'}},h('span',{style:{opacity:0}},c),h('img',{src:pcSupportGlyph(family),alt:'',style:{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}})));
+  if(PC_CONTROLLER_FAMILIES.includes(family))return kids.filter(padShown).map((c,i)=>h('span',{key:'continue-support-'+i,style:{position:'relative',display:'inline-flex'}},h('span',{style:{opacity:0}},c),h('img',{src:pcSupportGlyph(family),alt:'',style:{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}})));
   const ps = kids.filter(c => PAD_PS.has(c.props.feature) && padShown(c));
   return ps.length ? ps : kids.filter(c => c.props.feature === PAD_FULL && padShown(c)).slice(0, 1);
 }

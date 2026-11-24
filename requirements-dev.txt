@@ -1,2 +1,3 @@
 # QA only. The installed Continue? application uses the Python standard library.
 pytest==9.1.1
+playwright==1.57.0

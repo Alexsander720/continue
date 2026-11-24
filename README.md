@@ -12,7 +12,7 @@
 
 </div>
 
-> **Public alpha · Steam Deck (`continue-deck-0.1.4.zip`) through Decky · Windows / Big Picture (`continue-pc-0.1.4-r19.zip`): alpha tested on Windows 11 on the owner's PC and in automated tests; clean Windows 10/ARM64 and diverse antiviruses are untested. See [PC guide](docs/install-pc.md) and [latest release](https://github.com/Alexsander720/continue/releases/latest).**
+> **Public alpha · Steam Deck (`continue-deck-0.1.5.zip`) through Decky · Windows / Big Picture (`continue-pc-0.1.5.zip`): alpha tested on Windows 11 on the owner's PC and in automated tests; clean Windows 10/ARM64 and diverse antiviruses are untested. See [PC guide](docs/install-pc.md) and [latest release](https://github.com/Alexsander720/continue/releases/latest).**
 
 Continue? puts the last proven chapter, location, objective and useful facts from your save on the Steam game page. Come back after a week and see where you stopped before pressing Continue. Choose a Steam trailer, a YouTube trailer with your consent, your own Steam Game Recording clip or a still image as the background.
 
@@ -104,7 +104,7 @@ The fields below come from the committed golden snapshots. Values that are absen
 | :-: |---|---|
 | — | Alan Wake | place, chapter; coffee thermoses, chests, can pyramids, TV and radio shows, signs |
 | <img src="site/media/1903340/cover.jpg" width="40" alt=""> | Clair Obscur: Expedition 33 | place, chapter, objective; party levels, story progress, save time |
-| <img src="site/media/2322010/cover.jpg" width="40" alt=""> | God of War Ragnarök† | reader included; no local fixture was available for this golden run |
+| <img src="site/media/2322010/cover.jpg" width="40" alt=""> | God of War Ragnarök† | place, objective; hacksilver, play time, Nornir Chests, and Nine Realms favors (including journal Odin's Ravens) |
 | <img src="site/media/367520/cover.jpg" width="40" alt=""> | Hollow Knight | place; completion, time, geo, masks, nail, spells, abilities, charms, grubs, dreamers |
 | <img src="site/media/2420110/cover.jpg" width="40" alt=""> | Horizon Forbidden West | quest text as place/chapter; Aloy's level and play time |
 | <img src="site/media/1092790/cover.jpg" width="40" alt=""> | Inscryption | deck, lives, teeth, highest damage |
@@ -117,7 +117,8 @@ The fields below come from the committed golden snapshots. Values that are absen
 | <img src="site/media/524220/cover.jpg" width="40" alt=""> | NieR:Automata | place, chapter; character, route, level, gold, quests, weapons and endings |
 | <img src="site/media/1809540/cover.jpg" width="40" alt=""> | Nine Sols | place; time, level, deaths, seals, skills, jades and encyclopedia progress |
 | <img src="site/media/2129530/cover.jpg" width="40" alt=""> | REANIMAL | place, chapter; chapter number, gameplay time, finds, masks and posters |
-| <img src="site/media/2124490/cover.jpg" width="40" alt=""> | SILENT HILL 2 | place; health, ammunition, healing, kills, weapons, maps and memos |
+| <img src="site/media/541570/cover.jpg" width="40" alt=""> | Sally Face | episode, current objective; pocket inventory with icons and remaining episode achievements |
+| <img src="site/media/2124490/cover.jpg" width="40" alt=""> | SILENT HILL 2 | place; vitals, drinks & syringes, arsenal & ammo, pocket items with icons, Strange Photos, Glimpses of the Past, memos and kills |
 | <img src="site/media/646570/cover.jpg" width="40" alt=""> | Slay the Spire | act/floor, character, ascension, wins, HP and gold |
 | <img src="site/media/2531310/cover.jpg" width="40" alt=""> | The Last of Us Part II Remastered† | reader included; no local fixture was available for this golden run |
 | <img src="site/media/391540/cover.jpg" width="40" alt=""> | UNDERTALE | area; LV, HP, G, time, kills, weapons and armor |
@@ -128,7 +129,7 @@ The fields below come from the committed golden snapshots. Values that are absen
 
 † The golden test deliberately skips a reader when its research fixture is not present. These two readers ship, but this table does not claim fields that were unavailable to the current golden run.
 
-Sally Face and Alice: Madness Returns are not registered: the available material did not prove a reader across the required stages. ENSLAVED, LEGO Harry Potter, and Bleach readers are also excluded from the public build.
+Alice: Madness Returns is not registered: the available material did not prove a reader across the required stages. ENSLAVED, LEGO Harry Potter, and Bleach readers are also excluded from the public build.
 
 <a id="languages"></a>
 
@@ -140,11 +141,11 @@ The plugin interface is translated directly to English, Ukrainian, and Russian. 
 
 ## Install, update, and remove
 
-**Steam Deck:** download `continue-deck-0.1.4.zip` and its matching `.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
+**Steam Deck:** download `continue-deck-0.1.5.zip` and its matching `.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest). Do not unpack the ZIP. This alpha is not in the Decky store. Install the ZIP or its direct asset URL through **Decky → Settings → Developer → Install from URL/ZIP**. Keep the checksum next to the ZIP when distributing a release. Installation, recovery, updates and removal are covered in the [Steam Deck guide](docs/install-deck.md).
 
 In Decky’s plugin list the name is **Continue** (Decky cannot load a plugin name containing `?`); inside the interface it is **Continue?**.
 
-**Windows / Big Picture:** the package is released as `continue-pc-0.1.4-r19.zip` (with `continue-pc-0.1.4-r19.zip.sha256`) in the [v0.1.4 release](https://github.com/Alexsander720/continue/releases/latest). Steam Deck uses a separate `continue-deck-0.1.4.zip`. This is a public alpha: verified on Windows 11 on the owner's single computer and in automated tests; testing on clean Windows 10, ARM64, and with diverse antivirus suites has not been performed yet. Installation requires Steam with the local debugging port enabled (`127.0.0.1:8080`), which `setup.cmd` configures with your consent. Honest limits: if Python 3.10+ is missing, `setup.cmd` downloads the official embeddable Python into your user profile; Windows SmartScreen or antivirus may show an unsigned-script warning; and YouTube may occasionally and temporarily reject requests from home IP addresses. See the [PC installation guide](docs/install-pc.md) and [quick install cheat sheet](docs/quick-install.md) for setup, status verification, updates, and removal.
+**Windows / Big Picture:** the package is released as `continue-pc-0.1.5.zip` (with `continue-pc-0.1.5.zip.sha256`) in the [v0.1.5 release](https://github.com/Alexsander720/continue/releases/latest). Steam Deck uses a separate `continue-deck-0.1.5.zip`. This is a public alpha: verified on Windows 11 on the owner's single computer and in automated tests; testing on clean Windows 10, ARM64, and with diverse antivirus suites has not been performed yet. Installation requires Steam with the local debugging port enabled (`127.0.0.1:8080`), which `setup.cmd` configures with your consent. Honest limits: if Python 3.10+ is missing, `setup.cmd` downloads the official embeddable Python into your user profile; Windows SmartScreen or antivirus may show an unsigned-script warning; and YouTube may occasionally and temporarily reject requests from home IP addresses. See the [PC installation guide](docs/install-pc.md) and [quick install cheat sheet](docs/quick-install.md) for setup, status verification, updates, and removal.
 
 <a id="report"></a>
 
@@ -164,7 +165,7 @@ The website is a curated demonstration, not a Steam connection:
 python tools/preview.py
 ```
 
-Open <http://127.0.0.1:8811/>. No Steam account or installed game is needed. The 20 interactive examples are fixed snapshots; the supported-reader catalog contains 22 public-alpha games.
+Open <http://127.0.0.1:8811/>. No Steam account or installed game is needed. The 20 interactive examples are fixed snapshots; the supported-reader catalog contains 23 public-alpha games.
 
 <a id="evidence"></a>
 
@@ -236,7 +237,7 @@ The [roadmap](docs/ROADMAP.md) lists the remaining checks, and the [changelog](C
 <details>
 <summary><b>Can I install Continue? now?</b></summary>
 
-Yes. For Steam Deck: download `continue-deck-0.1.4.zip` from the [latest release](https://github.com/Alexsander720/continue/releases/latest) and follow the [Deck guide](docs/install-deck.md). For Windows / Big Picture: download `continue-pc-0.1.4-r19.zip` from the same [v0.1.4 release](https://github.com/Alexsander720/continue/releases/latest) and follow the [PC guide](docs/install-pc.md) or [quick install cheat sheet](docs/quick-install.md). The PC build is an alpha tested on Windows 11 on the owner's single machine and in automated tests; clean Windows 10, ARM64, and diverse antiviruses are untested. if Python 3.10+ is missing, `setup.cmd` downloads the official embeddable Python; it also enables Steam's local debugging port with your consent, and SmartScreen or antivirus may warn about unsigned scripts.
+Yes. For Steam Deck: download `continue-deck-0.1.5.zip` from the [latest release](https://github.com/Alexsander720/continue/releases/latest) and follow the [Deck guide](docs/install-deck.md). For Windows / Big Picture: download `continue-pc-0.1.5.zip` from the same [v0.1.5 release](https://github.com/Alexsander720/continue/releases/latest) and follow the [PC guide](docs/install-pc.md) or [quick install cheat sheet](docs/quick-install.md). The PC build is an alpha tested on Windows 11 on the owner's single machine and in automated tests; clean Windows 10, ARM64, and diverse antiviruses are untested. if Python 3.10+ is missing, `setup.cmd` downloads the official embeddable Python; it also enables Steam's local debugging port with your consent, and SmartScreen or antivirus may warn about unsigned scripts.
 
 </details>
 

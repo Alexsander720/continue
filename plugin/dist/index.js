@@ -672,6 +672,71 @@ const SOURCE_LABELS = Object.fromEntries(["steam", "youtube", "recording"].map(k
 // С 02.10 нижней полосы Steam («Выбрать / Назад», 40px) нет — тема No-Whats-New + Clean Gameview «Ignore Footer»:
 // блок на всю высоту 534, строка «Играть» у самого низа.
 
+// Shared game visuals start
+function gameColorContrast(first, second) {
+  const luminance = color => {
+    if (!/^#[0-9a-f]{6}$/i.test(color || "")) return null;
+    const v = [1, 3, 5].map(i => parseInt(color.slice(i, i + 2), 16) / 255)
+      .map(n => n <= .04045 ? n / 12.92 : ((n + .055) / 1.055) ** 2.4);
+    return .2126 * v[0] + .7152 * v[1] + .0722 * v[2];
+  };
+  const a = luminance(first), b = luminance(second);
+  return a === null || b === null ? 0 : (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+}
+function gamePlayPalette(accent) {
+  const foreground = "#0b1016";
+  return { background: gameColorContrast(accent, foreground) >= 4.5 ? accent : "#ffffff", foreground };
+}
+function gamePlayCss(accent, appid) {
+  const ab = DFL.appActionButtonClasses || {};
+  if (!ab.PlayButtonContainer || !ab.ButtonChild || !/^[1-9][0-9]{0,9}$/.test(String(appid))) return "";
+  const p = gamePlayPalette(accent);
+  const button = `:root:root[data-continue-visual="${appid}"] .${ab.PlayButtonContainer} .${ab.ButtonChild}`;
+  return `${[button,button+":hover",button+".gpfocus",button+":focus-visible"].join(",")}{background:${p.background}!important;color:${p.foreground}!important;border-radius:3px!important;box-shadow:0 4px 16px rgba(0,0,0,.55)!important}
+${button} svg,${button} *{color:${p.foreground}!important;fill:currentColor}
+${ab.ButtonText ? `${button} .${ab.ButtonText}{font-family:"Noto Serif",Georgia,serif!important;font-weight:700!important;letter-spacing:.16em!important;text-transform:uppercase!important}` : ""}
+${button}.gpfocus,${button}:focus-visible{outline:2px solid #fff!important;outline-offset:3px!important;box-shadow:0 0 0 3px #0b1016,0 4px 16px rgba(0,0,0,.55)!important}
+${ab.Disabled ? `:root:root[data-continue-visual="${appid}"] .${ab.PlayButtonContainer}.${ab.Disabled} .${ab.ButtonChild}{opacity:.55}` : ""}`;
+}
+function gameCardPaletteCss(palette, appid) {
+  if (!/^[1-9][0-9]{0,9}$/.test(String(appid))) return "";
+  const blue = palette === "courier-blue";
+  if (!blue && palette !== "courier-black") return "";
+  const root = `:root[data-continue-visual="${appid}"] .gh-root`;
+  const ink = blue ? "#a5c3d1" : "#f6d34c";
+  const shade = blue ? "5,15,23" : "8,8,7";
+  return `${root} .gh-kicker{color:${ink}!important}
+${root} .gh-sub,${root} .gh-fl{color:${blue ? "#cfdee6" : "#e4e1d3"}!important}
+${root} .gh-fact:not(.gh-rowstart)::before{background:${ink}!important;opacity:.3}
+${root} .gh-shade{background:linear-gradient(92deg,rgba(${shade},.94),rgba(${shade},.72) 18%,rgba(${shade},0) 58%),linear-gradient(0deg,rgba(${shade},.96),rgba(${shade},0) 52%)!important}`;
+}
+const GAME_RAIL_CSS = `
+.gh-rule .gh-rail{display:block;position:static;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;opacity:0}
+.gh-rule.gh-has-rail{left:calc(0px - min(24px,var(--gh-rail-limit,48px)) - 4px)!important;width:min(24px,var(--gh-rail-limit,48px))!important;height:var(--gh-rail-height,384px);bottom:auto;max-width:48px!important;background:none!important;border:0!important;border-radius:0!important}
+.gh-rule.gh-has-rail::before,.gh-rule.gh-has-rail::after{display:none!important}
+.gh-rule.gh-has-rail .gh-rail{opacity:1}`;
+function GameRail({ visual }) {
+  const [ready, setReady] = useState(false);
+  return h("div", { className: "gh-rule" + (ready ? " gh-has-rail" : ""), "aria-hidden": true },
+    visual?.rail ? h("img", { className: "gh-rail", src: visual.rail, alt: "", "aria-hidden": true,
+      onLoad: e => setReady(e.currentTarget.naturalWidth > 0), onError: () => setReady(false) }) : null);
+}
+const gameVisualOwners = new WeakMap();
+function useGameVisualDocument(appid, rootRef, enabled) {
+  useLayoutEffect(() => {
+    const root = rootRef.current?.ownerDocument?.documentElement;
+    if (!root || !enabled) return;
+    const owner = {}; gameVisualOwners.set(root, owner);
+    root.setAttribute("data-continue-visual", String(appid));
+    return () => {
+      if (gameVisualOwners.get(root) === owner) {
+        root.removeAttribute("data-continue-visual"); gameVisualOwners.delete(root);
+      }
+    };
+  }, [appid, !!enabled]);
+}
+// Shared game visuals end
+
 const CSS = (accent, hideSteamLogo) => `
 .gh-root{position:absolute;left:0;top:0;right:0;height:534px;z-index:0;pointer-events:none;overflow:hidden}
 .gh-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:gh-fade .8s ease}
@@ -702,6 +767,37 @@ const CSS = (accent, hideSteamLogo) => `
 .gh-pp span{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#dfe5ec}
 .gh-pp.dead img{opacity:.22;filter:grayscale(1)}.gh-pp.dead span{opacity:.4;text-decoration:line-through}
 .gh-pp-ph{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.15)}
+.gh-fact.gh-people.gh-strip{width:fit-content;min-width:0;max-width:100%;padding:9px 14px 8px;gap:6px;border-radius:10px;white-space:normal;
+  background:linear-gradient(180deg,rgba(14,16,20,.62),rgba(8,9,12,.72));border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 22px rgba(0,0,0,.35)}
+.gh-strip .gh-hd{gap:10px}.gh-strip .gh-hd .gh-fl{letter-spacing:.14em}.gh-strip .gh-hd .gh-fv{font-size:13px;opacity:.75}
+.gh-strip .gh-pp-row{gap:6px;align-items:flex-start}
+.gh-strip .gh-pp{width:96px;gap:4px}
+.gh-strip .gh-pp img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.7))}
+.gh-strip .gh-pp.gh-ac img{border-radius:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 2px 8px rgba(0,0,0,.5)}
+.gh-strip .gh-pp span{font-size:9px;letter-spacing:.05em;line-height:1.15;text-align:center;overflow-wrap:anywhere;color:#cfd6df}
+.gh-fact.gh-icons{align-items:flex-start}
+.gh-factbar:has(.gh-icons){align-items:start}
+.gh-ic-row{display:flex;align-items:center;gap:9px;margin-top:6px;height:34px}
+.gh-ic{position:relative;display:flex}
+.gh-ic img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,.75))}
+.gh-ic-ach .gh-ic-row{gap:7px}
+.gh-ic-ach .gh-ic img{width:30px;height:30px;border-radius:50%;object-fit:cover;filter:none;
+  box-shadow:0 0 0 1.5px rgba(201,168,118,.6),0 2px 6px rgba(0,0,0,.6)}
+.gh-ic-ach .gh-ic img.gh-ic-steam-gray{filter:grayscale(1) brightness(.75)}
+.gh-ic-ach .gh-ic::after{content:"";position:absolute;right:-3px;bottom:-3px;width:12px;height:12px;border-radius:50%;
+  background:#1d1e21 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e6d6b4'%3E%3Cpath d='M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h6V8a3 3 0 0 0-6 0z'/%3E%3C/svg%3E") center/7px no-repeat;box-shadow:0 0 0 1px rgba(201,168,118,.75)}
+.gh-ic-ph{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12)}
+.gh-fact.gh-ic-span{grid-column:1/-1}
+.gh-fact.gh-ic-span::before{display:none!important}
+.gh-ic-fav .gh-ic-row{gap:var(--gh-icg,10px)}
+.gh-ic-fav .gh-ic{align-items:center;gap:3px}
+.gh-ic-fav .gh-ic img{width:28px;height:28px}
+.gh-ic-v{font:700 13px/1 "Motiva Sans",Arial,sans-serif;color:#fff;letter-spacing:0;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.gh-factbar:has(.gh-ic-fav){column-gap:24px}
+.gh-factbar:has(.gh-ic-fav) .gh-fact:not(.gh-rowstart)::before{left:calc(var(--gh-cg-half,12px) * -1)!important}
+.gh-ic-zero img,.gh-ic-zero .gh-ic-v{opacity:.45}
+.gh-ic-full .gh-ic-v{color:#e6c98a}
+.gh-factbar:has(.gh-ic-fav) .gh-fl{font-family:"Motiva Sans",Arial,sans-serif!important;font-weight:700!important}
 
 .gh-fact img.gh-icon-own{width:34px;height:34px;flex:none;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8))}
 .gh-fl{font:700 9.5px/1.15 "Motiva Sans",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#b4bfcc}
@@ -714,6 +810,7 @@ const CSS = (accent, hideSteamLogo) => `
 ${hideSteamLogo ? `.${DFL.appDetailsHeaderClasses.BoxSizerContainer}{opacity:0!important}` : ""}
 .hltb-info{display:none!important}
 ${playBarCss()}
+${GAME_RAIL_CSS}
 `;
 
 // Полоса «Играть / Запуск / кнопки» прозрачная (просьба владельца 02.10, Дека и ПК): под ней два слоя —
@@ -797,6 +894,9 @@ function fitPanel(el, bar, logo, barWidth, shot, video) {
     for (const sc of scales) {
       el.style.width = (width / sc) + "px";
       el.style.transform = `scale(${sc})`;
+      // Bound the PNG by available space, independently of the text height.
+      // Both image dimensions stay auto so either limit scales it uniformly.
+      el.style.setProperty("--gh-rail-height", Math.max(0, avail / sc - 2) + "px");
       setLogo(FIT.logoMin, sc);
       if (fits()) { grow(sc); return; }
     }
@@ -1098,7 +1198,16 @@ function useAchievements(appid) {
     const read = () => {
       try {
         const x = window.appDetailsStore?.GetAchievements?.(appid);
-        if (x && x.nTotal > 0) { if (alive) setA({ got: x.nAchieved, total: x.nTotal }); return true; }
+        if (x && x.nTotal > 0) {
+          const icons = {};
+          for (const arr of [x.vecHighlight, x.vecUnachieved, x.vecAchievedHidden]) {
+            for (const it of (arr || [])) {
+              if (it && it.strID && it.strImage) icons[it.strID] = it.strImage;
+            }
+          }
+          if (alive) setA({ got: x.nAchieved, total: x.nTotal, icons });
+          return true;
+        }
       } catch (e) {}
       return false;
     };
@@ -1302,9 +1411,10 @@ function GameHubPanel({ appid }) {
     const t = setTimeout(run, 500);   // шрифты/логотип доехали
     return () => clearTimeout(t);
   });
+  useGameVisualDocument(appid, rootRef, !!card?.standalone);
   if (!card) return h("div", { ref: rootRef, className: "gh-root" });
 
-  const accent = card.accent || "#c8a96a";
+  const accent = card.visual?.accent || card.accent || "#c8a96a";
   const mins = ov?.minutes_playtime_forever || 0;
   // Где остановился — только если это действительно известно. Сейв без разобранного места («Есть сохранение»)
   // и игры без данных хаба: крупной надписи нет, место — под описание игры.
@@ -1340,10 +1450,11 @@ function GameHubPanel({ appid }) {
 
   return h("div", { ref: rootRef, className: "gh-root" },
     h("style", null, CSS(accent, !!(block.title || facts.length || detail || card.media?.wall || videoRel))),
+    card.standalone ? h("style", null, gamePlayCss(card.visual?.accent, appid) + gameCardPaletteCss(card.visual?.palette, appid)) : null,
     bg,
     h("div", { className: "gh-shade" }),
     h("div", { ref: panelRef, className: "gh-panel" },
-      h("div", { className: "gh-rule" }),
+      h(GameRail, { key: String(appid) + ":" + (card.visual?.rail_sha256 || "legacy"), visual: card.visual }),
       logo ? h("img", { key: logo, ref: logoRef, className: "gh-logo", src: logo, onError: () => setLogoFailed(true), onLoad: onLogo })
         : h("div", { className: "gh-logo-text" }, name),
       block.kicker ? h("div", { className: "gh-kicker" }, block.kicker) : null,
@@ -1356,11 +1467,23 @@ function GameHubPanel({ appid }) {
       h("div", null, h(Icon, { name: "camera" }), t("save_frame"))) : null,
     facts.length ? h("div", { ref: barRef, className: "gh-factbar" },
       ...facts.map((f, i) => f.people && f.people.length
-        ? h("div", { key: i, className: "gh-fact gh-people" },
+        ? h("div", { key: i, className: "gh-fact gh-people" + (f.cls ? " " + f.cls : "") },
             h("div", { className: "gh-hd" }, h("div", { className: "gh-fl" }, f.label), h("div", { className: "gh-fv" }, f.value)),
-            h("div", { className: "gh-pp-row" }, ...f.people.map(pp => h("div", { key: pp.name, className: "gh-pp" + (pp.alive ? "" : " dead") },
+            h("div", { className: "gh-pp-row" }, ...f.people.map(pp => h("div", { key: pp.name, className: "gh-pp" + (pp.alive ? "" : " dead") + (pp.cls ? " " + pp.cls : "") },
               pp.icon && pp.icon.startsWith("img:") ? h("img", { src: DATA + pp.icon.slice(4) }) : h("div", { className: "gh-pp-ph" }),
               h("span", null, pp.name)))))
+        : f.groups ? f.groups.map((g, gi) => h("div", { key: i + "-" + gi, className: "gh-fact gh-icons gh-ic-" + (g.kind || "x") + (g.wide ? " gh-ic-span" : "") },
+            h("div", null, h("div", { className: "gh-fl" }, g.label),
+              h("div", { className: "gh-ic-row" }, ...(g.people || []).map(pp => {
+                const src = pp.icon && pp.icon.startsWith("img:") ? DATA + pp.icon.slice(4)
+                  : (pp.ach_key && ach?.icons?.[pp.ach_key] ? ach.icons[pp.ach_key] : null);
+                const steamGray = !pp.icon && !!(pp.ach_key && ach?.icons?.[pp.ach_key]);
+                return h("div", { key: pp.key || pp.name,
+                    className: "gh-ic" + (pp.value ? (pp.total && pp.done >= pp.total ? " gh-ic-full" : !pp.done ? " gh-ic-zero" : "") : ""),
+                    title: pp.value ? pp.name + " " + pp.value : pp.name },
+                  src ? h("img", { src, alt: pp.name, className: steamGray ? "gh-ic-steam-gray" : undefined }) : h("div", { className: "gh-ic-ph" }),
+                  pp.value ? h("span", { className: "gh-ic-v" }, pp.value) : null);
+              })))))
         : h("div", { key: i, className: "gh-fact" + (f.label === t("last_achievement") ? " gh-wide" : "") }, h(Icon, { name: f.icon }),
             h("div", null, h("div", { className: "gh-fl" }, f.label), h("div", { className: "gh-fv" }, f.value))))) : null);
 }
@@ -1388,7 +1511,7 @@ function DeckPanel({ appid }) {
   }, []);
   if (g) { FIT.rootH = DECK_H; FIT.barBottom = g.barBottom; FIT.barRight = g.barRight; useHubLook(g.s !== 1); }
   // монитор/ТВ — вид и размеры хаба; свой экран Деки — как было (крупно, с подбором масштаба вверх)
-  const css = g && g.s !== 1 ? `.gh-root{zoom:${g.s}}.gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}${HUB_LOOK_CSS}` : "";
+  const css = g && g.s !== 1 ? `.gh-root{zoom:${g.s};--gh-rail-limit:${48 / g.s}px}.gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}${HUB_LOOK_CSS}` : "";
   return h(React.Fragment, null, h("style", { ref }, css), g ? h(GameHubPanel, { key: appid, appid }) : null);
 }
 

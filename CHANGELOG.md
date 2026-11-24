@@ -2,6 +2,24 @@
 
 All notable public changes are recorded here. Continue? follows semantic versioning once the public alpha starts.
 
+## 0.1.5 — 2026-11-24
+
+Steam Deck and Windows Big Picture update (`continue-deck-0.1.5.zip` and `continue-pc-0.1.5.zip` with `.sha256`).
+
+### Added
+
+- **Sally Face** (`541570`, 23rd public reader): episode title, current objective, pocket inventory with item icons, remaining episode achievements with Steam achievement icons, and the game's custom visual theme.
+- **God of War Ragnarök**: Nine Realms favors icon row (Odin's Ravens, Draugr Holes, Hel Tears, Lindwyrms, Stags of Yggdrasil, Berserker Souls, Nine Realms in Bloom) and Nornir Chests row (Chests, Idunn Apples, Horns of Blood Mead) with custom icons, plus an exact Table 1 journal counter for Odin's Ravens.
+- **SILENT HILL 2 Remake**: expanded live save reader with James's vitals/condition row (health, drinks, syringes), arsenal with ammo and weapon kill counters, pocket key items with item icons, Strange Photos (`X / 26`), Glimpses of the Past (`X / 26`), memos, and survival stats.
+- Shared themed card visuals across Deck and PC: decorative vertical rails per catalog game, accent-matched Play button styling, and a static vector flashlight beam for Alan Wake.
+- Controller button prompt glyphs derived from Kenney Input Prompts (CC0) on Windows Big Picture.
+- Windows local Steam Game Recording discovery and HEVC → AVC background clip normalization, plus `-OwnerThemeOnly` compatible visual installation mode.
+
+### Changed
+
+- Unified `groups` icon-row renderer in the shared frontend (`plugin/dist/index.js`) and safe lazy icon caching in `plugin/main.py` for both Steam Deck and Windows Big Picture.
+- Updated the website showcase, README files (EN/UK/RU), and installation guides for `0.1.5` and 23 public readers.
+
 ## 0.1.4 — 2026-10-16
 
 Steam Deck and Windows Big Picture release. Tested on a real Steam Deck OLED and Windows 11 x64.

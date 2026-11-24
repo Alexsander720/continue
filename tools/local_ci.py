@@ -42,6 +42,7 @@ def main() -> int:
     run(["node", "--check", "pc/bp_public_controls.js"])
     run(["node", "--check", "pc/bp_public_settings.js"])
     run(["node", "--check", "pc/bp_suffix.js"])
+    run(["node", "--check", "pc/bp_owner_theme.js"])
     folders = sorted(path for path in (ROOT / "games").glob("*") if path.is_dir())
     for folder in folders:
         run([sys.executable, "-I", "tools/run_game_tests.py", folder.name])

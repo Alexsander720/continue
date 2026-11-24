@@ -2,7 +2,7 @@
 
 [English](install-pc.md) · **Українська** · [Русский](install-pc.ru.md)
 
-Ця інструкція призначена для пакета Windows Steam Big Picture (`continue-pc-0.1.4-r19.zip`), опублікованого в [релізі v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
+Ця інструкція призначена для пакета Windows Steam Big Picture (`continue-pc-0.1.5.zip`), опублікованого в [релізі v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
 Вихідний код служби та встановлювача включено до репозиторію в папці `pc/`. Пакет пройшов перевірки у справжньому Steam на Windows 11 x64 на комп'ютері власника та в автотестах; приймання на чистих інсталяціях Windows 10, ARM64 та з різними антивірусами триває.
 Встановлювач і службу перевірено в тимчасових профілях Windows з ізольованим тестовим Steam/CDP. 13.10.2026 у справжньому Steam Big Picture на Windows 11 x64 також перевірено встановлення, відновлення, картку гри, вкладки бібліотеки, налаштування, відмову від встановлення та видалення. На цьому ПК уже були Python і ввімкнене налагодження Steam. Чистий обліковий запис без Python, Windows 10 і ARM64 — експериментально; використання фізичного контролера ще не перевірено. Ставтеся до пакета як до альфа-версії та закривайте ігри перед перезапуском Steam.
 
@@ -13,17 +13,17 @@
 
 ## Встановлення: подвійний клік, згода, перезапуск Steam
 
-1. Завантаж релізний архів `continue-pc-0.1.4-r19.zip` і сусідній `continue-pc-0.1.4-r19.zip.sha256` з [останнього релізу](https://github.com/Alexsander720/continue/releases/latest).
+1. Завантаж релізний архів `continue-pc-0.1.5.zip` і сусідній `continue-pc-0.1.5.zip.sha256` з [останнього релізу](https://github.com/Alexsander720/continue/releases/latest).
    Перевір контрольну суму в PowerShell одним рядком:
    ```powershell
-   (Get-FileHash .\continue-pc-0.1.4-r19.zip).Hash -eq ((Get-Content .\continue-pc-0.1.4-r19.zip.sha256) -split '\s+')[0]
+   (Get-FileHash .\continue-pc-0.1.5.zip).Hash -eq ((Get-Content .\continue-pc-0.1.5.zip.sha256) -split '\s+')[0]
    ```
    Якщо команда повернула `True`, повністю розпакуй ZIP у звичайну локальну папку.
    Також можна зібрати локальний тестовий кандидат із вихідних файлів репозиторію:
    ```bash
    python tools/build_pc_zip.py
    # або з явною версією:
-   python tools/build_pc_zip.py 0.1.4
+   python tools/build_pc_zip.py 0.1.5
    ```
    Команда створює `dist/continue-pc-<версія>.zip` і `dist/continue-pc-<версія>.zip.sha256`.
 2. Двічі натисни `Continue\setup.cmd` (або `Continue\pc\setup.cmd`). Windows може попередити, бо це читабельні
@@ -97,7 +97,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\status.ps1
 запускає нову службу й чекає свіжий health-запис із версією та одноразовим nonce. Якщо запуск невдалий, попередня
 версія повертається і запускається. Робоча копія без `RELEASE.json` не оновлюється.
 
-Публічний альфа-пакет для ПК опубліковано в GitHub Releases починаючи з v0.1.4 (`continue-pc-0.1.4-r19.zip`). Служба автоматичного оновлення перевірятиме наявність наступних стабільних версій у релізах GitHub.
+Публічний альфа-пакет для ПК опубліковано в GitHub Releases починаючи з v0.1.5 (`continue-pc-0.1.5.zip`). Служба автоматичного оновлення перевірятиме наявність наступних стабільних версій у релізах GitHub.
 
 ## Видалення
 

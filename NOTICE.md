@@ -45,9 +45,10 @@ game owners' rights; the program license does not grant rights in the underlying
   license; removal requests can be submitted through the project issue tracker. Personal saves and
   full extracted localization archives are not distributed. There is no blanket 160-character limit.
 - Steam, Steam Deck and Big Picture are trademarks of Valve Corporation. Continue? is not affiliated with Valve.
-- Per-game icons and character portraits in `assets/game_icons/` (PC: `pc/assets/game_icons/`) identify the games
-  and are shown for informational, non-commercial purposes. The underlying likenesses and symbols remain the property
-  of the respective rights holders; removal requests can be submitted through the project issue tracker.
+- Per-game icons and character portraits in `assets/game_icons/` (PC: `pc/assets/game_icons/`) and item icon sets
+  in `ddsaves/data/*_icons/` identify the games and in-save items and are shown for informational, non-commercial
+  purposes. The underlying likenesses and symbols remain the property of the respective rights holders; removal
+  requests can be submitted through the project issue tracker.
 - YouTube trailers and theme music are downloaded only after the user's explicit consent, locally on the user's own PC.
   The project distributes no third-party audio or video; the user is responsible for following the services' terms and
   copyright. Helper programs (the pinned Python from python.org, yt-dlp, Node and FFmpeg) are third-party software
@@ -113,3 +114,24 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Controller button prompts (PC)
+
+The PC controller prompt subsets in `pc/assets/controller_glyphs/` are derived
+from **Kenney Input Prompts 1.5A**, created/distributed by Kenney:
+https://kenney.nl/assets/input-prompts . The author labels this pack
+**Creative Commons CC0**; the included author notice states
+"License: (Creative Commons Zero, CC0)" and links to
+http://creativecommons.org/publicdomain/zero/1.0/ . Credit is optional under
+the author's notice; Continue? credits Kenney voluntarily. The original notice
+is included in `pc/assets/licenses/kenney-input-prompts.txt` and in the PC
+package's `licenses/kenney-input-prompts.txt`.
+
+Only Xbox, PlayStation, Steam Deck and Steam Controller prompt subsets are
+included. Changes: a viewBox crop preserves the previous button footprint;
+the four DualShock face prompts use blue, red, pink and green. The manifest
+records the source member, original SHA256, derived SHA256 and modifications
+for each SVG. No installed Steam Input artwork is redistributed.
+Controller and platform names identify compatible layouts; no endorsement
+by their respective owners is implied. The rest of Continue? retains its
+existing GPL-3.0-or-later terms and section 7 additional permission.

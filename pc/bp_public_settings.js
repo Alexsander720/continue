@@ -118,8 +118,11 @@ Object.assign(PC_SETTINGS_TEXT.uk,{gb:'ГБ',glyph_detail:'Оберіть сим
 PC_SETTINGS_TEXT.en.cache_detail+=' This is a ceiling, not reserved disk space. Downloads stop while free space is low.';
 PC_SETTINGS_TEXT.ru.cache_detail+=' Это предел, место заранее не резервируется. При нехватке свободного места загрузки останавливаются.';
 PC_SETTINGS_TEXT.uk.cache_detail+=' Це межа, місце заздалегідь не резервується. Якщо вільного місця замало, завантаження зупиняються.';
+Object.assign(PC_SETTINGS_TEXT.en,{pad_xbox:'Xbox (color)',pad_sense:'PlayStation DualSense (white)',pad_shock:'PlayStation DualShock (color)',pad_deck:'Steam Deck',pad_controller:'Steam Controller'});
+Object.assign(PC_SETTINGS_TEXT.ru,{pad_xbox:'Xbox (цветные)',pad_sense:'PlayStation DualSense (белые)',pad_shock:'PlayStation DualShock (цветные)',pad_deck:'Steam Deck',pad_controller:'Steam Controller'});
+Object.assign(PC_SETTINGS_TEXT.uk,{pad_xbox:'Xbox (кольорові)',pad_sense:'PlayStation DualSense (білі)',pad_shock:'PlayStation DualShock (кольорові)',pad_deck:'Steam Deck',pad_controller:'Steam Controller'});
 function pcControllerChoices() {
-  return [['owner',psText('custom')],['native',psText('steam')],['xbox','Xbox'],['playstation','PlayStation'],['steam','Steam Deck / Steam Controller']];
+  return [['owner',psText('custom')],['native',psText('steam')],['xbox',psText('pad_xbox')],['playstation',psText('pad_sense')],['dualshock',psText('pad_shock')],['steam',psText('pad_deck')],['steam_controller',psText('pad_controller')]];
 }
 function PcSettingsButton({ children, onClick, selected, disabled, primary, label }) {
   const activate = disabled ? undefined : onClick;
@@ -255,7 +258,7 @@ function PcSettings({closeModal, initialSection='start', initialScope='global'})
   else if(section==='appearance')content=h(React.Fragment,null,h('h2',null,psText('appearance')),
     toggle(psText('rounded'),!!themes.find(x=>x.name==='Round')?.active,v=>run(async()=>setThemes(await call('themes_set','Round',null,v)))),
     choices(psText('glyphs'),s.pc_glyphs||'owner',pcControllerChoices(),v=>update('pc_glyphs',v),psText('glyph_detail')),
-    ['xbox','playstation','steam'].includes(s.pc_glyphs)?h('div',{className:'cps-choices','aria-label':psText('glyph_preview')},...['a','b','x','y','back','start','lb','rb','lt','rt'].map(k=>h('img',{key:k,alt:k.toUpperCase(),src:pcControllerGlyph('https://steamloopback.host/steaminputglyphs/xbox_button_'+k+'.svg',s.pc_glyphs),style:{width:32,height:32}}))):null,
+    PC_CONTROLLER_FAMILIES.includes(s.pc_glyphs)?h('div',{className:'cps-choices','aria-label':psText('glyph_preview')},...['a','b','x','y','back','start','lb','rb','lt','rt'].map(k=>h('img',{key:k,alt:k.toUpperCase(),src:pcControllerGlyph('https://steamloopback.host/steaminputglyphs/xbox_button_'+k+'.svg',s.pc_glyphs),style:{width:32,height:32}}))):null,
     choices(psText('pads'),s.pc_pads||'owner',pcControllerChoices(),v=>update('pc_pads',v),psText('pads_detail')),
     toggle(psText('movie'),movie,v=>run(async()=>setMovie(await setStartupMovie(v)))),
     h('div',{className:'cps-row'},h('div',{className:'cps-label'},psText('advanced'),h('small',null,psText('advanced_detail'))),B(psText('settings'),openThemes)));

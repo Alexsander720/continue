@@ -610,7 +610,7 @@ function New-ContinueRecovery($Manifest, [string]$State, $StartupMovie = $null) 
     # secrets, media, task XML, or an executable recovery command.
     $owner = [ordered]@{}
     foreach ($key in @('schema', 'install_id', 'version', 'root', 'app', 'data', 'logs', 'steam', 'debug_flag',
-        'debug_flag_created', 'debug_flag_stamp', 'task_name', 'pythonw', 'python_console', 'python_created')) { $owner[$key] = $Manifest.$key }
+        'debug_flag_created', 'debug_flag_stamp', 'task_name', 'pythonw', 'python_console', 'python_created', 'mode')) { $owner[$key] = $Manifest.$key }
     return [pscustomobject]@{ schema = 1; state = $State; owner = [pscustomobject]$owner; startup_movie = $StartupMovie }
 }
 
@@ -720,7 +720,7 @@ function Get-ContinueCdpState {
     finally { $tcp.Dispose() }
 }
 
-function Get-ContinueMediaState {
+function Get-ContinueMediaState([int]$Port = 8793) {
     if ($script:ContinueContext.Fixture) {
         $state = Get-ContinueFixtureState
         if ($state.PSObject.Properties['media']) { return [string]$state.media }
@@ -728,11 +728,11 @@ function Get-ContinueMediaState {
     }
     $tcp = New-Object Net.Sockets.TcpClient
     try {
-        $connect = $tcp.BeginConnect('127.0.0.1', 8793, $null, $null)
+        $connect = $tcp.BeginConnect('127.0.0.1', $Port, $null, $null)
         if (-not $connect.AsyncWaitHandle.WaitOne(1000)) { return 'closed' }
         $tcp.EndConnect($connect)
         try {
-            $health = Invoke-RestMethod -Uri 'http://127.0.0.1:8793/__continue_health' -TimeoutSec 2
+            $health = Invoke-RestMethod -Uri "http://127.0.0.1:$Port/__continue_health" -TimeoutSec 2
             if ($health.service -eq 'ContinueBigPicture') { return 'continue' }
         } catch { }
         return 'other'

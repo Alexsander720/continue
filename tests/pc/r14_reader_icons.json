@@ -506,7 +506,7 @@
   },
   "2124490": {
     "slug": "silent_hill_2",
-    "reader_sha256": "46a9d27e0c773f6bce258ed34f4dd3641043be7dd59d888f44158e59f7d5bc58",
+    "reader_sha256": "2121c724cb0b94e477e3c162537d46f1266f6e32b4710d9fdd842f5120ad3d1d",
     "facts": [
       {
         "id": "health",
@@ -689,7 +689,7 @@
   },
   "2322010": {
     "slug": "god_of_war_ragnarok",
-    "reader_sha256": "1fef38dd459584d7a4738381749cc04c7f7df3aeaf54c64c92f008b28330507e",
+    "reader_sha256": "71c9c1d6748606671a447ac6c2d0444242d328f02bcf332976d7a089ced3accf",
     "facts": [
       {
         "id": "raven",

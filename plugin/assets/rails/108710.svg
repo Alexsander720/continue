@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="768" viewBox="0 0 48 768" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <radialGradient id="halo" gradientUnits="userSpaceOnUse" cx="24" cy="625" r="28" gradientTransform="translate(0 -13750) scale(1 23)">
+      <stop offset="0" stop-color="#ffe8b0" stop-opacity=".88"/>
+      <stop offset=".36" stop-color="#e1af60" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#d39b44" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="628" x2="0" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0c9" stop-opacity=".9"/>
+      <stop offset=".16" stop-color="#eee0b9" stop-opacity=".46"/>
+      <stop offset=".65" stop-color="#d6aa66" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#c49752" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="10" y1="0" x2="38" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#121b22"/><stop offset=".3" stop-color="#65716c"/>
+      <stop offset=".48" stop-color="#28332f"/><stop offset="1" stop-color="#0b1016"/>
+    </linearGradient>
+  </defs>
+  <path d="M20 634 L0 8 Q24 0 48 8 L28 634 Z" fill="url(#halo)"/>
+  <path d="M21 634 L9 18 Q24 10 39 18 L27 634 Z" fill="url(#beam)"/>
+  <circle cx="16" cy="182" r=".8" fill="#eee0b9" opacity=".2"/>
+  <circle cx="30" cy="288" r=".7" fill="#eee0b9" opacity=".24"/>
+  <circle cx="22" cy="377" r=".9" fill="#eee0b9" opacity=".24"/>
+  <circle cx="28" cy="465" r=".7" fill="#eee0b9" opacity=".28"/>
+  <path d="M10 637 Q24 631 38 637 L33 658 L15 658 Z" fill="url(#metal)" stroke="#869082" stroke-width=".8"/>
+  <ellipse cx="24" cy="637" rx="14" ry="3" fill="#d6b66e"/>
+  <ellipse cx="24" cy="636" rx="10" ry="1.6" fill="#fff0c9"/>
+  <rect x="17" y="657" width="14" height="87" rx="3" fill="url(#metal)" stroke="#6c776b" stroke-width=".7"/>
+  <path d="M18 669 H30 M18 677 H30 M18 685 H30 M18 693 H30 M18 701 H30 M18 709 H30 M18 717 H30 M18 725 H30" fill="none" stroke="#121b22" stroke-width="2"/>
+  <rect x="21" y="662" width="6" height="9" rx="2" fill="#a59874"/>
+  <rect x="17" y="743" width="14" height="8" rx="2" fill="#252f2b" stroke="#6c776b" stroke-width=".7"/>
+</svg>

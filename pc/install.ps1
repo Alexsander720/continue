@@ -5,6 +5,7 @@ param(
     [switch]$DeclineDebugPort,
     [switch]$RestartSteam,
     [switch]$NonInteractive,
+    [switch]$OwnerThemeOnly,
     [string]$FixtureProfile,
     [string]$FixtureSteam,
     [string]$FixturePython
@@ -68,6 +69,7 @@ try {
         pythonw = $python.Pythonw; python_console = $python.Console; python_version = $python.Version
         python_created = [bool]$python.Owned; debug_port_consent = $true
         installed_utc = [DateTime]::UtcNow.ToString('o')
+        mode = $(if ($OwnerThemeOnly -or ($old -and $old.mode -eq 'owner-theme')) { 'owner-theme' } else { 'full' })
     }
     # The receipt and the identity of the empty file precede every side effect.
     # Rename a stamped candidate without overwriting a concurrent consumer's flag.

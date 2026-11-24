@@ -173,4 +173,5 @@ def save_facts(save, state=None, limit=4):
                 out.insert(min(2, len(out)), {"icon": "level", "label": t("label_progress"),
                                              "value": t("level_value", value=st["value"])})
                 break
-    return out[:limit]
+    rows = [r for r in (prog.get("fact_rows") or []) if isinstance(r, dict) and (r.get("people") or r.get("groups"))]
+    return out[:limit] + rows

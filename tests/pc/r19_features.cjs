@@ -7,6 +7,9 @@ const context=vm.createContext({console,URL,encodeURIComponent,Map,Set,
   livePolicy:()=>{},refreshMediaLatest:()=>{},startupMovieOn:()=>false,currentAppId:()=>42,
   window:{appStore:{GetAppOverviewByAppID:()=>({display_name:'Fixture'})}},
 });
+const glyphPack=path.join(root,'pc/assets/controller_glyphs');
+const glyphManifest=JSON.parse(fs.readFileSync(path.join(glyphPack,'manifest.json'),'utf8'));
+context.__PC_CONTROLLER_GLYPHS__=Object.fromEntries(Object.entries(glyphManifest.sets).map(([family,buttons])=>[family,Object.fromEntries(Object.entries(buttons).map(([key,file])=>[key,'data:image/svg+xml,'+encodeURIComponent(fs.readFileSync(path.join(glyphPack,file),'utf8'))]))]));
 vm.runInContext(fs.readFileSync(path.join(root,'pc/bp_public_controls.js'),'utf8'),context);
 vm.runInContext(fs.readFileSync(process.env.R19_SETTINGS_SOURCE||path.join(root,'pc/bp_public_settings.js'),'utf8'),context);
 for(const family of ['xbox','playstation','steam']) {
@@ -68,7 +71,7 @@ assert.equal(hasText(render(),'Characters and survival'),true);
 section='backgrounds';fields=[];
 assert.ok(hasText(render(),'64 GB'));
 section='appearance';context.setStartupMovie=()=>{};context.openThemes=()=>{};
-const nodes=render();for(const name of ['Xbox','PlayStation','Steam Deck / Steam Controller','Continue? style','Steam default'])assert.ok(hasText(nodes,name),name);
+const nodes=render();for(const name of ['Xbox (color)','PlayStation DualSense (white)','PlayStation DualShock (color)','Steam Deck','Steam Controller','Continue? style','Steam default'])assert.ok(hasText(nodes,name),name);
 for(const lang of ['ru','uk']){context.LANGUAGE=lang;section='backgrounds';assert.ok(hasText(render(),'64 ГБ'));}context.LANGUAGE='en';
 const suffix=fs.readFileSync(path.join(root,'pc/bp_suffix.js'),'utf8');
 vm.runInContext(suffix.slice(suffix.indexOf('const PAD_PS'),suffix.indexOf('// Страница игры')),context);

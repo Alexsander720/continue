@@ -1,0 +1,510 @@
+{
+  "author": "Kenney",
+  "source": "https://kenney.nl/assets/input-prompts",
+  "version": "1.5A",
+  "license": "CC0-1.0",
+  "sets": {
+    "xbox": {
+      "a": "xbox/a.svg",
+      "b": "xbox/b.svg",
+      "x": "xbox/x.svg",
+      "y": "xbox/y.svg",
+      "back": "xbox/back.svg",
+      "start": "xbox/start.svg",
+      "lb": "xbox/lb.svg",
+      "rb": "xbox/rb.svg",
+      "lt": "xbox/lt.svg",
+      "rt": "xbox/rt.svg",
+      "up": "xbox/up.svg",
+      "down": "xbox/down.svg",
+      "left": "xbox/left.svg",
+      "right": "xbox/right.svg"
+    },
+    "playstation": {
+      "a": "playstation/a.svg",
+      "b": "playstation/b.svg",
+      "x": "playstation/x.svg",
+      "y": "playstation/y.svg",
+      "back": "playstation/back.svg",
+      "start": "playstation/start.svg",
+      "lb": "playstation/lb.svg",
+      "rb": "playstation/rb.svg",
+      "lt": "playstation/lt.svg",
+      "rt": "playstation/rt.svg",
+      "up": "playstation/up.svg",
+      "down": "playstation/down.svg",
+      "left": "playstation/left.svg",
+      "right": "playstation/right.svg"
+    },
+    "dualshock": {
+      "a": "dualshock/a.svg",
+      "b": "dualshock/b.svg",
+      "x": "dualshock/x.svg",
+      "y": "dualshock/y.svg",
+      "back": "dualshock/back.svg",
+      "start": "dualshock/start.svg",
+      "lb": "dualshock/lb.svg",
+      "rb": "dualshock/rb.svg",
+      "lt": "dualshock/lt.svg",
+      "rt": "dualshock/rt.svg",
+      "up": "dualshock/up.svg",
+      "down": "dualshock/down.svg",
+      "left": "dualshock/left.svg",
+      "right": "dualshock/right.svg"
+    },
+    "steam": {
+      "a": "steam/a.svg",
+      "b": "steam/b.svg",
+      "x": "steam/x.svg",
+      "y": "steam/y.svg",
+      "back": "steam/back.svg",
+      "start": "steam/start.svg",
+      "lb": "steam/lb.svg",
+      "rb": "steam/rb.svg",
+      "lt": "steam/lt.svg",
+      "rt": "steam/rt.svg",
+      "up": "steam/up.svg",
+      "down": "steam/down.svg",
+      "left": "steam/left.svg",
+      "right": "steam/right.svg"
+    },
+    "steam_controller": {
+      "a": "steam_controller/a.svg",
+      "b": "steam_controller/b.svg",
+      "x": "steam_controller/x.svg",
+      "y": "steam_controller/y.svg",
+      "back": "steam_controller/back.svg",
+      "start": "steam_controller/start.svg",
+      "lb": "steam_controller/lb.svg",
+      "rb": "steam_controller/rb.svg",
+      "lt": "steam_controller/lt.svg",
+      "rt": "steam_controller/rt.svg",
+      "up": "steam_controller/up.svg",
+      "down": "steam_controller/down.svg",
+      "left": "steam_controller/left.svg",
+      "right": "steam_controller/right.svg"
+    }
+  },
+  "provenance": {
+    "xbox/a.svg": {
+      "source": "Xbox Series/Vector/xbox_button_color_a.svg",
+      "source_sha256": "63d1a6d0798c09c70f1bd25cf03dce39bd0c04e721240fda62facd5dafe08bdc",
+      "sha256": "95165b18eda8077a53963ad66c6aa931f95a28e3cfd445f84b44912269d494d9",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/b.svg": {
+      "source": "Xbox Series/Vector/xbox_button_color_b.svg",
+      "source_sha256": "1a50644b6cb5a59564a3fdb977b16abb33ebe356e65e1b610dc2f8fb21e49fe0",
+      "sha256": "1e06e14f26f6a066ec7bf97145c57466b82d7a8842990fbfc4601c06d3e01dd6",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/x.svg": {
+      "source": "Xbox Series/Vector/xbox_button_color_x.svg",
+      "source_sha256": "49840e42f7aa78d107a3c496a15093b4bdf6a114b0141807f86facdbe0461154",
+      "sha256": "6c4776f05ae18d7bbc7651fc84be9d357beadd961059cdd22a99218065b3823c",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/y.svg": {
+      "source": "Xbox Series/Vector/xbox_button_color_y.svg",
+      "source_sha256": "27436f37e982d0e2502a761d889b7502faa3fcfabf0a868dcf85bfe204dfeb38",
+      "sha256": "7a792b8266266b4aa63715f6e2682768e94bb601fe2de3bbbe4b2158c348fe13",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/back.svg": {
+      "source": "Xbox Series/Vector/xbox_button_view.svg",
+      "source_sha256": "d9f3bd3869469d006b3c2786ef7598f4470483371764390dbe2cb557873dde9c",
+      "sha256": "0cbbeb857d218dfcd71079b8a858d3101cc0c490fb2047965c78a481bed975b4",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/start.svg": {
+      "source": "Xbox Series/Vector/xbox_button_menu.svg",
+      "source_sha256": "6e69a539c8a57ed461cf2690a5422abd94acad05b1c7f51b879bbad8c239c3f6",
+      "sha256": "a8e59ddfda5c655f90c3ba0646f80031cf59de30bbc5a5c74e731849cc520a48",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/lb.svg": {
+      "source": "Xbox Series/Vector/xbox_lb.svg",
+      "source_sha256": "6463d4c86715f1445838dd502e2060cc1719bcc66af705a15efb69fa9949c36c",
+      "sha256": "e1db0d147c5418418a06fc21a7486253372a40c4f2026d7eea00cd594026996d",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/rb.svg": {
+      "source": "Xbox Series/Vector/xbox_rb.svg",
+      "source_sha256": "066ac893d3baa92d4ba9e3b7e12b1829cce3cdf7d0676fbab4eb56d4cf17e63b",
+      "sha256": "6966682ec459fc6dc907f36cb76ccd5f67712d57d50b8025916c697037dc7ac1",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/lt.svg": {
+      "source": "Xbox Series/Vector/xbox_lt.svg",
+      "source_sha256": "f86e4e5d11a0d7fe029362694cbf0c3b6db7daa19d43513075bd0f2ee666ef36",
+      "sha256": "d37fb611b4a449e7a5f43c77309ac0d5b107798d83a76f04ab250c733d8f175d",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/rt.svg": {
+      "source": "Xbox Series/Vector/xbox_rt.svg",
+      "source_sha256": "a31df1a73f3d04cdebbd2c639d273b19d840e0736a7fcc2039ac521b76652b57",
+      "sha256": "330362135924800d3863af944b610320e1a710b4267152731783b651f0a30fda",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/up.svg": {
+      "source": "Xbox Series/Vector/xbox_dpad_up.svg",
+      "source_sha256": "1eb952dcac0a986a5ab4f5cf61ee832504554cdc2df46b20dc0998a91b70e25b",
+      "sha256": "d272b0a814007f52cc9f55bf4d0ba2fc1fc80ae2efc127e4eb7972f0fcac5a91",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/down.svg": {
+      "source": "Xbox Series/Vector/xbox_dpad_down.svg",
+      "source_sha256": "d7a0d403e36c41120882f5713927e828794cdff93f88f8d3cbea3d8384b322c9",
+      "sha256": "104c928e73c9e24d6f9f27b541803a4d194b9a0d6eccbe3f133898f7f1a9914c",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/left.svg": {
+      "source": "Xbox Series/Vector/xbox_dpad_left.svg",
+      "source_sha256": "6fc565008a474f3c3899cc97854947a51700ce925523bf155ba77e7c28c658f6",
+      "sha256": "1623d7accad6cde46f70878a78262a61e43b288660c2394010f8d0142368aec4",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "xbox/right.svg": {
+      "source": "Xbox Series/Vector/xbox_dpad_right.svg",
+      "source_sha256": "5e3e358a70aaa5ea7236aef3504491051af91847466c349965cc345dd5b7dcb0",
+      "sha256": "075d697cf097a99ee7b5a4c3c2a0b39243b51a2d7e367759091b660b9171eb95",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/a.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_cross.svg",
+      "source_sha256": "99f10d52721ec97a5ddef748c72a3fadaa6a0085071c2c7200b246b51819924f",
+      "sha256": "7e9185ecedae3b3eef0ab841301f4bd86fa95f7fe350cc9b4c2381fc1e39ecb3",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/b.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_circle.svg",
+      "source_sha256": "25b96587a67842bf059eebe653ce0945d81715655adf92be0326eb800e166f99",
+      "sha256": "66954fd242de78a81d3deacc04ac5cae6c7d89ecbf81b1aa42f7dfbb871240b4",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/x.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_square.svg",
+      "source_sha256": "f6aef0bdc5017a6be18fbae5e5aee89ec678574277aaf7d8f9876fac4238434c",
+      "sha256": "522c19397b29334ee76ad05d2be2737c92fe683fec7e11720e3dd629e2b58c5b",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/y.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_triangle.svg",
+      "source_sha256": "1a5aea5d68026f51dff5940efc13ce1fb725a6fba66c953de73ac7a5049bc238",
+      "sha256": "1a8f0fb3dc7ea037efcfff6f123ca707067671cd0db0c854456597267b4a8c85",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/back.svg": {
+      "source": "PlayStation Series/Vector/playstation5_button_create.svg",
+      "source_sha256": "4ec964bb271ba0d396ae601e3175b9832928057bfd08a4adb1c0298d7619a7f0",
+      "sha256": "dfeb60c287b28ef1da28e358b5f3e55bfbad8dae81b4d7b10c29e14bd6e8c653",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/start.svg": {
+      "source": "PlayStation Series/Vector/playstation5_button_options.svg",
+      "source_sha256": "a399c8b72af736c7488c9b8927a653b2aeeab72d10730ad432ab8c37f4dfe218",
+      "sha256": "bd5db9b9c9af6d2c07137da2164c6011a082f13a197076cc790cfcff9c554dba",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/lb.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_l1.svg",
+      "source_sha256": "ae444563986badefcdc417b3d744be0676670fffd36783d91c1592d14f21b93a",
+      "sha256": "e143f689b79c49fec92c7de005207796bbe604357ae7e143ddc0d861b85a0481",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/rb.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_r1.svg",
+      "source_sha256": "387a37176b86facb7629b0020c56f5cb780f14d30d62e54baa394ecd2ee8229b",
+      "sha256": "c91f612523026f3c99c7d37a1114ae81479980a1e509063d054af7c1bee7e7b7",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/lt.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_l2.svg",
+      "source_sha256": "ae89a40ccb5ae3e3b79e604d9e1f4903e773f87d36b18686b2d123ce3e4a5473",
+      "sha256": "c0972fb942446f682b38e23c84efadfabb8b54d84895683c4d467c481b6b75e1",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/rt.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_r2.svg",
+      "source_sha256": "da1e0239321400b2e0a2941759bb75fb7382f0450ed38db2abe2eac999ea011c",
+      "sha256": "12ee72cfb577c883efbf7b4cf5be32c942194993547dc9bc87181b76b4e5581e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/up.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_up.svg",
+      "source_sha256": "e61c695f420ac22fc860b764a1527e0cf2bfd6e38162731c001bfe9121a7a0a8",
+      "sha256": "a092bd044f4fdb32c2fb6648b3e516fa3c850d130933a3ba52c601ba7027bd6e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/down.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_down.svg",
+      "source_sha256": "c06abfab82a6e264f4f62c546922afe6f53619bbdfae699baa9d599677093ac3",
+      "sha256": "e93a29cc8859bc4dcff5ce644580cdff66f28c381fdfeedebda7eaa774a84fab",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/left.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_left.svg",
+      "source_sha256": "5c81b1632941d5d297c282750f4ed4587ac3a277527df56604b8b2bf04526d7a",
+      "sha256": "40181be8a55acb0378e19832352bb325a0c4e4ebda9eb23c661472f670c5afb7",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "playstation/right.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_right.svg",
+      "source_sha256": "32d64ec2639ef291983daba2c3eb5eae6722a5fa0289737d049a12d6275f622a",
+      "sha256": "cd4ce67ecc8f10c78ac8d6f5a6a9a199b44f2056f5e63f9a60e144f6b44c5a05",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/a.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_color_cross.svg",
+      "source_sha256": "c9feef98bfd29797c16caef18be8f26e1ce175f140d29a48dc2ac9826fb9812e",
+      "sha256": "0da4941107f71108328fa5d54007e4d9e8dca34538b0040112e8642218279f08",
+      "changes": "viewBox crop for r19 footprint; face color adjusted; unused xlink namespace removed"
+    },
+    "dualshock/b.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_color_circle.svg",
+      "source_sha256": "7749fe0886d9d832bff47324ab1fbe7f9f3475b7de69dbc01743365b9451d94c",
+      "sha256": "f838b62cb215d43910b07fd199ab0c3dc456e90e99f514d036812f0d7daa4ad0",
+      "changes": "viewBox crop for r19 footprint; face color adjusted; unused xlink namespace removed"
+    },
+    "dualshock/x.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_color_square.svg",
+      "source_sha256": "2ad7d59334648b822fdec370aa2f9b28810d6bece4cd395d8af5d1d839732385",
+      "sha256": "0daf3d48085687c8cfd086a2ee3911ebcc5ec52716d593d215c920b52defb2fa",
+      "changes": "viewBox crop for r19 footprint; face color adjusted; unused xlink namespace removed"
+    },
+    "dualshock/y.svg": {
+      "source": "PlayStation Series/Vector/playstation_button_color_triangle.svg",
+      "source_sha256": "c8af09238e5c38203178eabbc968d04ff85ca4fb9a394b0c1f4832a0b4550704",
+      "sha256": "480276e46fb2092fb9f656b9912b43b62dfa20ec5ee05ad06fc0e5fa945adacc",
+      "changes": "viewBox crop for r19 footprint; face color adjusted; unused xlink namespace removed"
+    },
+    "dualshock/back.svg": {
+      "source": "PlayStation Series/Vector/playstation4_button_share.svg",
+      "source_sha256": "5fededddd3e444613b6ec045664336b3787bebb0d8cedb94b37375a21ee1bc49",
+      "sha256": "9eff52eb1bc87543929add1e8eb05d3b21b324d1f5499df4e776e636ae5d0594",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/start.svg": {
+      "source": "PlayStation Series/Vector/playstation4_button_options.svg",
+      "source_sha256": "d89149000ce40ae26a097040d98b7d9c69e98fbc450671b46bbb110f58914d53",
+      "sha256": "b44994151f43ef5ef0d9ff380a008391321aad7f2a380f2e7c22f6f63d820ea3",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/lb.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_l1.svg",
+      "source_sha256": "ae444563986badefcdc417b3d744be0676670fffd36783d91c1592d14f21b93a",
+      "sha256": "e143f689b79c49fec92c7de005207796bbe604357ae7e143ddc0d861b85a0481",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/rb.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_r1.svg",
+      "source_sha256": "387a37176b86facb7629b0020c56f5cb780f14d30d62e54baa394ecd2ee8229b",
+      "sha256": "c91f612523026f3c99c7d37a1114ae81479980a1e509063d054af7c1bee7e7b7",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/lt.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_l2.svg",
+      "source_sha256": "ae89a40ccb5ae3e3b79e604d9e1f4903e773f87d36b18686b2d123ce3e4a5473",
+      "sha256": "c0972fb942446f682b38e23c84efadfabb8b54d84895683c4d467c481b6b75e1",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/rt.svg": {
+      "source": "PlayStation Series/Vector/playstation_trigger_r2.svg",
+      "source_sha256": "da1e0239321400b2e0a2941759bb75fb7382f0450ed38db2abe2eac999ea011c",
+      "sha256": "12ee72cfb577c883efbf7b4cf5be32c942194993547dc9bc87181b76b4e5581e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/up.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_up.svg",
+      "source_sha256": "e61c695f420ac22fc860b764a1527e0cf2bfd6e38162731c001bfe9121a7a0a8",
+      "sha256": "a092bd044f4fdb32c2fb6648b3e516fa3c850d130933a3ba52c601ba7027bd6e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/down.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_down.svg",
+      "source_sha256": "c06abfab82a6e264f4f62c546922afe6f53619bbdfae699baa9d599677093ac3",
+      "sha256": "e93a29cc8859bc4dcff5ce644580cdff66f28c381fdfeedebda7eaa774a84fab",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/left.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_left.svg",
+      "source_sha256": "5c81b1632941d5d297c282750f4ed4587ac3a277527df56604b8b2bf04526d7a",
+      "sha256": "40181be8a55acb0378e19832352bb325a0c4e4ebda9eb23c661472f670c5afb7",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "dualshock/right.svg": {
+      "source": "PlayStation Series/Vector/playstation_dpad_right.svg",
+      "source_sha256": "32d64ec2639ef291983daba2c3eb5eae6722a5fa0289737d049a12d6275f622a",
+      "sha256": "cd4ce67ecc8f10c78ac8d6f5a6a9a199b44f2056f5e63f9a60e144f6b44c5a05",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/a.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_a.svg",
+      "source_sha256": "64c7e4560c68bbbdc824627aca50464eee2dab31323e06df5b4d8f8b33a7d453",
+      "sha256": "7e1f6fe4991cc39c492fc2e0c80d1c22300a4f1d362ab08d072e357173bfbf80",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/b.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_b.svg",
+      "source_sha256": "12061d33eb6596dc94ad551296502a9e15bd26c9199210db4728fa2a666f3ca0",
+      "sha256": "8e4648ad2b21e58f35f5c024486596546b6264489b35150556e5c95f50a41656",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/x.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_x.svg",
+      "source_sha256": "505b595feca94a6dbb3b4bfb1f8213e108fab2d3419f265d7f42c7c1c1f3c711",
+      "sha256": "9257787d34fac7f6061e3061707572b2bfc5913ea70b4221be86596ee81ffb21",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/y.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_y.svg",
+      "source_sha256": "c509a5a985e6c6ba9bbe6caa593571488ea4307d4d134632564742cc4f98dc03",
+      "sha256": "813d8729f98a564ad7fa91e4c07c694ecb3fc2cffe484b8fac0490aa2a794b61",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/back.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_view.svg",
+      "source_sha256": "305d27bdba89253cc27e9837589099730303ab8847c3aead27e37caa18b5c54c",
+      "sha256": "cc81926c2dbc98ca64f650abd28cc469594a525a035627953be2c14651f3643d",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/start.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_options.svg",
+      "source_sha256": "e28902c7938c7d96fb783716a3e6a797134ad7bde925dff576c45f129bf12146",
+      "sha256": "67099b64f60534ec4670413bcb74241cd462476ecf1d77c714da10694eb4846f",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/lb.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_l1.svg",
+      "source_sha256": "4ed141c97ff2e8e2faebfa6a44023a0ff03992ec9f86e73d5ab605b7fe5f9c76",
+      "sha256": "d89a775eba7bd7cc311bf9355aea9ce53d24ec82ea84ea7de3b6284cb48e9554",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/rb.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_r1.svg",
+      "source_sha256": "cf6a3c9ab5f573f60e714cd7dbe4dc5b515923e315ad79b85d6213fd2c1e0533",
+      "sha256": "052fd56b0d8e58b916f9c58619b9426ee9ca034c69a0f4147ea07126692fffb8",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/lt.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_l2.svg",
+      "source_sha256": "ddf29d5d73bca72866462c0fd524f2c571d33d49aad9c1a7d5e6e1bfa5ada75e",
+      "sha256": "03775f3c69e9eeb733adfd264b071a67f445db4221d7d66613c0b33e826e1313",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/rt.svg": {
+      "source": "Steam Deck/Vector/steamdeck_button_r2.svg",
+      "source_sha256": "21e2c8cbbb42d13344229211264fb3bc48addf84dc5cd0621d9efd2b412bbff3",
+      "sha256": "a39635a4ecaa77d69099625bfac0d57d528b1bd23628dd2a113873a5a77efe4e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/up.svg": {
+      "source": "Steam Deck/Vector/steamdeck_dpad_up.svg",
+      "source_sha256": "1eb952dcac0a986a5ab4f5cf61ee832504554cdc2df46b20dc0998a91b70e25b",
+      "sha256": "d272b0a814007f52cc9f55bf4d0ba2fc1fc80ae2efc127e4eb7972f0fcac5a91",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/down.svg": {
+      "source": "Steam Deck/Vector/steamdeck_dpad_down.svg",
+      "source_sha256": "d7a0d403e36c41120882f5713927e828794cdff93f88f8d3cbea3d8384b322c9",
+      "sha256": "104c928e73c9e24d6f9f27b541803a4d194b9a0d6eccbe3f133898f7f1a9914c",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/left.svg": {
+      "source": "Steam Deck/Vector/steamdeck_dpad_left.svg",
+      "source_sha256": "6fc565008a474f3c3899cc97854947a51700ce925523bf155ba77e7c28c658f6",
+      "sha256": "1623d7accad6cde46f70878a78262a61e43b288660c2394010f8d0142368aec4",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam/right.svg": {
+      "source": "Steam Deck/Vector/steamdeck_dpad_right.svg",
+      "source_sha256": "5e3e358a70aaa5ea7236aef3504491051af91847466c349965cc345dd5b7dcb0",
+      "sha256": "075d697cf097a99ee7b5a4c3c2a0b39243b51a2d7e367759091b660b9171eb95",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/a.svg": {
+      "source": "Steam Controller/Vector/steam_button_a.svg",
+      "source_sha256": "64c7e4560c68bbbdc824627aca50464eee2dab31323e06df5b4d8f8b33a7d453",
+      "sha256": "7e1f6fe4991cc39c492fc2e0c80d1c22300a4f1d362ab08d072e357173bfbf80",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/b.svg": {
+      "source": "Steam Controller/Vector/steam_button_b.svg",
+      "source_sha256": "12061d33eb6596dc94ad551296502a9e15bd26c9199210db4728fa2a666f3ca0",
+      "sha256": "8e4648ad2b21e58f35f5c024486596546b6264489b35150556e5c95f50a41656",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/x.svg": {
+      "source": "Steam Controller/Vector/steam_button_x.svg",
+      "source_sha256": "505b595feca94a6dbb3b4bfb1f8213e108fab2d3419f265d7f42c7c1c1f3c711",
+      "sha256": "9257787d34fac7f6061e3061707572b2bfc5913ea70b4221be86596ee81ffb21",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/y.svg": {
+      "source": "Steam Controller/Vector/steam_button_y.svg",
+      "source_sha256": "c509a5a985e6c6ba9bbe6caa593571488ea4307d4d134632564742cc4f98dc03",
+      "sha256": "813d8729f98a564ad7fa91e4c07c694ecb3fc2cffe484b8fac0490aa2a794b61",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/back.svg": {
+      "source": "Steam Controller/Vector/controller_button_view.svg",
+      "source_sha256": "305d27bdba89253cc27e9837589099730303ab8847c3aead27e37caa18b5c54c",
+      "sha256": "cc81926c2dbc98ca64f650abd28cc469594a525a035627953be2c14651f3643d",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/start.svg": {
+      "source": "Steam Controller/Vector/controller_button_options.svg",
+      "source_sha256": "e28902c7938c7d96fb783716a3e6a797134ad7bde925dff576c45f129bf12146",
+      "sha256": "67099b64f60534ec4670413bcb74241cd462476ecf1d77c714da10694eb4846f",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/lb.svg": {
+      "source": "Steam Controller/Vector/controller_button_l1.svg",
+      "source_sha256": "4ed141c97ff2e8e2faebfa6a44023a0ff03992ec9f86e73d5ab605b7fe5f9c76",
+      "sha256": "d89a775eba7bd7cc311bf9355aea9ce53d24ec82ea84ea7de3b6284cb48e9554",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/rb.svg": {
+      "source": "Steam Controller/Vector/controller_button_r1.svg",
+      "source_sha256": "cf6a3c9ab5f573f60e714cd7dbe4dc5b515923e315ad79b85d6213fd2c1e0533",
+      "sha256": "052fd56b0d8e58b916f9c58619b9426ee9ca034c69a0f4147ea07126692fffb8",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/lt.svg": {
+      "source": "Steam Controller/Vector/controller_button_l2.svg",
+      "source_sha256": "367e12beb217962ce615fcfb3bfa93bc5b192d125e8d26c138764f49d21d7abd",
+      "sha256": "3558b562bdc4694d2d4b27e6185b68dab0df29cbd11607d8761dc37e6fbf883c",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/rt.svg": {
+      "source": "Steam Controller/Vector/controller_button_r2.svg",
+      "source_sha256": "20121a361acbb5d2bc44be069ee2e0198cfc566218096277454538f7c8914181",
+      "sha256": "9e7a6a8f91035acb9c7cfb63d534164f02d90ce23a089ec7d355965f5a9aa532",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/up.svg": {
+      "source": "Steam Controller/Vector/steam_dpad_up.svg",
+      "source_sha256": "13e7808fe548fcfbcccc048d249e52674ce9ea5bb518fe7e0b743ceae6a88e78",
+      "sha256": "d6a78d99d68a7292f4d8494177b5b889e8476027f7b517f92463b04a731f57a2",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/down.svg": {
+      "source": "Steam Controller/Vector/steam_dpad_down.svg",
+      "source_sha256": "505801d362fda072fbbae17851ef1763efd6f649f51fa55de1ca1070e618c38f",
+      "sha256": "1efbdca4c1c376d2c64e4e726cdaab1ecbf58516a1fd868f24a115d08fadcfc0",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/left.svg": {
+      "source": "Steam Controller/Vector/steam_dpad_left.svg",
+      "source_sha256": "fd41280b06f519ba4353c794407f7da0d8b43bd26081941a206878ddb37c1a92",
+      "sha256": "0a85d7bee651153bd8dc4233269b7bb29b900a458d52d8e42d8d9db85f220f8e",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    },
+    "steam_controller/right.svg": {
+      "source": "Steam Controller/Vector/steam_dpad_right.svg",
+      "source_sha256": "282ee17278a5e655b6bd225de7b8e7ba0d8dd6595c7c9c90f4f70d2dcf21641e",
+      "sha256": "96a6c0bbecf1f5bbb1ec581a82dec4ff3990fac0f0a95d5210c2e638b75f99fd",
+      "changes": "viewBox crop for r19 footprint; unused xlink namespace removed"
+    }
+  }
+}

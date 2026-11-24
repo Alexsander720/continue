@@ -315,6 +315,17 @@ def build_bundle(config):
     settings_ui = (here / 'bp_public_settings.js').read_text(encoding='utf-8')
     for token, name in [('__PC_GLYPHS__', 'glyphs.json'), ('__PC_GAME_STYLES__', 'game_styles.json')]:
         controls = controls.replace(token, json.dumps(read_json(here / 'assets' / name), ensure_ascii=False))
+    # Author-licensed vectors are embedded once; glyph selection never requests a network asset.
+    pack = here / 'assets/controller_glyphs'
+    controller_glyphs = {}
+    for family, buttons in read_json(pack / 'manifest.json').get('sets', {}).items():
+        controller_glyphs[family] = {}
+        for key, relative in buttons.items():
+            vector = (pack / relative).resolve()
+            if not vector.is_relative_to(pack.resolve()) or vector.suffix != '.svg':
+                raise ValueError('Unexpected controller glyph path')
+            controller_glyphs[family][key] = 'data:image/svg+xml,' + urllib.parse.quote(vector.read_text(encoding='utf-8'), safe='')
+    controls = controls.replace('__PC_CONTROLLER_GLYPHS__', json.dumps(controller_glyphs))
     controls = controls.replace('__PC_ICON_NAMES__', json.dumps(sorted(file.stem for file in (config.plugin / 'assets/icons').glob('*.svg'))))
     suffix = (here / 'bp_suffix.js').read_text(encoding='utf-8')
     version = hashlib.sha256((prelude + body + controls + settings_ui + suffix).encode()).hexdigest()[:12]
@@ -422,7 +433,7 @@ class Backend:
             @staticmethod
             def _valid_setting(key, value, standalone):
                 if key in ('pc_glyphs', 'pc_pads'):
-                    return isinstance(value, str) and value in ('owner', 'native', 'xbox', 'playstation', 'steam')
+                    return isinstance(value, str) and value in ('owner', 'native', 'xbox', 'playstation', 'dualshock', 'steam', 'steam_controller')
                 if key == 'pc_home':
                     return value in ('owner', 'native') and isinstance(value, str)
                 if key == 'music_volume':
@@ -740,7 +751,7 @@ class Session:
                         future.set_result(msg)
                 elif msg.get('method') in ('Runtime.executionContextsCleared', 'Runtime.executionContextCreated', 'Runtime.executionContextDestroyed'):
                     self.context_revision += 1
-                elif msg.get('method') == 'Runtime.bindingCalled' and msg.get('params', {}).get('name') == '__ghBridge':
+                elif self.backend is not None and self.pool is not None and msg.get('method') == 'Runtime.bindingCalled' and msg.get('params', {}).get('name') == '__ghBridge':
                     self.pool.submit(self.handle, msg['params'].get('payload', '{}'))
         except Exception as error:
             log.info('CDP disconnected (%s)', type(error).__name__)
@@ -866,6 +877,12 @@ def serve(config, stop_event=None):
 
 
 def _serve_locked(config, stop_event=None):
+    mode = read_json(config.root / 'install.json').get('mode', 'full')
+    if mode == 'owner-theme':
+        from public_owner_theme import serve_theme
+        return serve_theme(config, Session, shared_ctx_ws, write_json, stop_event)
+    if mode != 'full':
+        raise ValueError('Unknown installation mode')
     config.data.mkdir(exist_ok=True)
     stop_event = stop_event or threading.Event()
     for attempt in range(5):

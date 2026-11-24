@@ -95,6 +95,7 @@ life_is_strange_double_exposure = _plain("life_is_strange_double_exposure")
 # 08.10: GoW Ragnarök из GameHub/gowsave.py — только доказанное (место/задание из заголовка, вороны, серебро, время)
 god_of_war_ragnarok = _plain("god_of_war_ragnarok")
 the_last_of_us_part_ii = _plain("the_last_of_us_part_ii")
+sally_face = _plain("sally_face")
 def uncharted_lot(data_dir):
     out = _dd("uncharted_lot")
     if out:
@@ -135,6 +136,7 @@ READERS = {
     2322010: god_of_war_ragnarok,
     2531310: the_last_of_us_part_ii,
     1659420: uncharted_lot,
+    541570: sally_face,
 }
 
 

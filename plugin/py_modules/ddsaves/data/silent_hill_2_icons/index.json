@@ -1,0 +1,2399 @@
+{
+ "_generator": "steamdeck/research/deep_dig/tools/silent_hill_2_item_icons.py",
+ "items": {
+  "BcaOW_AngelasKnife": {
+   "file": "PriOW_Weight02_Inv_TB.png",
+   "w": 85,
+   "h": 128
+  },
+  "BcaOW_Apartment_303_Key": {
+   "file": "BcaOW_Apartment_303_Key_Inv_TB.png",
+   "w": 101,
+   "h": 128
+  },
+  "BcaOW_Bird_01": {
+   "file": "BcaOW_Bird_01_Inv_TB.png",
+   "w": 128,
+   "h": 117
+  },
+  "BcaOW_Bird_02": {
+   "file": "BcaOW_Bird_02_Inv_TB.png",
+   "w": 128,
+   "h": 106
+  },
+  "BcaOW_Bird_02_Part_A": {
+   "file": "BcaOW_Bird_02_Part_A_Inv_TB.png",
+   "w": 96,
+   "h": 128
+  },
+  "BcaOW_Bird_02_Part_B": {
+   "file": "BcaOW_Bird_02_Part_B_Inv_TB.png",
+   "w": 128,
+   "h": 85
+  },
+  "BcaOW_Bird_Key": {
+   "file": "BcaOW_Bird_Key_Inv_TB.png",
+   "w": 80,
+   "h": 128
+  },
+  "BcaOW_ClockHandHours": {
+   "file": "BcaOW_ClockHandHours_Inv_TB.png",
+   "w": 48,
+   "h": 128
+  },
+  "BcaOW_ClockHandMinutes": {
+   "file": "BcaOW_ClockHandMinutes_Inv_TB.png",
+   "w": 46,
+   "h": 128
+  },
+  "BcaOW_ClockHandSeconds": {
+   "file": "BcaOW_ClockHandSeconds_Inv_TB.png",
+   "w": 35,
+   "h": 128
+  },
+  "BcaOW_MapBlueCreek1F": {
+   "file": "BlueCreek1F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 91
+  },
+  "BcaOW_MapBlueCreek2F": {
+   "file": "BlueCreek2F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 94
+  },
+  "BcaOW_MapBlueCreek3F": {
+   "file": "BlueCreek3F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 90
+  },
+  "BcaOW_ResilienceKey": {
+   "file": "BcaOW_AngellaKey_Inv_TB.png",
+   "w": 47,
+   "h": 128
+  },
+  "BcaOW_Valve": {
+   "file": "BcaOW_Valve_Inv_TB.png",
+   "w": 104,
+   "h": 128
+  },
+  "Chainsaw": {
+   "file": "Chainsaw_Inv_TB.png",
+   "w": 176,
+   "h": 180
+  },
+  "Cryptic_Note": {
+   "file": "End_Bliss_Nathan_Note_FirstGame_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "EcFW_BackRoomNote": {
+   "file": "EcFW_BackRoomNote_Inv_TB.png",
+   "w": 94,
+   "h": 128
+  },
+  "EcFW_BigJaysNote": {
+   "file": "EcFW_BigJaysNote_Inv_TB.png",
+   "w": 95,
+   "h": 128
+  },
+  "EcFW_Blockage_Note": {
+   "file": "EcFW_Blockage_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_CamperNote": {
+   "file": "EcFW_CamperNote_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_CamperNote_Easy": {
+   "file": "EcFW_CamperNote_Easy_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_CamperNote_Hard": {
+   "file": "EcFW_CamperNote_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_FlowerShopNote": {
+   "file": "EcFW_FlowerShopNote_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "EcFW_GrandMarketCodeNote": {
+   "file": "EcFW_GrandMarketCodeNote_Inv_TB.png",
+   "w": 100,
+   "h": 128
+  },
+  "EcFW_GroovyMusicNote": {
+   "file": "EcFW_GroovyMusicNote_Inv_TB.png",
+   "w": 100,
+   "h": 128
+  },
+  "EcFW_HappyBurgerBox": {
+   "file": "EcFW_HappyBurgerBox_Inv_TB.png",
+   "w": 128,
+   "h": 126
+  },
+  "EcFW_JukeboxButton": {
+   "file": "EcFW_JukeboxButton_Inv_TB.png",
+   "w": 107,
+   "h": 128
+  },
+  "EcFW_MapEastCity": {
+   "file": "EastCity_Map_Inv_TB.png",
+   "w": 128,
+   "h": 95
+  },
+  "EcFW_MapEastCityOW": {
+   "file": "EastCityOW_Map_Inv_TB.png",
+   "w": 128,
+   "h": 94
+  },
+  "EcFW_MapWestCity": {
+   "file": "WestCity_Map_Inv_TB.png",
+   "w": 128,
+   "h": 97
+  },
+  "EcFW_MapWestCityOW": {
+   "file": "WestCityOW_Map_Inv_TB.png",
+   "w": 128,
+   "h": 95
+  },
+  "EcFW_MartinStBody_Note": {
+   "file": "EcFW_MartinStBody_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_Matchbox": {
+   "file": "EcFW_Matchbox_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "EcFW_MotorHomeNote": {
+   "file": "EcFW_MotorHomeNote_Inv_TB.png",
+   "w": 95,
+   "h": 128
+  },
+  "EcFW_NeelysBarKey": {
+   "file": "EcFW_NeelysBarKey_Inv_TB.png",
+   "w": 50,
+   "h": 128
+  },
+  "EcFW_NeelysBarNote": {
+   "file": "EcFW_NeelysBarNote_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_NeelysCoin": {
+   "file": "EcFW_NeelysCoin_Inv_TB.png",
+   "w": 128,
+   "h": 128
+  },
+  "EcFW_OldMap": {
+   "file": "EcFW_OldMap_Inv_TB.png",
+   "w": 103,
+   "h": 128
+  },
+  "EcFW_SandersStBody_Note": {
+   "file": "EcFW_SandersStBody_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_SaulApsB2Key": {
+   "file": "EcFW_SaulApsB2Key_Inv_TB.png",
+   "w": 58,
+   "h": 128
+  },
+  "EcFW_SaulApt_Lobby_Note": {
+   "file": "EcFW_SaulApt_Lobby_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_SaulStBody_Note1": {
+   "file": "EcFW_SaulStBody_Note1_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_SaulStBody_Note2": {
+   "file": "EcFW_SaulStBody_Note2_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_SaulStBody_Note3": {
+   "file": "EcFW_SaulStBody_Note3_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_TenantsNote": {
+   "file": "EcFW_TenantsNote_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "EcFW_TexansFlyer": {
+   "file": "EcFW_TexansFlyer_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcFW_VinylGlue": {
+   "file": "EcFW_VinylGlue_Inv_TB.png",
+   "w": 45,
+   "h": 128
+  },
+  "EcFW_VinylGlued": {
+   "file": "EcFW_VinylGlued_Inv_TB.png",
+   "w": 128,
+   "h": 128
+  },
+  "EcFW_VinylHalfA": {
+   "file": "EcFW_VinylHalfA_Inv_TB.png",
+   "w": 77,
+   "h": 128
+  },
+  "EcFW_VinylHalfB": {
+   "file": "EcFW_VinylHalfB_Inv_TB.png",
+   "w": 74,
+   "h": 128
+  },
+  "EcFW_WoodsideApartmentsKey": {
+   "file": "EcFW_WoodsideApartmentsKey_Inv_TB.png",
+   "w": 70,
+   "h": 128
+  },
+  "EcOW_LetterTrailer": {
+   "file": "EcOW_LetterTrailer_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcOW_LetterWrench": {
+   "file": "EcOW_LetterWrench_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "EcOW_Wrench": {
+   "file": "EcOW_Wrench_Inv_TB.png",
+   "w": 58,
+   "h": 128
+  },
+  "End_Bliss_Bowling_Note": {
+   "file": "End_Bliss_Bowling_Note_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_Bliss_Nathan_Note_FirstGame": {
+   "file": "End_Bliss_Nathan_Note_FirstGame_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_Bliss_Nathan_Note_NG+": {
+   "file": "End_Bliss_Nathan_Note_NG+_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_Bliss_RustedKey": {
+   "file": "End_Bliss_RustedKey_Inv_TB.png",
+   "w": 84,
+   "h": 128
+  },
+  "End_Bliss_SmallChest": {
+   "file": "End_Bliss_SmallChest_Inv_TB.png",
+   "w": 128,
+   "h": 87
+  },
+  "End_Bliss_WhiteClaudia": {
+   "file": "End_Bliss_WhiteClaudia_Inv_TB.png",
+   "w": 48,
+   "h": 128
+  },
+  "End_Dog_Key1": {
+   "file": "End_Dog_Key2_Inv_TB.png",
+   "w": 94,
+   "h": 128
+  },
+  "End_Dog_Key2": {
+   "file": "End_Dog_Key1_Inv_TB.png",
+   "w": 72,
+   "h": 128
+  },
+  "End_Dog_Key_Full": {
+   "file": "End_Dog_Key_Full_Inv_TB.png",
+   "w": 51,
+   "h": 128
+  },
+  "End_Reb_Clue_Note": {
+   "file": "End_Bliss_Nathan_Note_FirstGame_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_Reb_CrimsonCeremony": {
+   "file": "End_Reb_CrimsonCeremony_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "End_Reb_LostMemories": {
+   "file": "End_Reb_LostMemories_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "End_Reb_ObsidianGoblet": {
+   "file": "End_Reb_ObsidianGoblet_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_Reb_WhiteChrism": {
+   "file": "End_Reb_WhiteChrism_Inv_TB.png",
+   "w": 45,
+   "h": 128
+  },
+  "End_Silence_Cardiectomy_Note": {
+   "file": "End_Silence_Postcard_Inv_TB.png",
+   "w": 128,
+   "h": 87
+  },
+  "End_Silence_KeyofSorrow": {
+   "file": "End_Silence_KeyofSorrow_Inv_TB.png",
+   "w": 47,
+   "h": 128
+  },
+  "End_Silence_Postcard": {
+   "file": "End_Silence_Postcard_Inv_TB.png",
+   "w": 128,
+   "h": 87
+  },
+  "End_Silence_Renting_Note": {
+   "file": "HosFW_HeadNursesNote_Easy_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "End_UFO_ChannelingStone": {
+   "file": "End_UFO_ChannelingStone_Inv_TB.png",
+   "w": 85,
+   "h": 128
+  },
+  "Example_Xray": {
+   "file": "Xray_01_Inv_TB.png",
+   "w": 100,
+   "h": 128
+  },
+  "Flashlight": {
+   "file": "Flashlight_Inv_TB.png",
+   "w": 64,
+   "h": 128
+  },
+  "HandgunAmmo": {
+   "file": "HandgunAmmo_Inv_TB.png",
+   "w": 128,
+   "h": 91
+  },
+  "HealthDrink": {
+   "file": "HealthDrink_Inv_TB.png",
+   "w": 53,
+   "h": 128
+  },
+  "HisOW_PurgatoryKey": {
+   "file": "HisOW_PurgatoryKey_Inv_TB.png",
+   "w": 128,
+   "h": 117
+  },
+  "HosFW_1FInnerWardKey": {
+   "file": "HosFW_1FCorridorKey_Inv_TB.png",
+   "w": 128,
+   "h": 121
+  },
+  "HosFW_AggressiveBracelet": {
+   "file": "HosFW_AggressiveBracelet_Inv_TB.png",
+   "w": 128,
+   "h": 64
+  },
+  "HosFW_BasementKey": {
+   "file": "HosFW_BasementKey_Inv_TB.png",
+   "w": 128,
+   "h": 113
+  },
+  "HosFW_BentNeedle": {
+   "file": "HosFW_BentNeedle_Inv_TB.png",
+   "w": 128,
+   "h": 91
+  },
+  "HosFW_BookRoomKey": {
+   "file": "HosFW_BookRoomKey_Inv_TB.png",
+   "w": 55,
+   "h": 128
+  },
+  "HosFW_CodeLocation_Note": {
+   "file": "HosFW_CodeLocation_Note_Inv_TB.png",
+   "w": 99,
+   "h": 128
+  },
+  "HosFW_DirtyXray1_Hard": {
+   "file": "HosFW_DirtyXray1_Normal_Easy_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_DirtyXray1_Normal_Easy": {
+   "file": "HosFW_DirtyXray1_Normal_Easy_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_DisgustPatientBracelet": {
+   "file": "HosFW_DisgustPatientBracelet_Inv_TB.png",
+   "w": 128,
+   "h": 58
+  },
+  "HosFW_EmptyFuelCan": {
+   "file": "EmptyFuelContainer_Inv_TB.png",
+   "w": 128,
+   "h": 122
+  },
+  "HosFW_FearPatientBracelet": {
+   "file": "HosFW_FearPatientBracelet_Inv_TB.png",
+   "w": 128,
+   "h": 64
+  },
+  "HosFW_FullFuelCan": {
+   "file": "HosFW_FullFuelCan_Inv_TB.png",
+   "w": 128,
+   "h": 107
+  },
+  "HosFW_HeadNursesNote_Easy": {
+   "file": "HosFW_HeadNursesNote_Easy_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_HeadNursesNote_Hard": {
+   "file": "HosFW_HeadNursesNote_Hard_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_HeadNursesNote_Normal": {
+   "file": "HosFW_HeadNursesNote_Normal_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_HospitalSafeNote": {
+   "file": "HosFW_HospitalSafeNote_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_KeyLockerNote": {
+   "file": "HosFW_KeyLockerNote_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_L1RoomKey": {
+   "file": "HosFW_L1RoomKey_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "HosFW_MapBrookhavenHospital1F": {
+   "file": "HospitalMap1F_Inv_TB.png",
+   "w": 128,
+   "h": 91
+  },
+  "HosFW_MapBrookhavenHospital2F": {
+   "file": "HospitalMap2F_Inv_TB.png",
+   "w": 128,
+   "h": 94
+  },
+  "HosFW_MapBrookhavenHospital3F": {
+   "file": "HospitalMap3F_Inv_TB.png",
+   "w": 128,
+   "h": 89
+  },
+  "HosFW_MapBrookhavenHospitalBF": {
+   "file": "HospitalMapBF_Inv_TB.png",
+   "w": 128,
+   "h": 92
+  },
+  "HosFW_MedicalTube": {
+   "file": "MedicalHose_Inv_TB.png",
+   "w": 128,
+   "h": 117
+  },
+  "HosFW_MoldRemover_Hard": {
+   "file": "HosFW_MoldRemover_Inv_TB.png",
+   "w": 81,
+   "h": 128
+  },
+  "HosFW_MoldRemover_Normal_Easy": {
+   "file": "HosFW_MoldRemover_Inv_TB.png",
+   "w": 81,
+   "h": 128
+  },
+  "HosFW_NeedleMedicalTube": {
+   "file": "HosFW_NeedleMedicalTube_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "HosFW_NursesNote": {
+   "file": "HosFW_NursesNote_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_PatientFile1_Note": {
+   "file": "HosFW_PatientFile1_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_PatientFile2_Note": {
+   "file": "HosFW_PatientFile2_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_PatientFile3_Note": {
+   "file": "HosFW_PatientFile3_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_PatientNo22Note": {
+   "file": "HosFW_PatientNo22Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_PatientNo30Note": {
+   "file": "HosFW_PatientNo30Note_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_PatientNo48Note": {
+   "file": "PatientNo48Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_PoolPumpKey": {
+   "file": "HosFW_PoolPumpKey_Inv_TB.png",
+   "w": 58,
+   "h": 128
+  },
+  "HosFW_PoolPumpValve": {
+   "file": "PoolPumpValve_Inv_TB.png",
+   "w": 62,
+   "h": 128
+  },
+  "HosFW_RooftopDiaryPageNote": {
+   "file": "HosFW_RooftopDiaryPageNote_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "HosFW_RooftopKey": {
+   "file": "RooftopKey_Inv_TB.png",
+   "w": 128,
+   "h": 105
+  },
+  "HosFW_SafeSymbol": {
+   "file": "HosFW_SafeSymbol_Inv_TB.png",
+   "w": 73,
+   "h": 128
+  },
+  "HosFW_SecurityGuardNote": {
+   "file": "HosFW_SecurityGuardNote_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_SecurityGuardNoteHard": {
+   "file": "HosFW_SecurityGuardNoteHard_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "HosFW_ThreePatients_Lobby": {
+   "file": "HosFW_ThreePatients_Lobby_Inv_TB.png",
+   "w": 100,
+   "h": 128
+  },
+  "HosFW_ThreePatients_Reception_Note": {
+   "file": "HosFW_ThreePatients_Reception_Note_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "HosFW_TreatmentRoomKey": {
+   "file": "TreatmentRoom_Key_Inv_TB.png",
+   "w": 128,
+   "h": 72
+  },
+  "HosFW_WasteDisposalNote": {
+   "file": "HosFW_WasteDisposalNote_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_WomensLockerRoomKey": {
+   "file": "HosFW_WomensLockerRoomKey_Inv_TB.png",
+   "w": 47,
+   "h": 128
+  },
+  "HosFW_Xray1_Hard": {
+   "file": "HosFW_Xray1_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_Xray1_Normal_Easy": {
+   "file": "HosFW_Xray1_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_Xray2": {
+   "file": "Xray2_Inv_TB.png",
+   "w": 94,
+   "h": 128
+  },
+  "HosFW_Xray3": {
+   "file": "Xray3_Inv_TB.png",
+   "w": 94,
+   "h": 128
+  },
+  "HosFW_Xray4_Hard": {
+   "file": "HosFW_Xray4_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_Xray4_Normal_Easy": {
+   "file": "HosFW_Xray4_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosFW_Xray_Note": {
+   "file": "HosFW_Xray_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosOW_CopperRing": {
+   "file": "HosOW_CopperRing_Inv_TB.png",
+   "w": 128,
+   "h": 86
+  },
+  "HosOW_Director_Note1": {
+   "file": "HosOW_Director_Note1_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosOW_Director_Note2": {
+   "file": "HosOW_Director_Note2_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosOW_Director_Note3": {
+   "file": "HosOW_Director_Note3_Inv_TB.png",
+   "w": 93,
+   "h": 128
+  },
+  "HosOW_Director_Note4": {
+   "file": "HosOW_Director_Note4_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosOW_DirectorsOfficeKey": {
+   "file": "HosOW_DirectorsOfficeKey_Inv_TB.png",
+   "w": 128,
+   "h": 90
+  },
+  "HosOW_Electroshock_Note1": {
+   "file": "HosOW_Electroshock_Note1_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "HosOW_Electroshock_Note2": {
+   "file": "HosOW_Electroshock_Note2_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "HosOW_ElevatorButton3F": {
+   "file": "HosOW_ElevatorButton3F_Inv_TB.png",
+   "w": 126,
+   "h": 128
+  },
+  "HosOW_ElevatorButtonBF": {
+   "file": "HosOW_ElevatorButtonBF_Inv_TB.png",
+   "w": 119,
+   "h": 128
+  },
+  "HosOW_Evaluation_Note": {
+   "file": "HosOW_Evaluation_Note_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "HosOW_HospitalEntranceKey": {
+   "file": "HosOW_HospitalEntranceKey_Inv_TB.png",
+   "w": 66,
+   "h": 128
+  },
+  "HosOW_HospitalEntranceKeyAndMap": {
+   "file": "LockerRoom_Key_Inv_TB.png",
+   "w": 128,
+   "h": 79
+  },
+  "HosOW_L2Key": {
+   "file": "LockerRoom_Key_Inv_TB.png",
+   "w": 128,
+   "h": 79
+  },
+  "HosOW_LeadRing": {
+   "file": "HosOW_LeadRing_Inv_TB.png",
+   "w": 128,
+   "h": 94
+  },
+  "HosOW_LobotomyHammer": {
+   "file": "HosOW_LobotomyHammer_Inv_TB.png",
+   "w": 73,
+   "h": 128
+  },
+  "HosOW_LobotomyNail": {
+   "file": "HosOW_LobotomyOrbitoclast_Inv_TB.png",
+   "w": 29,
+   "h": 128
+  },
+  "HosOW_LobotomyOrbitoclast": {
+   "file": "HosOW_LobotomyOrbitoclast_Inv_TB.png",
+   "w": 29,
+   "h": 128
+  },
+  "HosOW_Lobotomy_Note": {
+   "file": "HosOW_Lobotomy_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "HosOW_LouisBoxKey": {
+   "file": "HosOW_LouisBoxKey_Inv_TB.png",
+   "w": 65,
+   "h": 128
+  },
+  "HosOW_MapHospital1F": {
+   "file": "HospitalOWMap1F_Inv_TB.png",
+   "w": 128,
+   "h": 93
+  },
+  "HosOW_MapHospital2F": {
+   "file": "HospitalOWMap2F_Inv_TB.png",
+   "w": 128,
+   "h": 97
+  },
+  "HosOW_MapHospital3F": {
+   "file": "HospitalOWMap3F_Inv_TB.png",
+   "w": 128,
+   "h": 94
+  },
+  "HosOW_MapHospitalBF": {
+   "file": "HospitalOWMapBF_Inv_TB.png",
+   "w": 128,
+   "h": 95
+  },
+  "HosOW_Pills_Puzzle_Note": {
+   "file": "HosFW_ThreePatients_Reception_Note_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "HosOW_Wrench_Note": {
+   "file": "HosOW_Wrench_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "IronPipe": {
+   "file": "IronPipe_Inv_TB.png",
+   "w": 94,
+   "h": 180
+  },
+  "LabOW_DisgustKey": {
+   "file": "LabOW_DisgustKey_Inv_TB.png",
+   "w": 128,
+   "h": 127
+  },
+  "LabOW_FearPathHandcuffsKey": {
+   "file": "LabOW_FearPathHandcuffsKey_Inv_TB.png",
+   "w": 81,
+   "h": 128
+  },
+  "LabOW_Lever": {
+   "file": "LabOW_Lever_Inv_TB.png",
+   "w": 70,
+   "h": 128
+  },
+  "LabOW_Lighter": {
+   "file": "LabOW_Lighter_Inv_TB.png",
+   "w": 123,
+   "h": 128
+  },
+  "LabOW_LighterFixed": {
+   "file": "LabOW_LighterFixed_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "LabOW_LighterGas": {
+   "file": "Lighter_Gasoline_Inv_TB.png",
+   "w": 128,
+   "h": 126
+  },
+  "LabOW_LighterWick": {
+   "file": "WickBox_Inv_TB.png",
+   "w": 128,
+   "h": 105
+  },
+  "LabOW_MapAngerPath": {
+   "file": "LabiryntAnger__MapInv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LabOW_MapDisgustPath": {
+   "file": "LabiryntDisgust_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LabOW_MapFearPathDown": {
+   "file": "LabiryntFearDown_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LabOW_MapFearPathUp": {
+   "file": "LabiryntFearUp_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LabOW_MapHUB": {
+   "file": "LabiryntHub_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LabOW_Wirecutter": {
+   "file": "LhOW_Boltcutter_Inv_TB.png",
+   "w": 85,
+   "h": 128
+  },
+  "LetterFromMary": {
+   "file": "LetterFromMary3_Inv_TB.png",
+   "w": 128,
+   "h": 71
+  },
+  "LetterFromMary2": {
+   "file": "LetterFromMary3_Inv_TB.png",
+   "w": 128,
+   "h": 71
+  },
+  "LetterFromMary3": {
+   "file": "LetterFromMary3_Inv_TB.png",
+   "w": 128,
+   "h": 71
+  },
+  "LetterFromMary_backup": {
+   "file": "Radio_Inv_TB.png",
+   "w": 124,
+   "h": 128
+  },
+  "LhFW_CleanUp_Note": {
+   "file": "LhFW_CleanUp_Note_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "LhFW_MapLakeviewHotel2F": {
+   "file": "Hotel2fE_Map_Inv.png",
+   "w": 128,
+   "h": 95
+  },
+  "LhFW_MapLakeviewHotel3F": {
+   "file": "Hotel3fE_Map_Inv.png",
+   "w": 128,
+   "h": 97
+  },
+  "LhFW_MapLakeviewHotelBF": {
+   "file": "HotelBF_Map_Inv.png",
+   "w": 128,
+   "h": 96
+  },
+  "LhFW_MapLakeviewHotelEF": {
+   "file": "Hotel1FE_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LhFW_RustColoredEgg": {
+   "file": "LhFW_RustColoredEgg_Inv_TB.png",
+   "w": 102,
+   "h": 128
+  },
+  "LhFW_ScarletEgg": {
+   "file": "LhFW_ScarletEgg_Inv_TB.png",
+   "w": 102,
+   "h": 128
+  },
+  "LhOW_102Key": {
+   "file": "LhOW_102Key_Inv_TB.png",
+   "w": 72,
+   "h": 128
+  },
+  "LhOW_107Key": {
+   "file": "LhOW_107Key_Inv_TB.png",
+   "w": 127,
+   "h": 128
+  },
+  "LhOW_202Key": {
+   "file": "LhOW_202Key_Inv_TB.png",
+   "w": 119,
+   "h": 128
+  },
+  "LhOW_312Key": {
+   "file": "LhOW_312Key_Inv_TB.png",
+   "w": 128,
+   "h": 121
+  },
+  "LhOW_312KeyAndMusicBoxKey": {
+   "file": "LhOW_312KeyAndMusicBoxKey_Inv_TB.png",
+   "w": 128,
+   "h": 125
+  },
+  "LhOW_BarKey": {
+   "file": "LhOW_BarKey_Inv_TB.png",
+   "w": 128,
+   "h": 103
+  },
+  "LhOW_BasementStaircaseKey": {
+   "file": "LhOW_BasementStaircaseKey_Inv_TB.png",
+   "w": 123,
+   "h": 128
+  },
+  "LhOW_BinocularCoin": {
+   "file": "Coin01_Inv_TB.png",
+   "w": 128,
+   "h": 128
+  },
+  "LhOW_BlueGem": {
+   "file": "LhOW_BlueGem_Inv_TB.png",
+   "w": 124,
+   "h": 128
+  },
+  "LhOW_Boltcutter": {
+   "file": "LabOW_Wirecutter_Inv_TB.png",
+   "w": 63,
+   "h": 128
+  },
+  "LhOW_Bulb": {
+   "file": "LhOW_Bulb_Inv_TB.png",
+   "w": 83,
+   "h": 128
+  },
+  "LhOW_CanOpener": {
+   "file": "LhOW_CanOpener_Inv_TB.png",
+   "w": 52,
+   "h": 128
+  },
+  "LhOW_CanPaint": {
+   "file": "LhOW_CanPaint_Inv_TB.png",
+   "w": 117,
+   "h": 128
+  },
+  "LhOW_CleanGardenNote": {
+   "file": "LhOW_CleanGardenNote_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "LhOW_CleanHotelRoomNote": {
+   "file": "LhOW_CleanHotelRoomNote_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "LhOW_CleanHotelRoomNoteAndKey": {
+   "file": "LhOW_CleanHotelRoomNote_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "LhOW_CleanUpNote": {
+   "file": "LhOW_CleanUpNote_Inv_TB.png",
+   "w": 99,
+   "h": 128
+  },
+  "LhOW_EmployeeElevatorKey": {
+   "file": "LhOW_EmployeeElevatorKey_Inv_TB.png",
+   "w": 53,
+   "h": 128
+  },
+  "LhOW_Figurine_A": {
+   "file": "LhOW_Figurine_A_Inv_TB.png",
+   "w": 54,
+   "h": 128
+  },
+  "LhOW_Figurine_A_Damaged": {
+   "file": "LhOW_Figurine_A_Inv_TB.png",
+   "w": 54,
+   "h": 128
+  },
+  "LhOW_Figurine_C": {
+   "file": "LhOW_Figurine_C_Inv_TB.png",
+   "w": 84,
+   "h": 128
+  },
+  "LhOW_Figurine_Damaged": {
+   "file": "LhOW_Figurine_Damaged_Inv_TB.png",
+   "w": 56,
+   "h": 128
+  },
+  "LhOW_Figurine_Undamaged": {
+   "file": "LhOW_Figurine_Undamaged_Inv_TB.png",
+   "w": 53,
+   "h": 128
+  },
+  "LhOW_FreshApple": {
+   "file": "LhOW_FreshApple_Inv_TB.png",
+   "w": 128,
+   "h": 128
+  },
+  "LhOW_GemPuzzleNote": {
+   "file": "LhOW_GemPuzzleNote_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "LhOW_GiftShopKey": {
+   "file": "LhOW_GiftShopKey_Inv_TB.png",
+   "w": 119,
+   "h": 128
+  },
+  "LhOW_GreenGem": {
+   "file": "LhOW_GreenGem_Inv_TB.png",
+   "w": 124,
+   "h": 128
+  },
+  "LhOW_LaurasLetter": {
+   "file": "LhOW_LaurasLetter_Inv_TB.png",
+   "w": 99,
+   "h": 128
+  },
+  "LhOW_LibraryPuzzleAngelBook": {
+   "file": "LhOW_LibraryPuzzleAngelBook_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "LhOW_LibraryPuzzleBullBook": {
+   "file": "LhOW_LibraryPuzzleBullBook_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "LhOW_LibraryPuzzleEagleBook": {
+   "file": "LhOW_LibraryPuzzleEagleBook_Inv_TB.png",
+   "w": 86,
+   "h": 128
+  },
+  "LhOW_LibraryPuzzleLionBook": {
+   "file": "LhOW_LibraryPuzzleLionBook_Inv_TB.png",
+   "w": 88,
+   "h": 128
+  },
+  "LhOW_LostMemories_Note": {
+   "file": "LhOW_LostMemories_Note_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "LhOW_ManagerOfficeKeypadNote": {
+   "file": "LhOW_ManagerOfficeKeypadNote_Inv_TB.png",
+   "w": 101,
+   "h": 128
+  },
+  "LhOW_MapLakeviewHotel1F": {
+   "file": "Hotel1F_Map_Inv.png",
+   "w": 128,
+   "h": 89
+  },
+  "LhOW_MapLakeviewHotel2F": {
+   "file": "Hotel2fE_Map_Inv.png",
+   "w": 128,
+   "h": 95
+  },
+  "LhOW_MapLakeviewHotel3F": {
+   "file": "Hotel3fE_Map_Inv.png",
+   "w": 128,
+   "h": 97
+  },
+  "LhOW_MapLakeviewHotelBF": {
+   "file": "HotelBF_Map_Inv.png",
+   "w": 128,
+   "h": 96
+  },
+  "LhOW_MapLakeviewHotelEF": {
+   "file": "Hotel1FE_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "LhOW_MapLakeviewHotelGF": {
+   "file": "HotelGarden_Map_Inv.png",
+   "w": 128,
+   "h": 90
+  },
+  "LhOW_MapLakeviewHotelVenus": {
+   "file": "HotelVenus_Map_Inv.png",
+   "w": 128,
+   "h": 93
+  },
+  "LhOW_MirrorShard": {
+   "file": "LhOW_MirrorShard_Inv_TB.png",
+   "w": 128,
+   "h": 96
+  },
+  "LhOW_MusicBoxKey": {
+   "file": "LhOW_MusicBoxKey_Inv_TB.png",
+   "w": 102,
+   "h": 128
+  },
+  "LhOW_OpenedCanPaint": {
+   "file": "LhOW_OpenedCanPaint_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "LhOW_Poker": {
+   "file": "LhOW_Poker_Inv_TB.png",
+   "w": 60,
+   "h": 128
+  },
+  "LhOW_Polariod_01_Hard": {
+   "file": "LhOW_Polariod_01_Hard_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_01_Easy": {
+   "file": "LhOW_Polaroid_01_Easy_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_01_Normal": {
+   "file": "LhOW_Polaroid_01_Normal_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_02_Easy": {
+   "file": "LhOW_Polaroid_02_Easy_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_02_Hard": {
+   "file": "LhOW_Polaroid_02_Hard_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_02_Normal": {
+   "file": "LhOW_Polaroid_02_Normal_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_03_Easy": {
+   "file": "LhOW_Polaroid_03_Easy_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_03_Hard": {
+   "file": "LhOW_Polaroid_03_Hard_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_Polaroid_03_Normal": {
+   "file": "LhOW_Polaroid_03_Normal_Inv_TB.png",
+   "w": 87,
+   "h": 128
+  },
+  "LhOW_RecepcionistMemo": {
+   "file": "LhOW_RecepcionistMemo_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "LhOW_RedBulb": {
+   "file": "LhOW_RedBulb_Inv_TB.png",
+   "w": 74,
+   "h": 128
+  },
+  "LhOW_RedGem": {
+   "file": "LhOW_RedGem_Inv_TB.png",
+   "w": 124,
+   "h": 128
+  },
+  "LhOW_RottenApple": {
+   "file": "LhOW_RottenApple_Inv_TB.png",
+   "w": 128,
+   "h": 124
+  },
+  "LhOW_SecondFloorLeftWingKey": {
+   "file": "LhOW_SecondFloorLeftWingKey_Inv_TB.png",
+   "w": 102,
+   "h": 128
+  },
+  "LhOW_SecondValve": {
+   "file": "LhOW_Valve_Inv_TB.png",
+   "w": 106,
+   "h": 128
+  },
+  "LhOW_TechKey": {
+   "file": "LhOW_TechKey_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "LhOW_ThirdFloorCorridorKey": {
+   "file": "LhOW_ThirdFloorCorridorKey_Inv_TB.png",
+   "w": 114,
+   "h": 128
+  },
+  "LhOW_Valve": {
+   "file": "LhOW_Valve_Inv_TB.png",
+   "w": 106,
+   "h": 128
+  },
+  "LhOW_VideoTape": {
+   "file": "LhOW_VideoTape_Inv_TB.png",
+   "w": 128,
+   "h": 86
+  },
+  "LhOW_VideoTapeAndKey": {
+   "file": "LhOW_VideoTape_Inv_TB.png",
+   "w": 128,
+   "h": 86
+  },
+  "PhotoOfMary": {
+   "file": "PhotoMary_Inv_TB.png",
+   "w": 162,
+   "h": 240
+  },
+  "Pistol": {
+   "file": "Pistol_Inv_TB.png",
+   "w": 170,
+   "h": 180
+  },
+  "PriOW_BlockAKey": {
+   "file": "PriOW_BlockAKey_Inv_TB.png",
+   "w": 50,
+   "h": 128
+  },
+  "PriOW_Boar_Disease_Note3": {
+   "file": "PriOW_Boar_Disease_Note3_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "PriOW_Boar_Prisoner_On_Guards_Note": {
+   "file": "PriOW_Boar_Prisoner_On_Guards_Note_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "PriOW_Dove_Kidnapper_Note": {
+   "file": "PriOW_Dove_Kidnapper_Note_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "PriOW_GuardRoomKey": {
+   "file": "PriOW_GuardRoomKey_Inv_TB.png",
+   "w": 51,
+   "h": 128
+  },
+  "PriOW_GunRoomKey": {
+   "file": "PriOW_GunRoomKey_Inv_TB.png",
+   "w": 128,
+   "h": 116
+  },
+  "PriOW_MapTolucaPrison2F": {
+   "file": "Prison2F_Map_Inv.png",
+   "w": 128,
+   "h": 94
+  },
+  "PriOW_MapTolucaPrison3F": {
+   "file": "Prison3F_Map_Inv.png",
+   "w": 128,
+   "h": 96
+  },
+  "PriOW_MapTolucaPrisonBF": {
+   "file": "PrisonBF_Map_Inv.png",
+   "w": 128,
+   "h": 93
+  },
+  "PriOW_MapTolucaPrison_Boar_1F": {
+   "file": "PrisonBoar_Map_Inv.png",
+   "w": 128,
+   "h": 97
+  },
+  "PriOW_MapTolucaPrison_Main_1F": {
+   "file": "Prison1FMain_Map_Inv.png",
+   "w": 128,
+   "h": 99
+  },
+  "PriOW_MapTolucaPrison_Serpent_1F": {
+   "file": "PrisonSerpent_Map_Inv.png",
+   "w": 128,
+   "h": 96
+  },
+  "PriOW_NaughtyBlockKey": {
+   "file": "PriOW_NaughtyBlockKey_Inv_TB.png",
+   "w": 103,
+   "h": 128
+  },
+  "PriOW_Ox_Assaulter_Bathroom_Note": {
+   "file": "PriOW_Ox_Assaulter_Bathroom_Note_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "PriOW_Ox_Assaulter_Cell_Note": {
+   "file": "PriOW_Ox_Assaulter_Cell_Note_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "PriOW_Ox_Guards_Noticing_Stalker": {
+   "file": "PriOW_Ox_Guards_Noticing_Stalker_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "PriOW_Ox_Isolation_Cell_Note": {
+   "file": "PriOW_Ox_Isolation_Cell_Note_Inv_TB.png",
+   "w": 92,
+   "h": 128
+  },
+  "PriOW_Photo_Murderer": {
+   "file": "PriOW_Photo_Murderer_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "PriOW_Rifle_Hint": {
+   "file": "PriOW_Rifle_Hint_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "PriOW_Weight01": {
+   "file": "PriOW_Weight01_Inv_TB.png",
+   "w": 80,
+   "h": 128
+  },
+  "PriOW_Weight02": {
+   "file": "PriOW_Weight02_Inv_TB.png",
+   "w": 85,
+   "h": 128
+  },
+  "PriOW_Weight03": {
+   "file": "PriOW_Weight03_Inv_TB.png",
+   "w": 90,
+   "h": 128
+  },
+  "PriOW_Weight04": {
+   "file": "PriOW_Weight04_Inv_TB.png",
+   "w": 95,
+   "h": 128
+  },
+  "PriOW_Weight05": {
+   "file": "PriOW_Weight05_Inv_TB.png",
+   "w": 100,
+   "h": 128
+  },
+  "PriOW_Weight06": {
+   "file": "PriOW_BlockAKey_Inv_TB.png",
+   "w": 50,
+   "h": 128
+  },
+  "Radio": {
+   "file": "Radio_Inv_TB.png",
+   "w": 124,
+   "h": 128
+  },
+  "Reflections_Photo_1": {
+   "file": "Reflections_Photo_1_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_10": {
+   "file": "Reflections_Photo_10_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_11": {
+   "file": "Reflections_Photo_11_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_12": {
+   "file": "Reflections_Photo_12_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_13": {
+   "file": "Reflections_Photo_13_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_14": {
+   "file": "Reflections_Photo_14_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_15": {
+   "file": "Reflections_Photo_15_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_16": {
+   "file": "Reflections_Photo_16_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_17": {
+   "file": "Reflections_Photo_17_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_18": {
+   "file": "Reflections_Photo_18_Inv_TB.png",
+   "w": 240,
+   "h": 239
+  },
+  "Reflections_Photo_19": {
+   "file": "Reflections_Photo_19_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_2": {
+   "file": "Reflections_Photo_2_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_20": {
+   "file": "Reflections_Photo_20_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_21": {
+   "file": "Reflections_Photo_21_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_22": {
+   "file": "Reflections_Photo_22_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_23": {
+   "file": "Reflections_Photo_23_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_24": {
+   "file": "Reflections_Photo_24_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_25": {
+   "file": "Reflections_Photo_25_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_26": {
+   "file": "Reflections_Photo_26_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_3": {
+   "file": "Reflections_Photo_3_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_4": {
+   "file": "Reflections_Photo_4_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_5": {
+   "file": "Reflections_Photo_5_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_6": {
+   "file": "Reflections_Photo_6_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_7": {
+   "file": "Reflections_Photo_7_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_8": {
+   "file": "Reflections_Photo_8_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Reflections_Photo_9": {
+   "file": "Reflections_Photo_9_Inv_TB.png",
+   "w": 207,
+   "h": 240
+  },
+  "Rifle": {
+   "file": "Rifle_Inv_TB.png",
+   "w": 180,
+   "h": 175
+  },
+  "RifleAmmo": {
+   "file": "RifleAmmo_Inv_TB.png",
+   "w": 128,
+   "h": 90
+  },
+  "RtSH_MapRoadToSilentHill": {
+   "file": "SouthValeCityMap_Inv_TB.png",
+   "w": 128,
+   "h": 99
+  },
+  "RtSH_WoodworkKey": {
+   "file": "RtSH_WoodworkKey_Inv_TB.png",
+   "w": 42,
+   "h": 128
+  },
+  "Shotgun": {
+   "file": "Shotgun_Inv_TB.png",
+   "w": 175,
+   "h": 180
+  },
+  "ShotgunAmmo": {
+   "file": "ShotgunAmmo_Inv_TB.png",
+   "w": 128,
+   "h": 89
+  },
+  "Syringe": {
+   "file": "SyringeConsumable_Inv_TB.png",
+   "w": 128,
+   "h": 80
+  },
+  "WcFW_Code_Note_Easy": {
+   "file": "WcFW_Code_Note_Easy_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "WcFW_Code_Note_Hard": {
+   "file": "WcFW_Code_Note_Hard_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "WcFW_Code_Note_Normal": {
+   "file": "WcFW_Code_Note_Normal_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "WcFW_GarageJack": {
+   "file": "WcFW_GarageJack_Inv_TB.png",
+   "w": 71,
+   "h": 128
+  },
+  "WcFW_KeyToMotelGate": {
+   "file": "WcFW_KeyToMotelGate_Inv_TB.png",
+   "w": 103,
+   "h": 128
+  },
+  "WcFW_Note_HS": {
+   "file": "WcFW_Note_HS_Inv_TB.png",
+   "w": 91,
+   "h": 128
+  },
+  "WcFW_Reception_Note": {
+   "file": "WcFW_Reception_Note_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "WcFW_RosewaterParkBrochure": {
+   "file": "WoodSideGateNote_Inv_TB.png",
+   "w": 93,
+   "h": 128
+  },
+  "WcOW_HistoricalSocietyKey": {
+   "file": "WcOW_HistoricalSocietyKey_Inv_TB.png",
+   "w": 38,
+   "h": 128
+  },
+  "WoodenPlank": {
+   "file": "WoodenPlank_Inv_TB.png",
+   "w": 165,
+   "h": 180
+  },
+  "WsaFW_CannedJuice": {
+   "file": "WsaFW_CannedJuice_Inv_TB.png",
+   "w": 128,
+   "h": 117
+  },
+  "WsaFW_Coin1": {
+   "file": "WsaFW_Coin1_Inv_TB.png",
+   "w": 127,
+   "h": 128
+  },
+  "WsaFW_Coin2": {
+   "file": "WsaFW_Coin2_Inv_TB.png",
+   "w": 126,
+   "h": 128
+  },
+  "WsaFW_Coin3": {
+   "file": "WsaFW_Coin3_Inv_TB.png",
+   "w": 128,
+   "h": 128
+  },
+  "WsaFW_Gun_Note": {
+   "file": "WsaFW_Gun_Note_Inv_TB.png",
+   "w": 88,
+   "h": 128
+  },
+  "WsaFW_KeyApartmentJ&M": {
+   "file": "WsaFW_KeyApartmentJM_Inv_TB.png",
+   "w": 57,
+   "h": 128
+  },
+  "WsaFW_KeyTo2ndFloor": {
+   "file": "WsaFW_KeyTo2ndFloor_Inv_TB.png",
+   "w": 81,
+   "h": 128
+  },
+  "WsaFW_KeyToAp212": {
+   "file": "WsaFW_KeyToAp212_Inv_TB.png",
+   "w": 88,
+   "h": 128
+  },
+  "WsaFW_KeyToChuteCouryard": {
+   "file": "WsaFW_KeyToChuteCouryard_Inv_TB.png",
+   "w": 66,
+   "h": 128
+  },
+  "WsaFW_KeyToPrisonerRoom": {
+   "file": "WsaFW_KeyToPrisonerRoom_Inv_TB.png",
+   "w": 88,
+   "h": 128
+  },
+  "WsaFW_KeyToStaircase": {
+   "file": "WsaFW_KeyToStaircase_Inv_TB.png",
+   "w": 89,
+   "h": 128
+  },
+  "WsaFW_MapWoodSide1F": {
+   "file": "WoodSide1F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 89
+  },
+  "WsaFW_MapWoodSide2F": {
+   "file": "WoodSide2F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 89
+  },
+  "WsaFW_MapWoodSide3F": {
+   "file": "WoodSide3F_Map_Inv_TB.png",
+   "w": 128,
+   "h": 97
+  },
+  "WsaFW_MarysScarf": {
+   "file": "WsaFW_MarysScarf_Inv_TB.png",
+   "w": 126,
+   "h": 128
+  },
+  "WsaFW_Surface_Note1": {
+   "file": "WsaFW_Surface_Note1_Inv_TB.png",
+   "w": 97,
+   "h": 128
+  },
+  "WsaFW_Surface_Note2": {
+   "file": "WsaFW_Surface_Note2_Inv_TB.png",
+   "w": 98,
+   "h": 128
+  },
+  "WsaFW_WardrobePart": {
+   "file": "WsaFW_WardrobePart_Inv_TB.png",
+   "w": 107,
+   "h": 128
+  }
+ },
+ "ui": {
+  "_health_cross": "_health_cross.png",
+  "_save_square": "_save_square.png"
+ },
+ "photos": {
+  "Reflections_Photo_1": {
+   "num": 1,
+   "ru": "«Так много людей!»",
+   "en": "\"So many people here!\""
+  },
+  "Reflections_Photo_2": {
+   "num": 2,
+   "ru": "«Никто не знает»",
+   "en": "\"No one knows\""
+  },
+  "Reflections_Photo_3": {
+   "num": 3,
+   "ru": "«Твой лучший друг!»",
+   "en": "\"Your best buddy!\""
+  },
+  "Reflections_Photo_4": {
+   "num": 4,
+   "ru": "«День святого Валентина»",
+   "en": "\"Valentine's Day\""
+  },
+  "Reflections_Photo_5": {
+   "num": 5,
+   "ru": "«Вход в церковь»",
+   "en": "\"Church entrance\""
+  },
+  "Reflections_Photo_6": {
+   "num": 6,
+   "ru": "«Это было счастье»",
+   "en": "\"I've been happy\""
+  },
+  "Reflections_Photo_7": {
+   "num": 7,
+   "ru": "«Скромное начало карьеры»",
+   "en": "\"Career's humble beginnings\""
+  },
+  "Reflections_Photo_8": {
+   "num": 8,
+   "ru": "«Вкусно!»",
+   "en": "\"Best flavor!\""
+  },
+  "Reflections_Photo_9": {
+   "num": 9,
+   "ru": "«Ее рисунки»",
+   "en": "\"Her drawings\""
+  },
+  "Reflections_Photo_10": {
+   "num": 10,
+   "ru": "«Они здесь»",
+   "en": "\"They're here\""
+  },
+  "Reflections_Photo_11": {
+   "num": 11,
+   "ru": "«Как летит время»",
+   "en": "\"How the time flies\""
+  },
+  "Reflections_Photo_12": {
+   "num": 12,
+   "ru": "«Раз — и все!»",
+   "en": "\"Ready to kill it!\""
+  },
+  "Reflections_Photo_13": {
+   "num": 13,
+   "ru": "«Нельзя, чтобы они узнали»",
+   "en": "\"They mustn't know\""
+  },
+  "Reflections_Photo_14": {
+   "num": 14,
+   "ru": "«Дом так далеко»",
+   "en": "\"So far from home\""
+  },
+  "Reflections_Photo_15": {
+   "num": 15,
+   "ru": "«Еще четыре месяца»",
+   "en": "\"Four months to go\""
+  },
+  "Reflections_Photo_16": {
+   "num": 16,
+   "ru": "«Вместе навсегда»",
+   "en": "\"Forever together\""
+  },
+  "Reflections_Photo_17": {
+   "num": 17,
+   "ru": "«Новые часы»",
+   "en": "\"The new clock\""
+  },
+  "Reflections_Photo_18": {
+   "num": 18,
+   "ru": "«Хотя бы она со мной»",
+   "en": "\"At least she was there\""
+  },
+  "Reflections_Photo_19": {
+   "num": 19,
+   "ru": "«У нас все впереди»",
+   "en": "\"Whole world ahead of us\""
+  },
+  "Reflections_Photo_20": {
+   "num": 20,
+   "ru": "«Получилось!»",
+   "en": "\"made it!\""
+  },
+  "Reflections_Photo_21": {
+   "num": 21,
+   "ru": "«Последствия...»",
+   "en": "\"aftermath... \""
+  },
+  "Reflections_Photo_22": {
+   "num": 22,
+   "ru": "«Пока не получается»",
+   "en": "\"Still can't get it right\""
+  },
+  "Reflections_Photo_23": {
+   "num": 23,
+   "ru": "«Старик всегда ко всему готов»",
+   "en": "\"Old man's always prepared\""
+  },
+  "Reflections_Photo_24": {
+   "num": 24,
+   "ru": "«Путешествие!»",
+   "en": "\"Road trip!\""
+  },
+  "Reflections_Photo_25": {
+   "num": 25,
+   "ru": "«Лучше уйти...»",
+   "en": "\"Better leave...\""
+  },
+  "Reflections_Photo_26": {
+   "num": 26,
+   "ru": "«ВНЕШНЕЕ ПРАВИТ РАЗУМОМ»",
+   "en": "\"SHAPE FORCES THE MIND\""
+  }
+ },
+ "places_extra": {
+  "ObservationDeck": {
+   "ru": "ДОРОГА В САЙЛЕНТ ХИЛЛ — Смотровая площадка",
+   "en": "ROAD TO SILENT HILL — Observation Deck"
+  },
+  "M_HospitalFW_1F_ReceptionOffice": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Кабинет администратора",
+   "en": "BROOKHAVEN HOSPITAL — Reception Office"
+  },
+  "M_HospitalFW_2F_RoomC3": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Палата C3",
+   "en": "BROOKHAVEN HOSPITAL — Room C3"
+  },
+  "M_HospitalFW_2F_DirectorsOffice": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Кабинет директора",
+   "en": "BROOKHAVEN HOSPITAL — Director's Office"
+  },
+  "M_HospitalFW_3F_3rdFloor": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Коридор 3-го этажа",
+   "en": "BROOKHAVEN HOSPITAL — 3rd Floor Corridor"
+  },
+  "A_HospitalFW_EF_HospitalEntrance": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Главный вход",
+   "en": "BROOKHAVEN HOSPITAL — Front Door"
+  },
+  "A_HospitalFW_BF_Basement": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Подвал",
+   "en": "BROOKHAVEN HOSPITAL — Basement"
+  },
+  "A_HospitalFW_BF_Generator": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Генераторная",
+   "en": "BROOKHAVEN HOSPITAL — Generator Room"
+  },
+  "A_HospitalFW_2F_MariaLiesInBed": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Палата C5",
+   "en": "BROOKHAVEN HOSPITAL — Room C5"
+  },
+  "A_HospitalFW_2F_HandPuzzle": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Кабинет директора",
+   "en": "BROOKHAVEN HOSPITAL — Director's Office"
+  },
+  "A_HospitalFW_2F_SafeSymbolPuzzle": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Кабинет директора",
+   "en": "BROOKHAVEN HOSPITAL — Director's Office"
+  },
+  "A_HospitalFW_3F_IsolationWard": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Инфекционная палата",
+   "en": "BROOKHAVEN HOSPITAL — Isolation Ward"
+  },
+  "A_HospitalFW_3F_FleshLip": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Губа из плоти",
+   "en": "BROOKHAVEN HOSPITAL — Flesh Lip"
+  },
+  "M_HospitalOW_1F_FanCorridor": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Коридор 1-го этажа",
+   "en": "BROOKHAVEN HOSPITAL — 1st Floor Corridor"
+  },
+  "A_HospitalOW_3F_Lobotomy": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Смотровой кабинет 4",
+   "en": "BROOKHAVEN HOSPITAL — Examination Room 4"
+  },
+  "M_Woodside_1F": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Приёмный покой",
+   "en": "WOOD SIDE APARTMENTS — Reception Office"
+  },
+  "M_Woodside_2F": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Маленькая лестница",
+   "en": "WOOD SIDE APARTMENTS — Small Staircase"
+  },
+  "A_Woodside_Entrance": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Вестибюль",
+   "en": "WOOD SIDE APARTMENTS — Lobby"
+  },
+  "A_Woodside_Apt202": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Кв. 202",
+   "en": "WOOD SIDE APARTMENTS — Apartment 202"
+  },
+  "A_Woodside_GunApt": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Кв. 217",
+   "en": "WOOD SIDE APARTMENTS — Apartment 217"
+  },
+  "A_Woodside_EddieApt": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Кв. 116",
+   "en": "WOOD SIDE APARTMENTS — Apartment 116"
+  },
+  "A_Woodside_CoinPuzzle": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «ВУДСАЙД» — Шкафчик для монет",
+   "en": "WOOD SIDE APARTMENTS — Coin Cabinet"
+  },
+  "WestCity_JacksInn_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Мотель «Джекс»",
+   "en": "WESTERN SOUTH VALE — Jacks Inn"
+  },
+  "NatureTrailTolucaGraveyard": {
+   "ru": "ДОРОГА В САЙЛЕНТ ХИЛЛ — Тропа",
+   "en": "ROAD TO SILENT HILL — Trail"
+  },
+  "HistoricalSocietyBuilding": {
+   "ru": "ИСТОРИЧЕСКОЕ ОБЩЕСТВО — Стойка администратора",
+   "en": "HISTORICAL SOCIETY — Reception Desk"
+  },
+  "LakesideDinerCityOW": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Кафе «У озера»",
+   "en": "WESTERN SOUTH VALE — Lakeside Diner"
+  },
+  "EastCity_CamperTrailer_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Фургон",
+   "en": "EASTERN SOUTH VALE — Motor Home"
+  },
+  "TolucaLakeShore": {
+   "ru": "ОЗЕРО ТОЛУКА — Берег",
+   "en": "TOLUCA LAKE — Shore"
+  },
+  "EastCity_Start_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Стенд с картами на Сандерс-стрит",
+   "en": "EASTERN SOUTH VALE — Map Stand at Sanders Street"
+  },
+  "EastCity_MartinsStreet_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Мартин-стрит",
+   "en": "EASTERN SOUTH VALE — Martin Street"
+  },
+  "EastCity_FirstEncounter_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Первая встреча",
+   "en": "EASTERN SOUTH VALE — First Encounter"
+  },
+  "EastCity_RoomAfterGarage_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Дом на Мартин-стрит",
+   "en": "EASTERN SOUTH VALE — House on Martin Street"
+  },
+  "EastCity_NeelysBar_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Бар «Нили»",
+   "en": "EASTERN SOUTH VALE — Neely's Bar"
+  },
+  "EastCity_NeelysBarBackAlley_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Переулок за баром «Нили»",
+   "en": "EASTERN SOUTH VALE — Back alley behind Neely's Bar"
+  },
+  "EastCity_GroovyMusic_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Магазин «Груви Мьюзик»",
+   "en": "EASTERN SOUTH VALE — I Love Groovy Music Store"
+  },
+  "EastCity_SaulApt_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Жилой комплекс на Саул-стрит",
+   "en": "EASTERN SOUTH VALE — Saul Street Apartments"
+  },
+  "PrisonCanteen": {
+   "ru": "ТЮРЬМА ТОЛУКА — Столовая",
+   "en": "TOLUCA PRISON — Canteen"
+  },
+  "PrisonDeathRow": {
+   "ru": "ТЮРЬМА ТОЛУКА — Камеры смертников",
+   "en": "TOLUCA PRISON — Death Row"
+  },
+  "PrisonGunRoom": {
+   "ru": "ТЮРЬМА ТОЛУКА — Оружейный склад",
+   "en": "TOLUCA PRISON — Armory"
+  },
+  "PrisonYard": {
+   "ru": "ТЮРЬМА ТОЛУКА — Двор",
+   "en": "TOLUCA PRISON — Yard"
+  },
+  "PrisonWardenOffice": {
+   "ru": "ТЮРЬМА ТОЛУКА — Кабинет начальника тюрьмы",
+   "en": "TOLUCA PRISON — Warden's Office"
+  },
+  "PrisonGuardRestroom": {
+   "ru": "ТЮРЬМА ТОЛУКА — Комната охраны",
+   "en": "TOLUCA PRISON — Guardroom"
+  },
+  "PrisonSpectatorRoom": {
+   "ru": "ТЮРЬМА ТОЛУКА — Комната для свидетелей",
+   "en": "TOLUCA PRISON — Witness Room"
+  },
+  "M_HotelOW_1F": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Стойка администратора",
+   "en": "LAKEVIEW HOTEL — Reception"
+  },
+  "M_HotelOW_2F_ReadingRoom": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Читальный зал",
+   "en": "LAKEVIEW HOTEL — Reading Room"
+  },
+  "M_HotelOW_VenusBar": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Бар «Слезы Венеры»",
+   "en": "LAKEVIEW HOTEL — Venus Tears Bar"
+  },
+  "M_HotelOW_ElevatorRoom": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Служебный лифт",
+   "en": "LAKEVIEW HOTEL — Employee Elevator Room"
+  },
+  "A_HotelOW_MusicBox": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Вестибюль",
+   "en": "LAKEVIEW HOTEL — Lobby"
+  },
+  "A_HotelOW_GemPuzzle": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Служебные помещения",
+   "en": "LAKEVIEW HOTEL — Employee Section"
+  },
+  "A_HotelOW_ValvePuzzle": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Подвал",
+   "en": "LAKEVIEW HOTEL — Basement"
+  },
+  "A_HotelOW_ApplePuzzle": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Номер 202",
+   "en": "LAKEVIEW HOTEL — Room 202"
+  },
+  "A_HotelOW_LauraEscape": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Ресторан «Лейк-шор»",
+   "en": "LAKEVIEW HOTEL — Lake Shore Restaurant"
+  },
+  "A_HotelOW_SunriseWing": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Рассветное крыло",
+   "en": "LAKEVIEW HOTEL — Sunrise Wing"
+  },
+  "A_HotelOW_Chimney": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Конференц-зал",
+   "en": "LAKEVIEW HOTEL — Conference Room"
+  },
+  "A_HotelOW_Library": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Читальный зал",
+   "en": "LAKEVIEW HOTEL — Reading Room"
+  },
+  "A_HotelOW_EscapeFromMandarin": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Номер 317",
+   "en": "LAKEVIEW HOTEL — Room 317"
+  },
+  "A_HotelOW_Gems": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Служебные помещения",
+   "en": "LAKEVIEW HOTEL — Employee Section"
+  },
+  "WestCity_LadyOfTheLight_A": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Лунная роща",
+   "en": "WESTERN SOUTH VALE — Moonlight Grove"
+  },
+  "WestCity_HeavensNight_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Райская ночь",
+   "en": "WESTERN SOUTH VALE — Heaven's Night"
+  },
+  "WestCity_ResidentialArea_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Жилой квартал",
+   "en": "WESTERN SOUTH VALE — Residential Area"
+  },
+  "WestCity_RosewaterParkPier_A": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Пирс",
+   "en": "WESTERN SOUTH VALE — Pier"
+  },
+  "PrisonToilet": {
+   "ru": "ТЮРЬМА ТОЛУКА — Туалет",
+   "en": "TOLUCA PRISON — Toilet"
+  },
+  "HotelFW_WeakFloor": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Номер 204",
+   "en": "LAKEVIEW HOTEL — Room 204"
+  },
+  "HotelFW_BF": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Подвал отеля",
+   "en": "LAKEVIEW HOTEL — Hotel's Basement"
+  },
+  "HotelFW_3F": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Отель, 3 эт. — трещина в полу",
+   "en": "LAKEVIEW HOTEL — Hotel 3F Floor Crack"
+  },
+  "PrisonLadyJustice": {
+   "ru": "ТЮРЬМА ТОЛУКА — Двор",
+   "en": "TOLUCA PRISON — Yard"
+  },
+  "PrisonElectricChair": {
+   "ru": "ТЮРЬМА ТОЛУКА — Комната для свидетелей",
+   "en": "TOLUCA PRISON — Witness Room"
+  },
+  "PrisonSerpentDone": {
+   "ru": "ТЮРЬМА ТОЛУКА — Выход змеи",
+   "en": "TOLUCA PRISON — Serpent Exit"
+  },
+  "PrisonDoveFinal": {
+   "ru": "ТЮРЬМА ТОЛУКА — Камера F10",
+   "en": "TOLUCA PRISON — Cell F10"
+  },
+  "PrisonShowers": {
+   "ru": "ТЮРЬМА ТОЛУКА — Душевые",
+   "en": "TOLUCA PRISON — Showers"
+  },
+  "A_HospitalOW_1F_AfterChase": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Лифт 1-го этажа",
+   "en": "BROOKHAVEN HOSPITAL — 1st Floor Elevator"
+  },
+  "A_HospitalOW_3F_Electroshock": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Инфекционная палата",
+   "en": "BROOKHAVEN HOSPITAL — Isolation Ward"
+  },
+  "HotelFW_VenusTearsBar": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Бар «Слезы Венеры»",
+   "en": "LAKEVIEW HOTEL — Venus Tears Bar"
+  },
+  "HotelFW_ReadingRoom": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Читальный зал",
+   "en": "LAKEVIEW HOTEL — Reading room"
+  },
+  "HotelFW_HotelEntrance": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Коридор",
+   "en": "LAKEVIEW HOTEL — Corridor"
+  },
+  "LabyrinthOW_Start_M": {
+   "ru": "ЛАБИРИНТ — Лифт",
+   "en": "LABYRINTH — Elevator"
+  },
+  "LabyrinthOW_Crossroad_M": {
+   "ru": "ЛАБИРИНТ — Перекресток",
+   "en": "LABYRINTH — Crossroads"
+  },
+  "LabyrinthOW_AngerPath_A": {
+   "ru": "ЛАБИРИНТ — Разрушенный коридор",
+   "en": "LABYRINTH — Ruined Corridor"
+  },
+  "LabyrinthOW_DisgustPath_M": {
+   "ru": "ЛАБИРИНТ — Гниющая комната",
+   "en": "LABYRINTH — Rotten Room"
+  },
+  "LabyrinthOW_FearPath_M": {
+   "ru": "ЛАБИРИНТ — Пустой коридор",
+   "en": "LABYRINTH — Desolate Corridor"
+  },
+  "LabyrinthOW_FearPath2_A": {
+   "ru": "ЛАБИРИНТ — Подземный туннель",
+   "en": "LABYRINTH — Underground Tunnel"
+  },
+  "LabyrinthOW_FearPathEnd_A": {
+   "ru": "ЛАБИРИНТ — Коридор с проволокой",
+   "en": "LABYRINTH — Wired Passage"
+  },
+  "LabyrinthOW_Cementary_M": {
+   "ru": "ЛАБИРИНТ — Кладбище",
+   "en": "LABYRINTH — Cemetery"
+  },
+  "LabyrinthOW_DisgustBeginnign_A": {
+   "ru": "ЛАБИРИНТ — Вход в прогнившую область",
+   "en": "LABYRINTH — Rotten Area Entrance"
+  },
+  "LabyrinthOW_FearBeginnign_A": {
+   "ru": "ЛАБИРИНТ — Вход в заброшенную область",
+   "en": "LABYRINTH — Desolate Area Entrance"
+  },
+  "LabyrinthOW_AngerBeginnign_A": {
+   "ru": "ЛАБИРИНТ — Вход в разрушенную область",
+   "en": "LABYRINTH — Ruined Area Entrance"
+  },
+  "LabyrinthOW_DisgustPathMariaCage_A": {
+   "ru": "ЛАБИРИНТ — Гниющая комната",
+   "en": "LABYRINTH — Rotten Room"
+  },
+  "LabyrinthOW_ADBeginning_A": {
+   "ru": "ЛАБИРИНТ — Абстрактный папочка",
+   "en": "LABYRINTH — Abstract Daddy"
+  },
+  "LabyrinthOW_ADEnd_A": {
+   "ru": "ЛАБИРИНТ — Квартира",
+   "en": "LABYRINTH — Apartment"
+  },
+  "LabyrinthOW_MariaIsDead_A": {
+   "ru": "ЛАБИРИНТ — Камера",
+   "en": "LABYRINTH — Cell"
+  },
+  "LabyrinthOW_EddiBeginning_A": {
+   "ru": "ЛАБИРИНТ — Мясохранилище",
+   "en": "LABYRINTH — Meat Locker"
+  },
+  "LabyrinthOW_EddiEnd_A": {
+   "ru": "ЛАБИРИНТ — Мясохранилище",
+   "en": "LABYRINTH — Meat Locker"
+  },
+  "RoadToCity_TolucaGraveyard": {
+   "ru": "ДОРОГА В САЙЛЕНТ ХИЛЛ — Кладбище «Толука»",
+   "en": "ROAD TO SILENT HILL — Toluca Graveyard"
+  },
+  "RoadToCity_SawMillGate": {
+   "ru": "ДОРОГА В САЙЛЕНТ ХИЛЛ — Лесопилка",
+   "en": "ROAD TO SILENT HILL — Sawmill"
+  },
+  "HistoricalSocietyLongCorridor": {
+   "ru": "ИСТОРИЧЕСКОЕ ОБЩЕСТВО — Лестница",
+   "en": "HISTORICAL SOCIETY — Staircase"
+  },
+  "HistoricalSocietyWell": {
+   "ru": "ИСТОРИЧЕСКОЕ ОБЩЕСТВО — Колодец",
+   "en": "HISTORICAL SOCIETY — Well"
+  },
+  "TolucaLake_Boat": {
+   "ru": "ОЗЕРО ТОЛУКА — Лодка",
+   "en": "TOLUCA LAKE — Boat"
+  },
+  "TolucaLake_HotelOW": {
+   "ru": "ОЗЕРО ТОЛУКА — Отель «Лейквью»",
+   "en": "TOLUCA LAKE — Lakeview Hotel"
+  },
+  "HotelFW_AngelaStaircase": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Подвал",
+   "en": "LAKEVIEW HOTEL — Basement"
+  },
+  "PrisonGallowsPlatePuzzle": {
+   "ru": "ТЮРЬМА ТОЛУКА — Двор",
+   "en": "TOLUCA PRISON — Yard"
+  },
+  "WestCity_BowlingAlley_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Боулинг-клуб Пита",
+   "en": "WESTERN SOUTH VALE — Pete's Bowl-O-Rama"
+  },
+  "HotelFW_PyramidHeadEndFight": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Вестибюль",
+   "en": "LAKEVIEW HOTEL — Lobby"
+  },
+  "HotelFW_AfterVideoTape": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Номер 312",
+   "en": "LAKEVIEW HOTEL — Room 312"
+  },
+  "HotelFW_PyramidHeadStartFight": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Пирамидоголовые близнецы",
+   "en": "LAKEVIEW HOTEL — Red Pyramid Twins"
+  },
+  "EastCity_TunneNeelysStreet_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Туннель на Нили-стрит",
+   "en": "EASTERN SOUTH VALE — Tunnel on Neely's Street"
+  },
+  "WestCity_BlueCreekApartments_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Жилой комплекс «Блю-Крик»",
+   "en": "WESTERN SOUTH VALE — Blue Creek Apartments"
+  },
+  "WestCity_BackAlley_A": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Переулок",
+   "en": "WESTERN SOUTH VALE — Back Alley"
+  },
+  "WestCity_RosewaterParkAngela_A": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Парк «Роузуотер»",
+   "en": "WESTERN SOUTH VALE — Rosewater Park"
+  },
+  "EastCityOW_TunneNeelysStreet_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Туннель",
+   "en": "EASTERN SOUTH VALE — Tunnel"
+  },
+  "EastCityOW_Laundromat_A": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Прачечная",
+   "en": "EASTERN SOUTH VALE — Laundromat"
+  },
+  "WestCity_Garage_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Гараж",
+   "en": "WESTERN SOUTH VALE — Garage"
+  },
+  "PrisonDoveSection": {
+   "ru": "ТЮРЬМА ТОЛУКА — Дверь бескрылого голубя",
+   "en": "TOLUCA PRISON — Wingless Dove Door"
+  },
+  "Prison_DoveEntrance": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Кв. 208",
+   "en": "BLUE CREEK APARTMENTS — Apartment 208"
+  },
+  "Bluecreeck_AfterEnteringBluecreek": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Кв. 303",
+   "en": "BLUE CREEK APARTMENTS — Apartment 303"
+  },
+  "A_BlueCreek_Radio_Room": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Помещение связи",
+   "en": "BLUE CREEK APARTMENTS — Radio Room"
+  },
+  "A_BlueCreek_DirtyRoom": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Кв. 210",
+   "en": "BLUE CREEK APARTMENTS — Apartment 210"
+  },
+  "A_BlueCreek_AngelaRoom": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Кв. 109",
+   "en": "BLUE CREEK APARTMENTS — Apartment 109"
+  },
+  "A_BlueCreek_MothRoom": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Кв. 202",
+   "en": "BLUE CREEK APARTMENTS — Apartment 202"
+  },
+  "A_BlueCreek_ClockPuzzleDone": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Комната с часами",
+   "en": "BLUE CREEK APARTMENTS — Clock Room"
+  },
+  "A_BlueCreek_PiramidHead": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Красная пирамида",
+   "en": "BLUE CREEK APARTMENTS — Red Pyramid Thing"
+  },
+  "A_BlueCreek_AfterPiramidHead": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Двор",
+   "en": "BLUE CREEK APARTMENTS — Courtyard"
+  },
+  "M_BlueCreek_ClockRoom": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Комната с часами",
+   "en": "BLUE CREEK APARTMENTS — Clock Room"
+  },
+  "A_HospitalOW_Garden": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Сад",
+   "en": "BROOKHAVEN HOSPITAL — Garden"
+  },
+  "M_HospitalOW_2F_Pillar": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Холл 2-го этажа",
+   "en": "BROOKHAVEN HOSPITAL — 2nd Floor Hall"
+  },
+  "A_HospitalOW_2F_LouiseBoxOpened": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Дева у двери",
+   "en": "BROOKHAVEN HOSPITAL — Lady of the Door"
+  },
+  "M_HospitalOW_CS_Staircase": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Лестница",
+   "en": "BROOKHAVEN HOSPITAL — Staircase"
+  },
+  "A_HospitalOW_BF_BasementStart": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Вход в подвал",
+   "en": "BROOKHAVEN HOSPITAL — Basement Entrance"
+  },
+  "A_HospitalOW_BF_MariaReappear": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Насосная",
+   "en": "BROOKHAVEN HOSPITAL — Pump Room"
+  },
+  "M_HospitalOW_1F_ReceptionOffice": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Приёмный покой",
+   "en": "BROOKHAVEN HOSPITAL — Reception Office"
+  },
+  "WestCityNight_JacksInn_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Мотель «Джекс»",
+   "en": "WESTERN SOUTH VALE — Jacks Inn"
+  },
+  "WestCityNight_BowlingAlley_M": {
+   "ru": "ЗАПАДНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Боулинг-клуб Пита",
+   "en": "WESTERN SOUTH VALE — Pete's Bowl-O-Rama"
+  },
+  "A_HospitalOW_2F_Pillar": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Ящик в цепях",
+   "en": "BROOKHAVEN HOSPITAL — Chained Box"
+  },
+  "A_HospitalOW_CS_Staircase": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Лестничная площадка",
+   "en": "BROOKHAVEN HOSPITAL — Staircase Landing"
+  },
+  "A_HospitalOW_CS_BeforeChase": {
+   "ru": "БОЛЬНИЦА БРУКХЕЙВЕН — Подземный коридор",
+   "en": "BROOKHAVEN HOSPITAL — Underground Corridor"
+  },
+  "LabyrinthOW_AngelaPath_A": {
+   "ru": "ЛАБИРИНТ — Проход",
+   "en": "LABYRINTH — Hallway"
+  },
+  "A_BlueCreek_BeforePiramidHead": {
+   "ru": "ЖИЛОЙ КОМПЛЕКС «БЛЮ-КРИК» — Вход во двор",
+   "en": "BLUE CREEK APARTMENTS — Courtyard Entrance"
+  },
+  "A_HotelFW_FinalStaircaseStart": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Выход на лестницу",
+   "en": "LAKEVIEW HOTEL — Staircase Entrance"
+  },
+  "A_HotelFW_FinalStaircaseEnd": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Лестница на крышу",
+   "en": "LAKEVIEW HOTEL — Rooftop Ladder"
+  },
+  "LabyrinthOW_AD3TV_A": {
+   "ru": "ЛАБИРИНТ — Абстрактный папочка",
+   "en": "LABYRINTH — Abstract Daddy"
+  },
+  "LabyrinthOW_AngerPath2_M": {
+   "ru": "ЛАБИРИНТ — Разрушенный проход",
+   "en": "LABYRINTH — Ruined Hallway"
+  },
+  "A_HotelFW_FinalBossFightStart": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Крыша",
+   "en": "LAKEVIEW HOTEL — Rooftop"
+  },
+  "EastCityOW_NeelysBar_M": {
+   "ru": "ВОСТОЧНАЯ СТОРОНА ЮЖНОЙ ДОЛИНЫ — Бар «Нили»",
+   "en": "EASTERN SOUTH VALE — Neely's Bar"
+  },
+  "A_HotelFW_FinalBossFightPhase2": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Крыша",
+   "en": "LAKEVIEW HOTEL — Rooftop"
+  },
+  "A_HotelFW_FinalBossFightPhase3": {
+   "ru": "ОТЕЛЬ «ЛЕЙКВЬЮ» — Крыша",
+   "en": "LAKEVIEW HOTEL — Rooftop"
+  }
+ }
+}

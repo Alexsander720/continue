@@ -53,6 +53,13 @@ PRESETS = {
     "balanced": {"height": 720, "crf": 23, "min_free_gb": 0.5, "max_games": 40},
     "maximum": {"height": 1080, "crf": 21, "min_free_gb": 1, "max_games": 40},
 }
+# The owner's own footage is kept at source resolution (Steam records up to 4K).
+RECORDING_PROFILE = {"height": 2160, "crf": 20}
+# Normalized 1 fps frame change of one Steam fragment: pause screens ~0,
+# animated main menus ~0.1, play and cutscenes 0.3+ even in very dark games.
+RECORDING_MOTION = 0.3
+RECORDING_CONTRAST = 2.5
+RECORDING_SCAN_FRAGMENTS = 240
 
 _CHILD_WINDOWS = os.name == 'nt'
 
@@ -945,7 +952,7 @@ class MediaManager:
                 "start": target, "local_start": target - before, "segments": len(window)}
 
     @staticmethod
-    def _normalize_fragments(path):
+    def _normalize_fragments(path, *, browser_output=True):
         """Rebase copied fMP4 decode timestamps to zero without reencoding.
 
         Fragment offsets are moof-relative and unchanged; validation rejects
@@ -972,7 +979,9 @@ class MediaManager:
                         raise ValueError("fragment decode timestamps not ordered")
                     stream.seek(tfdt[2] + 4)
                     stream.write(struct.pack(fmt, timestamp - first))
-        return _bmff(path)
+        # Local Steam input may be HEVC. Only the transcoded cache must pass
+        # the strict browser AVC validator; HLS downloads retain that default.
+        return _bmff(path) if browser_output else None
 
     def _probe_duration(self, source):
         if urllib.parse.urlparse(str(source)).scheme in ("http", "https"):
@@ -999,7 +1008,7 @@ class MediaManager:
         ffmpeg = shutil.which("ffmpeg")
         if not ffmpeg:
             return None
-        profile = PRESETS.get(preset, PRESETS["light"])
+        profile = RECORDING_PROFILE if preset == "recording" else PRESETS.get(preset, PRESETS["light"])
         duration = self._probe_duration(source)
         if urllib.parse.urlparse(str(source)).scheme in ("http", "https"):
             raise RuntimeError("ffmpeg remote media is disabled")
@@ -1019,7 +1028,7 @@ class MediaManager:
         try:
             for command in commands:
                 try:
-                    result = self.run(command, capture_output=True, timeout=180)
+                    result = self.run(command, capture_output=True, timeout=600 if preset == "recording" else 180)
                 except subprocess.TimeoutExpired:
                     if audio:
                         raise ThemeMusicError('theme_timeout')
@@ -1348,7 +1357,16 @@ class MediaManager:
     @staticmethod
     def _steam_roots():
         roots = [Path.home() / ".local/share/Steam", Path.home() / ".steam/steam"]
-        return [root for root in roots if root.exists()]
+        try:
+            import winreg
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam") as key:
+                roots.append(Path(winreg.QueryValueEx(key, "SteamPath")[0]))
+        except (ImportError, OSError, ValueError):
+            pass
+        for variable in ("ProgramFiles(x86)", "ProgramFiles"):
+            if os.environ.get(variable):
+                roots.append(Path(os.environ[variable]) / "Steam")
+        return list(dict.fromkeys(root.resolve() for root in roots if root.is_dir()))
 
     def recording_candidates(self, appid):
         appid = str(int(appid))
@@ -1386,17 +1404,85 @@ class MediaManager:
         still = sum(sum(abs(a - b) for a, b in zip(frames[i], frames[i + 1])) / len(frames[i]) < 4.5 for i in range(4))
         return flagged < 3 and still < 2
 
-    def _vet_recording(self, source, start):
+    @staticmethod
+    def _frames_visible(frames):
+        """A useful recorded scene, including menus; never a gameplay claim."""
+        return MediaManager._visible_score(frames) > 0
+
+    @staticmethod
+    def _visible_score(frames):
+        if len(frames) != 5 or any(len(f) != 120 * 68 for f in frames):
+            return 0
+        scores = []
+        for frame in frames:
+            mean = sum(frame) / len(frame)
+            variance = sum((v - mean) ** 2 for v in frame) / len(frame)
+            visible = sum(32 <= v <= 240 for v in frame) / len(frame)
+            scores.append(visible * variance ** .5 if visible >= .03 and variance >= 64 else 0)
+        return sum(scores) / 5 if sum(s > 0 for s in scores) >= 4 else 0
+
+    def _recording_ffmpeg(self):
+        return shutil.which("ffmpeg")
+
+    def _recording_frames(self, source, start, length=LOOP_SECONDS):
         frames = []
         for fraction in (0.12, 0.3, 0.5, 0.7, 0.88):
-            result = self.run([shutil.which("ffmpeg"), "-v", "error", "-protocol_whitelist", "file,pipe",
-                               "-ss", str(start + LOOP_SECONDS * fraction), "-i", str(source),
+            result = self.run([self._recording_ffmpeg(), "-v", "error", "-protocol_whitelist", "file,pipe",
+                               "-ss", str(start + length * fraction), "-i", str(source),
                                "-frames:v", "1", "-vf", "scale=120:68", "-pix_fmt", "gray", "-f", "rawvideo", "-"],
                               capture_output=True, timeout=30)
             if result.returncode:
-                return False
+                return []
             frames.append(result.stdout)
-        return self._frames_gameplay(frames)
+        return frames
+
+    def _vet_recording(self, source, start):
+        return self._frames_gameplay(self._recording_frames(source, start))
+
+    @staticmethod
+    def _activity(frames):
+        """(contrast, motion) of consecutive 120x68 gray frames, brightness-independent."""
+        normed, contrast = [], []
+        for frame in frames:
+            mean = sum(frame) / len(frame)
+            std = (sum((v - mean) ** 2 for v in frame) / len(frame)) ** .5
+            normed.append([(v - mean) / (std + 1) for v in frame])
+            contrast.append(std)
+        if len(normed) < 2:
+            return 0.0, 0.0
+        motion = sum(sum(abs(a - b) for a, b in zip(normed[i], normed[i + 1])) / len(normed[i])
+                     for i in range(len(normed) - 1)) / (len(normed) - 1)
+        return sum(contrast) / len(contrast), motion
+
+    def _fragment_active(self, init, chunk):
+        probe = self.media / f".probe-{os.getpid()}.part.mp4"
+        try:
+            self._copy_bounded([init, chunk], probe)
+            result = self.run([self._recording_ffmpeg(), "-v", "error", "-i", str(probe), "-vf", "fps=1,scale=120:68",
+                               "-frames:v", "3", "-pix_fmt", "gray", "-f", "rawvideo", "-"], capture_output=True, timeout=60)
+        finally:
+            probe.unlink(missing_ok=True)
+        size = 120 * 68
+        raw = result.stdout if not result.returncode else b""
+        contrast, motion = self._activity([raw[i:i + size] for i in range(0, len(raw) - size + 1, size)])
+        return contrast >= RECORDING_CONTRAST and motion >= RECORDING_MOTION
+
+    def _session_end_window(self, init, chunks):
+        """Latest stretch of real play: the owner's background is where they stopped.
+
+        Walks back from the session end past the menu, pause and black screens
+        that usually close a session. A session of only menus yields None.
+        """
+        need = max(2, math.ceil(LOOP_SECONDS / 3))  # Steam fragments are ~3 s
+        flags = {}
+        last = len(chunks) - 2  # the newest fragment may be cut short
+        for i in range(last, max(-1, last - RECORDING_SCAN_FRAGMENTS), -1):
+            self._checkpoint()
+            flags[i] = self._fragment_active(init, chunks[i])
+            window = [flags.get(k) for k in range(i, i + need)]
+            if None not in window and window[0] and window[-1] and sum(window) >= math.ceil(need * .7):
+                return chunks[i:i + need]
+        return None
 
     def _copy_bounded(self, sources, destination):
         used = 0
@@ -1418,39 +1504,92 @@ class MediaManager:
         candidates = self.recording_candidates(appid)
         if not candidates:
             raise RuntimeError("Steam Background Recording has no clips for this app")
-        if not shutil.which("ffmpeg"):
+        if not self._recording_ffmpeg():
             raise RuntimeError("recording requires ffmpeg frame analysis; static background retained")
         destination = self.media / f"{int(appid)}_recording.mp4"
         self.media.mkdir(parents=True, exist_ok=True)
-        for original in candidates[:3]:
-            joined = destination.with_name(destination.name + ".recording.part")
-            try:
-                source = original
-                if original.name == "init-stream0.m4s":
-                    chunks = sorted(original.parent.glob("chunk-stream0-*.m4s"), key=lambda p: int(re.search(r"(\d+)\.m4s$", p.name)[1]))
-                    # Steam chunks are contiguous, usually 2 seconds. Bound I/O
-                    # and verify measured duration rather than assume 2s.
-                    middle = max(0, len(chunks) // 2 - 8)
-                    selected = chunks[middle:middle + 32]
-                    indexes = [int(re.search(r"(\d+)\.m4s$", p.name)[1]) for p in selected]
+        joined = destination.with_name(destination.name + ".recording.part")
+        best = None
+
+        def stage(original, selected):
+            if selected is None:
+                return original
+            self._copy_bounded([original, *selected], joined)
+            self._normalize_fragments(joined, browser_output=False)
+            return joined
+
+        def encode(original, selected, start, length, selection):
+            source = stage(original, selected)
+            made = self._ffmpeg_loop(source, destination, "recording", start=start, length=length)
+            if made:
+                return {"ok": True, "source": "recording", "recording": original.parent.name,
+                        "selection": selection, "playback_seconds": length,
+                        "heuristic": "pixel heuristic only; recorded menus may be used as visible_recording", **made}
+
+        try:
+            # Newest session first; sessions of only menus are skipped.
+            for original in candidates[:6]:
+                if original.name != "init-stream0.m4s":
+                    continue
+                chunks = sorted(original.parent.glob("chunk-stream0-*.m4s"), key=lambda p: int(re.search(r"(\d+)\.m4s$", p.name)[1]))
+                try:
+                    selected = self._session_end_window(original, chunks)
+                    indexes = [int(re.search(r"(\d+)\.m4s$", p.name)[1]) for p in selected or []]
                     if not indexes or indexes != list(range(indexes[0], indexes[0] + len(indexes))):
                         continue
-                    self._copy_bounded([original, *selected], joined)
-                    self._normalize_fragments(joined)
-                    source = joined
-                duration = self._probe_duration(source)
-                if duration < LOOP_SECONDS:
+                    duration = self._probe_duration(stage(original, selected)) or 0
+                    if duration >= 4:
+                        result = encode(original, selected, 0, min(LOOP_SECONDS, duration), "session_end")
+                        if result:
+                            return result
+                except (OSError, ValueError, subprocess.SubprocessError):
                     continue
-                center = max(0, (duration - LOOP_SECONDS) / 2)
-                for start in dict.fromkeys((center, max(0, center - LOOP_SECONDS), min(duration - LOOP_SECONDS, center + LOOP_SECONDS))):
-                    if not self._vet_recording(source, start):
-                        continue
-                    made = self._ffmpeg_loop(source, destination, str(settings.get("preset") or "light"), start=start)
-                    if made:
-                        return {"ok": True, "source": "recording", "recording": original.parent.name,
-                                "heuristic": "five gray frames: dark/flat/still rejection; semantic quality needs Deck review", **made}
-            finally:
-                joined.unlink(missing_ok=True)
+            for original in candidates[:3]:
+                self._checkpoint()
+                windows = [None]
+                if original.name == "init-stream0.m4s":
+                    chunks = sorted(original.parent.glob("chunk-stream0-*.m4s"), key=lambda p: int(re.search(r"(\d+)\.m4s$", p.name)[1]))
+                    # Twelve 3s Steam fragments keep high-bitrate 4K within the
+                    # staging budget. Search across the session, not just its middle.
+                    offsets = dict.fromkeys((max(0, len(chunks) - 12), max(0, len(chunks) // 2 - 6), 0))
+                    windows = [chunks[i:i + 12] for i in offsets]
+                for selected in windows:
+                    self._checkpoint()
+                    try:
+                        if selected is not None:
+                            selected = list(selected)
+                            while selected and sum(p.stat().st_size for p in [original, *selected]) > MAX_DOWNLOAD_BYTES:
+                                selected.pop()
+                            indexes = [int(re.search(r"(\d+)\.m4s$", p.name)[1]) for p in selected]
+                            if not indexes or indexes != list(range(indexes[0], indexes[0] + len(indexes))):
+                                continue
+                        source = stage(original, selected)
+                        duration = self._probe_duration(source) or 0
+                        if duration < 4:
+                            continue
+                        length = min(LOOP_SECONDS, duration)
+                        # A shorter tail also avoids shader compilation preceding
+                        # an otherwise useful 10-15s recorded menu.
+                        choices = dict.fromkeys(((max(0, (duration-length)/2), length),
+                                                 (max(0, duration-min(12, length)), min(12, length))))
+                        for start, length in choices:
+                            frames = self._recording_frames(source, start, length)
+                            if self._frames_gameplay(frames):
+                                result = encode(original, selected, start, length, "gameplay_heuristic")
+                                if result:
+                                    return result
+                            score = self._visible_score(frames)
+                            if score and (best is None or score > best[0]):
+                                best = (score, original, selected, start, length)
+                    except (OSError, ValueError, subprocess.SubprocessError):
+                        continue  # an incomplete session must not hide older clips
+            if best:
+                _, original, selected, start, length = best
+                result = encode(original, selected, start, length, "visible_recording")
+                if result:
+                    return result
+        finally:
+            joined.unlink(missing_ok=True)
         raise RuntimeError("no recording window passed conservative gameplay frame analysis")
 
     # ---- one synchronous worker operation --------------------------------------------

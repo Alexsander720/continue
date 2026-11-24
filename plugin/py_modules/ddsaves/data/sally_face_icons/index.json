@@ -1,0 +1,358 @@
+{
+ "_generator": "steamdeck/research/deep_dig/tools/sally_face_item_icons.py",
+ "_source": [
+  {
+   "path": "resources.assets"
+  }
+ ],
+ "items": {
+  "0": {
+   "file": "item_0.png",
+   "texture": "inventory_Key",
+   "label": "Key",
+   "en": "key"
+  },
+  "3": {
+   "file": "item_3.png",
+   "texture": "teaFull",
+   "label": "Tea",
+   "en": "tea"
+  },
+  "5": {
+   "file": "item_5.png",
+   "texture": "teaSpiked",
+   "label": "sleepy tea",
+   "en": "tea + sleep aid"
+  },
+  "6": {
+   "file": "item_6.png",
+   "texture": "quarter",
+   "label": "Quarter",
+   "en": "quarter"
+  },
+  "7": {
+   "file": "item_7.png",
+   "texture": "walkieTalkie",
+   "label": "walkie",
+   "en": "walkie talkie"
+  },
+  "8": {
+   "file": "item_8.png",
+   "texture": "keyCard",
+   "label": "keycard",
+   "en": "key card"
+  },
+  "9": {
+   "file": "item_9.png",
+   "texture": "504_key",
+   "label": "504 Key",
+   "en": "504 key"
+  },
+  "10": {
+   "file": "item_10.png",
+   "texture": "teaEmpty",
+   "label": "empty cup",
+   "en": "tea cup"
+  },
+  "11": {
+   "file": "item_11.png",
+   "texture": "baggie",
+   "label": "Baggie",
+   "en": "baggie"
+  },
+  "1": {
+   "file": "item_1.png",
+   "texture": "toy",
+   "label": "toy",
+   "en": "Charley's Pony"
+  },
+  "2": {
+   "file": "item_2.png",
+   "texture": "gearBoy",
+   "label": "gearBoy",
+   "en": "Gear Boy"
+  },
+  "12": {
+   "file": "item_12.png",
+   "texture": "puzzleBox",
+   "label": "puzzleBox",
+   "en": "puzzle box"
+  },
+  "14": {
+   "file": "item_14.png",
+   "texture": "antenna",
+   "label": "Antenna",
+   "en": "antenna"
+  },
+  "16": {
+   "file": "item_16.png",
+   "texture": "necklace",
+   "label": "Necklace",
+   "en": "necklace"
+  },
+  "13": {
+   "file": "item_13.png",
+   "texture": "crowbar",
+   "label": "Crowbar",
+   "en": "crowbar"
+  },
+  "15": {
+   "file": "item_15.png",
+   "texture": "superGearBoy",
+   "label": "SGB",
+   "en": "Super Gear Boy"
+  },
+  "17": {
+   "file": "item_17.png",
+   "texture": "meganPhotoCU",
+   "label": "MeganPhoto",
+   "en": "Megan's Photo"
+  },
+  "18": {
+   "file": "item_18.png",
+   "texture": "chipKey",
+   "label": "computerChip",
+   "en": "computer chip?"
+  },
+  "19": {
+   "file": "item_19.png",
+   "texture": "rubixCube",
+   "label": "Rubix",
+   "en": "Rubix Cube"
+  },
+  "20": {
+   "file": "item_20.png",
+   "texture": "tennisBall",
+   "label": "tennisBall",
+   "en": "tennis ball"
+  },
+  "21": {
+   "file": "item_21.png",
+   "texture": "stickyTack",
+   "label": "tack",
+   "en": "sticky tack"
+  },
+  "22": {
+   "file": "item_22.png",
+   "texture": "kimsFile",
+   "label": "Kim's File",
+   "en": "photo of Kim's File"
+  },
+  "23": {
+   "file": "item_23.png",
+   "texture": "photo_Bird",
+   "label": "photo bird",
+   "en": "photo of bird"
+  },
+  "24": {
+   "file": "item_24.png",
+   "texture": "camera",
+   "label": "Camera",
+   "en": "camera"
+  },
+  "25": {
+   "file": "item_25.png",
+   "texture": "bologna",
+   "label": "Bologna",
+   "en": "bologna"
+  },
+  "26": {
+   "file": "item_26.png",
+   "texture": "paperClip",
+   "label": "paperClip",
+   "en": "paper clip"
+  },
+  "27": {
+   "file": "item_27.png",
+   "texture": "gearKey",
+   "label": "????",
+   "en": "???"
+  },
+  "28": {
+   "file": "item_28.png",
+   "texture": "Journal_Icon",
+   "label": "Journal",
+   "en": "old journal"
+  },
+  "29": {
+   "file": "item_29.png",
+   "texture": "packertonsKeys",
+   "label": "Packerton's keys",
+   "en": "Mrs. Packerton's keys"
+  },
+  "30": {
+   "file": "item_30.png",
+   "texture": "lightBulb",
+   "label": "lightBulb",
+   "en": "light bulb"
+  },
+  "31": {
+   "file": "item_31.png",
+   "texture": "clumpyCart",
+   "label": "clumpy cartridge",
+   "en": "Clumpy cartridge"
+  },
+  "32": {
+   "file": "item_32.png",
+   "texture": "chocolateBar",
+   "label": "chocolateBar",
+   "en": "chocolate bar"
+  },
+  "33": {
+   "file": "item_33.png",
+   "texture": "larrysKeyCard",
+   "label": "Larry's KeyCard",
+   "en": "key card"
+  },
+  "34": {
+   "file": "item_34.png",
+   "texture": "larrysLighter",
+   "label": "Larry's Lighter",
+   "en": "lighter"
+  },
+  "35": {
+   "file": "item_35.png",
+   "texture": "larrysRock",
+   "label": "Larry's Rock",
+   "en": "rock"
+  },
+  "36": {
+   "file": "item_36.png",
+   "texture": "cellPhone",
+   "label": "cellPhone",
+   "en": "cell phone"
+  },
+  "37": {
+   "file": "item_37.png",
+   "texture": "postIt",
+   "label": "Note",
+   "en": "note"
+  },
+  "38": {
+   "file": "item_38.png",
+   "texture": "pocketKnife",
+   "label": "pocketKnife",
+   "en": "pocket knife"
+  },
+  "39": {
+   "file": "item_39.png",
+   "texture": "tooth_N",
+   "label": "tooth1",
+   "en": "tooth (1/5)"
+  },
+  "40": {
+   "file": "item_40.png",
+   "texture": "tooth_E",
+   "label": "tooth2",
+   "en": "tooth (2/5)"
+  },
+  "41": {
+   "file": "item_41.png",
+   "texture": "tooth_X",
+   "label": "tooth3",
+   "en": "tooth (3/5)"
+  },
+  "42": {
+   "file": "item_42.png",
+   "texture": "tooth_S",
+   "label": "tooth4",
+   "en": "tooth (4/5)"
+  },
+  "43": {
+   "file": "item_43.png",
+   "texture": "tooth_W",
+   "label": "tooth5",
+   "en": "tooth (5/5)"
+  },
+  "44": {
+   "file": "item_44.png",
+   "texture": "templeKey",
+   "label": "templeKey",
+   "en": "temple key"
+  },
+  "45": {
+   "file": "item_45.png",
+   "texture": "switchLarry",
+   "label": "switchLarry",
+   "en": "switch to Larry"
+  },
+  "46": {
+   "file": "item_46.png",
+   "texture": "switchSal",
+   "label": "switchSal",
+   "en": "switch to Sal"
+  },
+  "47": {
+   "file": "item_47.png",
+   "texture": "larrysNote",
+   "label": "LarrysNote",
+   "en": "Larry's note"
+  },
+  "48": {
+   "file": "item_48.png",
+   "texture": "guitar",
+   "label": "Guitar1",
+   "en": "guitar"
+  },
+  "49": {
+   "file": "item_49.png",
+   "texture": "deadstone",
+   "label": "Deadstone",
+   "en": "The Deadstone"
+  },
+  "50": {
+   "file": "item_50.png",
+   "texture": "303_darkPony",
+   "label": "darkPony",
+   "en": "dark pony"
+  },
+  "51": {
+   "file": "item_51.png",
+   "texture": "201_key",
+   "label": "201 Key",
+   "en": "201 key"
+  },
+  "52": {
+   "file": "item_52.png",
+   "texture": "carrot",
+   "label": "Carrot",
+   "en": "carrot"
+  },
+  "53": {
+   "file": "item_53.png",
+   "texture": "larrysLighter",
+   "label": "Lighter",
+   "en": "lighter"
+  },
+  "54": {
+   "file": "item_54.png",
+   "texture": "knife",
+   "label": "Knife",
+   "en": "knife"
+  },
+  "55": {
+   "file": "item_55.png",
+   "texture": "pyramids",
+   "label": "Pyramids",
+   "en": "pyramids"
+  },
+  "56": {
+   "file": "item_56.png",
+   "texture": "C-4",
+   "label": "C4",
+   "en": "C-4"
+  },
+  "57": {
+   "file": "item_57.png",
+   "texture": "C-4_Detonator",
+   "label": "Detonator",
+   "en": "detonator"
+  },
+  "58": {
+   "file": "item_58.png",
+   "texture": "templeMap_icon",
+   "label": "templemap",
+   "en": "temple map"
+  }
+ }
+}

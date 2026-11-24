@@ -35,13 +35,16 @@ PC_ALLOWLIST = (
     "public_visuals.py",
     "bp_public_settings.js", "public_game_assets.py", "public_preferences.py", "public_media_policy.py",
     "public_media_runtime.py",
+    "public_owner_theme.py", "bp_owner_theme.js", "public_owner_recordings.py",
 )
 
 
-def build(root: Path, version: str) -> tuple[Path, Path]:
+def build(root: Path, version: str, candidate: str = "") -> tuple[Path, Path]:
     version = version.removeprefix("v")
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("Version must have the form 0.1.0 or v0.1.0")
+    if candidate and not re.fullmatch(r"r[1-9][0-9]*", candidate):
+        raise ValueError("Candidate must have the form r2")
     root = root.resolve()
     plugin_source = root / "plugin"
     pc_source = root / "pc"
@@ -75,7 +78,8 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
 
     destination = root / "dist"
     destination.mkdir(exist_ok=True)
-    archive = destination / f"continue-pc-{version}.zip"
+    label = version + ("-" + candidate if candidate else "")
+    archive = destination / f"continue-pc-{label}.zip"
     checksum = archive.with_name(archive.name + ".sha256")
     with tempfile.NamedTemporaryFile(dir=destination, suffix=".tmp", delete=False) as stream:
         temporary = Path(stream.name)
@@ -83,7 +87,7 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
         entries: dict[str, bytes] = {}
         # 1. Plugin shared source under Continue/plugin/
         for path in sorted(plugin_source.rglob("*")):
-            if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc":
+            if not path.is_file() or "__pycache__" in path.parts or path.suffix == ".pyc" or path.name.endswith((".bak-rails", ".bak-railsfix", ".bak-design", ".bak-r5", ".bak-r6", ".bak-r7", ".bak-ud")):
                 continue
             relative = path.relative_to(plugin_source).as_posix()
             if relative in ("RELEASE.json", "LICENSE", "NOTICE.md", "NOTICE"):
@@ -108,12 +112,16 @@ def build(root: Path, version: str) -> tuple[Path, Path]:
         for name in sorted(PC_ALLOWLIST):
             entries[f"Continue/pc/{name}"] = (pc_source / name).read_bytes()
         for path in sorted((pc_source / 'assets').rglob('*')):
-            if not path.is_file():
+            if not path.is_file() or path.name.endswith(('.bak-rails', '.bak-railsfix', '.bak-design', '.bak-r5', '.bak-r6', '.bak-r7')):
                 continue
             if path.is_symlink() or path.suffix not in ('.css','.json','.txt','.png','.jpg','.jpeg','.webp','.svg') and path.name != 'LICENSE' or path.name == 'config_USER.json':
                 raise ValueError('Unexpected PC visual asset')
             relative = path.relative_to(pc_source).as_posix()
             entries[f"Continue/pc/{relative}"] = path.read_bytes()
+
+        # Redistributed third-party notices must also be discoverable at package root.
+        for path in sorted((pc_source / 'assets/licenses').glob('*.txt')):
+            entries[f"Continue/licenses/{path.name}"] = path.read_bytes()
 
         # 3. Root files and metadata
         marker = {"version": version, "channel": "public", "platform": "windows"}
@@ -154,11 +162,12 @@ def main() -> int:
     parser.add_argument("version", nargs="?", default=None, help="Release version (defaults to plugin/package.json version)")
     parser.add_argument("--version", dest="version_flag", default=None, help="Release version flag")
     parser.add_argument("--root", type=Path, default=ROOT, help="Repository root")
+    parser.add_argument("--candidate", default="", help="Local archive suffix such as r2; embedded version stays semantic")
     args = parser.parse_args()
     root = args.root.resolve()
     version = args.version or args.version_flag or get_package_version(root)
     try:
-        build(root, version)
+        build(root, version, args.candidate)
     except (OSError, ValueError) as error:
         parser.exit(1, f"Build failed: {error}\n")
     return 0

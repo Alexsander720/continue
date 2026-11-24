@@ -5,10 +5,13 @@ ROOT=Path(__file__).resolve().parents[2]
 PACK=ROOT/'pc/assets/game_icons'
 def test_public_portraits_and_exact_owner_raven(tmp_path):
     m=validate_manifest(PACK)
-    assert len(m)==25
+    assert len(m)==28
     for name in ['Sam','Mike','Jessica','Emily','Matt','Ashley','Chris','Josh']:
         assert (PACK/m['2172010']['person:'+name]).is_file()
     raven=PACK/m['2322010']['raven']
     assert hashlib.sha256(raven.read_bytes()).hexdigest()=='70a4e5f7005c1c3684f228ea5c75171e67ef2933de8f37bdb9fccdedf1eb2750'
+    assert (PACK/m['2322010']['fav:odin_ravens']).is_file()
+    assert (PACK/m['2322010']['silver']).is_file()
+    assert (PACK/m['541570']['achievements']).is_file()
     seed_game_icons(PACK,tmp_path)
-    assert len(json.loads((tmp_path/'icons/manifest.json').read_text(encoding='utf-8')))==25
+    assert len(json.loads((tmp_path/'icons/manifest.json').read_text(encoding='utf-8')))==28

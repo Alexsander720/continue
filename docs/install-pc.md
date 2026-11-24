@@ -2,7 +2,7 @@
 
 **English** · [Українська](install-pc.uk.md) · [Русский](install-pc.ru.md)
 
-This guide covers the Windows Steam Big Picture package (`continue-pc-0.1.4-r19.zip`) released in [v0.1.4](https://github.com/Alexsander720/continue/releases/latest).
+This guide covers the Windows Steam Big Picture package (`continue-pc-0.1.5.zip`) released in [v0.1.5](https://github.com/Alexsander720/continue/releases/latest).
 The installer and runtime code are present in the repository under `pc/`. The package has passed real-Steam checks on Windows 11 x64 on the owner's PC and in automated tests, while acceptance on clean Windows 10, ARM64, and with diverse antivirus suites is ongoing.
 On 2026-10-13, installation, repair, a game card, native library tabs, settings, refusal and removal were also checked with real Steam Big Picture on Windows 11 x64, with Python and Steam debugging already available. A clean account without Python, Windows 10 and ARM64 are experimental; physical controller use is still pending. Treat this package as an alpha and close games before restarting Steam.
 
@@ -13,17 +13,17 @@ checks its published SHA-256, and installs it only under your user profile. It d
 
 ## Install: double-click, consent, restart Steam
 
-1. Download `continue-pc-0.1.4-r19.zip` together with its checksum file `continue-pc-0.1.4-r19.zip.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest).
+1. Download `continue-pc-0.1.5.zip` together with its checksum file `continue-pc-0.1.5.zip.sha256` from the [latest release](https://github.com/Alexsander720/continue/releases/latest).
    Verify the checksum in PowerShell:
    ```powershell
-   (Get-FileHash .\continue-pc-0.1.4-r19.zip).Hash -eq ((Get-Content .\continue-pc-0.1.4-r19.zip.sha256) -split '\s+')[0]
+   (Get-FileHash .\continue-pc-0.1.5.zip).Hash -eq ((Get-Content .\continue-pc-0.1.5.zip.sha256) -split '\s+')[0]
    ```
    If it outputs `True`, extract the whole ZIP to an ordinary local folder.
    Alternatively, you can build a local test candidate from repository source:
    ```bash
    python tools/build_pc_zip.py
    # or with an explicit version:
-   python tools/build_pc_zip.py 0.1.4
+   python tools/build_pc_zip.py 0.1.5
    ```
    This creates `dist/continue-pc-<version>.zip` and `dist/continue-pc-<version>.zip.sha256`.
 2. Double-click `Continue\setup.cmd` (or `Continue\pc\setup.cmd`). Windows may show a warning because the package is
@@ -97,7 +97,7 @@ A public installation checks GitHub Releases no more than once per day. It accep
 the directory atomically, starts the new service, and waits for a fresh version/nonce health record. If startup fails, it
 restores and restarts the previous app. Development checkouts without `RELEASE.json` do not update.
 
-The public PC alpha package is published on GitHub Releases starting with v0.1.4 (`continue-pc-0.1.4-r19.zip`). Future updates will be checked automatically against subsequent releases once published.
+The public PC alpha package is published on GitHub Releases starting with v0.1.5 (`continue-pc-0.1.5.zip`). Future updates will be checked automatically against subsequent releases once published.
 
 ## Remove
 
