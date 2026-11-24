@@ -25,7 +25,7 @@ jobs:
       - name: Tour videos into the site
         run: cp docs/img/tour-*.mp4 site/media/
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: site
       - id: deployment

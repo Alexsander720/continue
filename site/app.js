@@ -28,7 +28,7 @@ const GLYPH = {   // UI symbols for the fact categories; no invented in-game ite
   map: ["m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2z", "M9 3v16M15 5v16"],
   ammo: ["M8 21V8l4-5 4 5v13z", "M8 16h8"],
 };
-const glyphSvg = n => `<svg class="gh-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${GLYPH[n].map(d => `<path d="${d}"/>`).join("")}</svg>`;
+const glyphSvg = n => `<svg class="gh-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${(GLYPH[n] || GLYPH.book).map(d => `<path d="${d}"/>`).join("")}</svg>`;
 
 // текст карточки: язык игры, если он в ней есть; иначе английский (как в плагине)
 function gameText(g) {

@@ -737,14 +737,19 @@ const GAMES = [
     "bg": "art",
     "facts": [
       {
-        "glyph": "chapter",
+        "glyph": "book",
         "l": { "en": "Episode", "uk": "Епізод", "ru": "Эпизод" },
-        "value": { "en": "5 · Memories and Dreams", "ru": "5 · Воспоминания и сны" }
+        "value": "5 / 5"
       },
       {
-        "glyph": "trophy",
+        "icon": "achievements.png",
         "l": { "en": "Achievements", "uk": "Досягнення", "ru": "Достижения" },
-        "value": "27 / 35"
+        "value": "27 / 35 · 77%"
+      },
+      {
+        "glyph": "finds",
+        "l": { "en": "Left this episode", "uk": "Залишилось в епізоді", "ru": "Осталось в эпизоде" },
+        "value": "1"
       }
     ],
     "snapshot": { "kind": "owner", "date": "2026-11-06" },
