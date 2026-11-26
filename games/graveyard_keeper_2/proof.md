@@ -28,7 +28,8 @@ The HUD shows happiness as `x/20`. No variable in the `.dat` carries that cap (n
 `townCitizens` happens to be 20 but is not proven to be the denominator), so the card shows only the current value.
 
 Label strings in the game's `resources.assets`: `Graveyard Quality`, `Church Quality` (EN), `Качество кладбища`,
-`Качество церкви` (RU), `Friedhofsqualität`, `Kirchenqualität` (DE). Happiness has no text label in the HUD (icon only);
+`Качество церкви` (RU), `Friedhofsqualität`, `Kirchenqualität` (DE); the card uses the shorter nouns `Graveyard` / `Church`
+(`Кладбище` / `Церковь`), which are game strings too. Happiness has no text label in the HUD (icon only);
 its identifier in the game data is `happiness` / `town_happiness`, so the fact label is the plain word "Happiness".
 
 Stages are the game's rolling backups of one slot (`_backup_3` oldest → `Steam_1` newest), copied into the ignored

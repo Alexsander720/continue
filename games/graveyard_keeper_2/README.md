@@ -15,8 +15,8 @@ both files, so a Deck shows the same card as the PC.
 ## What the card shows
 
 - `day` — in-game day (fact id `day`, label `facts.graveyard_keeper_2.day`).
-- `graveyard_quality` — the game's "Graveyard Quality" value (declared non-monotonic: it can fall).
-- `church_quality` — the game's "Church Quality" value (declared non-monotonic).
+- `graveyard_quality` — the game's "Graveyard Quality" value, labelled "Graveyard" (declared non-monotonic: it can fall).
+- `church_quality` — the game's "Church Quality" value, labelled "Church" (declared non-monotonic).
 - `happiness` — the town happiness shown with the thumbs-up icon in the HUD (declared non-monotonic: it is spent).
   Only the current value is shown; the HUD's `/20` cap is not stored in the save, so it is not displayed.
 - `observed_at` — the save timestamp from `saveDateTime`.
