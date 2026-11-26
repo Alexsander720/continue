@@ -6,12 +6,15 @@ import json
 from pathlib import Path
 import re
 import struct
-import xml.etree.ElementTree as ET
+try:
+    import xml.etree.ElementTree as ET
+except ImportError:  # Decky's frozen Python ships no ``xml`` package; SVG rails are then skipped, PNG rails still work
+    ET = None
 
 
 def _static_svg(data):
     """Small authored rail vocabulary only: no code, raster, filters or references out."""
-    if len(data) > 16384 or b'<!' in data or b'<?' in data:
+    if ET is None or len(data) > 16384 or b'<!' in data or b'<?' in data:
         return False
     try:
         root = ET.fromstring(data)
