@@ -10,5 +10,9 @@
   "church_quality": {
     "subject": "a small chapel outline with a cross on the roof",
     "reference": "the Church Quality value shown in the church inspection panel"
+  },
+  "happiness": {
+    "subject": "a small thumbs-up hand",
+    "reference": "the town happiness icon (sprite `happiness`) next to the x/y counter in the HUD"
   }
 }

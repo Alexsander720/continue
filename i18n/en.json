@@ -3,7 +3,8 @@
     "graveyard_keeper_2": {
       "day": "Day",
       "graveyard_quality": "Graveyard Quality",
-      "church_quality": "Church Quality"
+      "church_quality": "Church Quality",
+      "happiness": "Happiness"
     }
   }
 }

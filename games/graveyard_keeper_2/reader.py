@@ -1,17 +1,22 @@
 """Graveyard Keeper 2 (appid 4358690): read-only, stdlib reader for the save metadata sidecar.
 
 Each slot writes two files next to each other: ``<slot>.dat`` (binary Unity/C# world state,
-~12 MB) and ``<slot>.info`` (small JSON written by the game). Only the ``.info`` sidecar is
-parsed here; the ``.dat`` is never opened.
+~13 MB, uncompressed, UTF-16 field names) and ``<slot>.info`` (small JSON written by the game).
+The ``.info`` sidecar gives day, time and the two zone qualities. One typed variable is read
+from the ``.dat`` by a byte scan: ``happiness``, the town happiness shown with the thumbs-up
+icon in the HUD. Nothing else in the ``.dat`` is interpreted.
 
 Proof (7 stages of one playthrough, see proof.md): ``day`` grows 110 -> 117 and ``saveDateTime``
 with it. ``graveyardQuality`` (28 -> 23) and ``churchQuality`` (36 -> 29) change between stages and
 match the HUD values the player sees; both are state values the game recomputes, so they are
-declared ``nonmonotonic``. ``villageRep`` and ``townCitizens`` stayed constant and remain unproven.
+declared ``nonmonotonic``. ``happiness`` (0 -> 3 -> 0 -> 5 -> 10) is a spendable town resource
+and is declared ``nonmonotonic`` too. ``villageRep`` and ``townCitizens`` stay hidden.
 """
 from __future__ import annotations
 import json
+import math
 import os
+import struct
 from datetime import datetime
 from pathlib import Path
 
@@ -34,6 +39,39 @@ APPID = 4358690
 SUB = "AppData/LocalLow/Lazy Bear Games/Graveyard Keeper 2"
 INFO_GLOB = "*.info"
 TIME_FORMAT = "%m/%d/%Y %I:%M:%S %p"
+DAT_MAX_BYTES = 64 * 1024 * 1024
+
+
+def _utf16(text: str) -> bytes:
+    return text.encode("utf-16-le")
+
+
+def _dat_variable(dat_path, name: str):
+    """Return the float value of a typed variable ``{type: <name>, value: <f32>}`` in the .dat.
+
+    The serializer writes ``\x01 <u32 len> <utf-16 name> \x1f\x01 \x05\0\0\0 "value" <f32>``.
+    Returns None when the file is missing, too large, the name is absent or ambiguous.
+    """
+    try:
+        if not dat_path.is_file() or dat_path.stat().st_size > DAT_MAX_BYTES:
+            return None
+        blob = read_bytes(dat_path)
+    except OSError:
+        return None
+    needle = struct.pack("<I", len(name)) + _utf16(name) + b"\x1f\x01\x05\x00\x00\x00" + _utf16("value")
+    values = set()
+    start = 0
+    while True:
+        at = blob.find(needle, start)
+        if at < 0:
+            break
+        start = at + len(needle)
+        if start + 4 <= len(blob):
+            values.add(struct.unpack_from("<f", blob, start)[0])
+    if len(values) != 1:
+        return None
+    value = values.pop()
+    return value if math.isfinite(value) else None
 
 
 def _empty() -> dict:
@@ -86,7 +124,11 @@ def read(path_or_dir=None) -> dict:
     if not isinstance(day, int) or isinstance(day, bool):
         return _empty()
     saved_at = _parse_time(info.get("saveDateTime"))
+    happiness = _dat_variable(path.with_suffix(".dat"), "happiness")
+    if happiness is not None and happiness == int(happiness):
+        happiness = int(happiness)
     progress = {
+        "happiness": happiness,
         "day": day,
         "saved_at": saved_at,
         "is_autosave": info.get("isAutoSave") is True,
@@ -100,7 +142,7 @@ def read(path_or_dir=None) -> dict:
     fact_sources = {"day": "day"}
     proven = ["day", "saved_at"]
     unproven = ["village_rep", "town_citizens", "is_autosave", "game_save_version"]
-    for field in ("graveyard_quality", "church_quality"):
+    for field in ("graveyard_quality", "church_quality", "happiness"):
         value = progress[field]
         if isinstance(value, int) and not isinstance(value, bool):
             facts.append({"id": field, "icon": field, "value": str(value)})
@@ -118,6 +160,7 @@ def read(path_or_dir=None) -> dict:
         "nonmonotonic": {
             "graveyard_quality": "sum of the current graves' quality; falls when graves decay, are reworked or removed (28 -> 23 observed across stages 4 -> 5)",
             "church_quality": "current church state, recomputed by the game; fell 36 -> 29 within one session (stages 6 -> 7)",
+            "happiness": "town happiness is a spendable resource (<sprite name=\"happiness\"> in the game's own texts); 3 -> 0 observed between stages 3 and 4",
         },
         "observed_at": saved_at if saved_at is not None else path.stat().st_mtime,
         "source_path": str(path),
