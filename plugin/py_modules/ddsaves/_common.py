@@ -290,9 +290,26 @@ def finish(out: Dict[str, Any], path: Path) -> Dict[str, Any]:
 
 
 def deck_home() -> Path:
-    """Домашняя папка Деки: Decky может запускать бэкенд от root (HOME=/root), а сейвы лежат у deck."""
+    """Домашняя папка Деки: Decky может запускать бэкенд от root (HOME=/root), а сейвы лежат у deck.
+
+    Desktop Linux (non-Deck): Decky still runs the backend as root, but the Steam user is not
+    ``deck``. Fall back to the invoking sudo user, then to the single ``/home/*`` account that owns
+    a Steam installation, and only then to ``$HOME``."""
+    explicit = os.environ.get("CONTINUE_HOME")
+    if explicit:   # set by reader_sandbox for its child, and by tests
+        return Path(explicit)
     if Path("/home/deck").is_dir():
         return Path("/home/deck")
+    sudo_user = os.environ.get("SUDO_USER")
+    if sudo_user and sudo_user != "root" and Path("/home", sudo_user).is_dir():
+        return Path("/home", sudo_user)
+    try:
+        owners = [h for h in Path("/home").iterdir()
+                  if h.is_dir() and ((h / ".steam/steam/steamapps").is_dir() or (h / ".local/share/Steam/steamapps").is_dir())]
+    except OSError:
+        owners = []
+    if len(owners) == 1:
+        return owners[0]
     return Path(os.environ.get("HOME") or "/home/deck")
 
 
