@@ -1,0 +1,37 @@
+{
+  "appid": 4358690,
+  "stages": [
+    {
+      "path": "stages/stage1_day110",
+      "note": "Steam_1_backup_3 (.info + .dat), 2026-11-09 20:53, day 110, game 1.011.1"
+    },
+    {
+      "path": "stages/stage2_day111",
+      "note": "Steam_1_backup_2, 2026-11-09 21:08, day 111"
+    },
+    {
+      "path": "stages/stage3_day113",
+      "note": "Steam_1_backup_1, 2026-11-09 21:26, day 113"
+    },
+    {
+      "path": "stages/stage4_day114",
+      "note": "Steam_1, 2026-11-09 21:32, day 114 (Steam Cloud copy from the Deck)"
+    },
+    {
+      "path": "stages/stage5_day116",
+      "note": "Steam_1_backup_3, 2026-11-26 21:56, day 116, game 1.012.9"
+    },
+    {
+      "path": "stages/stage6_day117",
+      "note": "Steam_1_backup_2, 2026-11-26 21:58, day 117"
+    },
+    {
+      "path": "stages/stage7_day117",
+      "note": "Steam_1_backup_1, 2026-11-26 22:02, day 117, church quality changed"
+    },
+    {
+      "path": "stages/stage8_day117",
+      "note": "Steam_1, 2026-11-26 22:09, day 117, happiness changed"
+    }
+  ]
+}
