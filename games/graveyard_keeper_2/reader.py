@@ -4,9 +4,10 @@ Each slot writes two files next to each other: ``<slot>.dat`` (binary Unity/C# w
 ~12 MB) and ``<slot>.info`` (small JSON written by the game). Only the ``.info`` sidecar is
 parsed here; the ``.dat`` is never opened.
 
-Proof (4 stages of one playthrough, see proof.md): ``day`` grows 110 -> 111 -> 113 -> 114 and
-``saveDateTime`` changes with it. ``graveyardQuality``, ``churchQuality``, ``villageRep`` and
-``townCitizens`` were constant across all stages and therefore stay unproven and hidden.
+Proof (7 stages of one playthrough, see proof.md): ``day`` grows 110 -> 117 and ``saveDateTime``
+with it. ``graveyardQuality`` (28 -> 23) and ``churchQuality`` (36 -> 29) change between stages and
+match the HUD values the player sees; both are state values the game recomputes, so they are
+declared ``nonmonotonic``. ``villageRep`` and ``townCitizens`` stayed constant and remain unproven.
 """
 from __future__ import annotations
 import json
@@ -96,14 +97,28 @@ def read(path_or_dir=None) -> dict:
         "town_citizens": info.get("townCitizens"),
     }
     facts = [{"id": "day", "icon": "day", "value": str(day)}]
+    fact_sources = {"day": "day"}
+    proven = ["day", "saved_at"]
+    unproven = ["village_rep", "town_citizens", "is_autosave", "game_save_version"]
+    for field in ("graveyard_quality", "church_quality"):
+        value = progress[field]
+        if isinstance(value, int) and not isinstance(value, bool):
+            facts.append({"id": field, "icon": field, "value": str(value)})
+            fact_sources[field] = field
+            proven.append(field)
+        else:
+            unproven.append(field)
     out = _empty()
     out.update({
         "progress": progress,
         "facts": facts,
-        "proven": ["day", "saved_at"],
-        "unproven": ["graveyard_quality", "church_quality", "village_rep", "town_citizens",
-                     "is_autosave", "game_save_version"],
-        "fact_sources": {"day": "day"},
+        "proven": proven,
+        "unproven": unproven,
+        "fact_sources": fact_sources,
+        "nonmonotonic": {
+            "graveyard_quality": "sum of the current graves' quality; falls when graves decay, are reworked or removed (28 -> 23 observed across stages 4 -> 5)",
+            "church_quality": "current church state, recomputed by the game; fell 36 -> 29 within one session (stages 6 -> 7)",
+        },
         "observed_at": saved_at if saved_at is not None else path.stat().st_mtime,
         "source_path": str(path),
     })

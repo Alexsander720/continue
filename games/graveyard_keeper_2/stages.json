@@ -1,9 +1,33 @@
 {
   "appid": 4358690,
   "stages": [
-    {"path": "stages/stage1_day110.info", "note": "Steam_1_backup_3.info, 2026-11-09 20:53, day 110"},
-    {"path": "stages/stage2_day111.info", "note": "Steam_1_backup_2.info, 2026-11-09 21:08, day 111"},
-    {"path": "stages/stage3_day113.info", "note": "Steam_1_backup_1.info, 2026-11-09 21:26, day 113"},
-    {"path": "stages/stage4_day114.info", "note": "Steam_1.info, 2026-11-09 21:32, day 114"}
+    {
+      "path": "stages/stage1_day110.info",
+      "note": "Steam_1_backup_3.info, 2026-11-09 20:53, day 110"
+    },
+    {
+      "path": "stages/stage2_day111.info",
+      "note": "Steam_1_backup_2.info, 2026-11-09 21:08, day 111"
+    },
+    {
+      "path": "stages/stage3_day113.info",
+      "note": "Steam_1_backup_1.info, 2026-11-09 21:26, day 113"
+    },
+    {
+      "path": "stages/stage4_day114.info",
+      "note": "Steam_1.info, 2026-11-09 21:32, day 114"
+    },
+    {
+      "path": "stages/stage5_day116.info",
+      "note": "Steam_1_backup_3.info, 2026-11-26 21:52, day 116, game 1.012.9"
+    },
+    {
+      "path": "stages/stage6_day117.info",
+      "note": "Steam_1_backup_1.info, 2026-11-26 21:58, day 117"
+    },
+    {
+      "path": "stages/stage7_day117.info",
+      "note": "Steam_1.info, 2026-11-26 22:02, day 117, church quality changed"
+    }
   ]
 }

@@ -1,7 +1,9 @@
 {
   "facts": {
     "graveyard_keeper_2": {
-      "day": "Day"
+      "day": "Day",
+      "graveyard_quality": "Graveyard Quality",
+      "church_quality": "Church Quality"
     }
   }
 }

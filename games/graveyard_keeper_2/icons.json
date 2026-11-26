@@ -1,3 +1,14 @@
 {
-  "day": {"subject": "a small sun above a horizon line, as on a calendar day marker", "reference": "the in-game day counter shown next to the clock HUD"}
+  "day": {
+    "subject": "a small sun above a horizon line, as on a calendar day marker",
+    "reference": "the in-game day counter shown next to the clock HUD"
+  },
+  "graveyard_quality": {
+    "subject": "a small stylised skull, as the game's own graveyard-quality marker",
+    "reference": "the skull sprite next to the Graveyard Quality value in the graveyard HUD/inspection panel"
+  },
+  "church_quality": {
+    "subject": "a small chapel outline with a cross on the roof",
+    "reference": "the Church Quality value shown in the church inspection panel"
+  }
 }

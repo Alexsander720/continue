@@ -1,6 +1,6 @@
 # graveyard_keeper_2
 
-Steam appid: `4358690`. Status: **proven** (day counter); quality/reputation fields unproven.
+Steam appid: `4358690`. Status: **proven** (day, graveyard quality, church quality); reputation and citizens hidden.
 
 ## Save locations
 
@@ -8,17 +8,23 @@ Steam appid: `4358690`. Status: **proven** (day counter); quality/reputation fie
 - Steam Deck / Proton: `steamapps/compatdata/4358690/pfx/drive_c/users/steamuser/AppData/LocalLow/Lazy Bear Games/Graveyard Keeper 2/`
 
 The reader uses `ddsaves._common.proton_user(4358690)` to walk every Steam library and picks the newest `*.info`.
-Only the small JSON sidecar is read; the 12 MB binary `.dat` is never opened.
+Only the small JSON sidecar is read; the 12 MB binary `.dat` is never opened. Steam Cloud syncs the sidecars, so a Deck
+shows the same card as the PC.
 
 ## What the card shows
 
 - `day` — in-game day (fact id `day`, label `facts.graveyard_keeper_2.day`).
+- `graveyard_quality` — the game's "Graveyard Quality" value (declared non-monotonic: it can fall).
+- `church_quality` — the game's "Church Quality" value (declared non-monotonic).
 - `observed_at` — the save timestamp from `saveDateTime`.
 
 ## What stays hidden
 
-`graveyardQuality`, `churchQuality`, `villageRep`, `townCitizens` are decoded into `progress` but were constant across all
-four stages, so they remain `unproven` and are not displayed. See `proof.md`.
+- `villageRep`: the sidecar value (17) did not match the reputation the player saw in the HUD (5), so its meaning is
+  unknown and it is never displayed.
+- `townCitizens`: matched the HUD (20) but was constant across all seven stages, so it stays unproven.
+
+See `proof.md` for the stage table.
 
 ## Checks
 
