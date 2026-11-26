@@ -1493,25 +1493,50 @@ function GameHubPanel({ appid }) {
 // Как на ПК (bp_suffix pcGeometry): .gh-root растягивается zoom-ом по высоте окна, полоса «Играть» Steam (80 CSS-px) в
 // единицах панели — 80/zoom. На своём экране Деки zoom = 1 и всё как было.
 const DECK_H = 534, PLAY_BAR = 80, BAR_GAP = 12;
-function deckGeometry(win) {
-  const W = win.innerWidth, H = win.innerHeight, s = H / DECK_H;
-  if (Math.abs(s - 1) < 0.02) return { s: 1, barBottom: PLAY_BAR + BAR_GAP, barRight: W - 28 };
-  return { s, barBottom: (PLAY_BAR + BAR_GAP) / s, barRight: W / s - 28 };
+// Desktop Big Picture (26.11.2026, Linux Mint, 1920×1080 at DPR 1.42 → 1353×761 CSS): Steam draws the hero as only the
+// first ~351 CSS-px of the page and puts the Play row *below* it, so scaling to the window height stretched .gh-root over
+// the Activity feed ("Latest update" was covered by the fact bar). Scale to the hero's real height instead; when the hero
+// fills the window (Deck screen, dock) the Play row lies inside it and the old numbers come out unchanged.
+function heroOf(styleEl) {
+  const parent = styleEl?.parentElement;
+  if (!parent) return null;
+  return Array.from(parent.children).find(c => c !== styleEl && c.tagName === "DIV" && !c.classList.contains("gh-root") && c.offsetHeight > 100) || null;
+}
+function deckGeometry(win, hero) {
+  const W = win.innerWidth;
+  const heroH = hero && hero.offsetHeight > 100 ? hero.offsetHeight : win.innerHeight;
+  const barInside = heroH >= win.innerHeight - 4;
+  const bar = (barInside ? PLAY_BAR : 0) + BAR_GAP;
+  let s = heroH / DECK_H, rootH = DECK_H;
+  if (s < 1) { s = 1; rootH = heroH; }   // short hero band: keep the Deck text size, only shorten .gh-root
+  if (Math.abs(s - 1) < 0.02) return { s: 1, rootH, barBottom: bar, barRight: W - 28 };
+  return { s, rootH: DECK_H, barBottom: bar / s, barRight: W / s - 28 };
 }
 function DeckPanel({ appid }) {
   const ref = useRef(null);
   const [g, setG] = useState(null);
   useLayoutEffect(() => {
-    const w = ref.current?.ownerDocument?.defaultView;
+    const el = ref.current, w = el?.ownerDocument?.defaultView;
     if (!w) return;
-    const upd = () => setG(deckGeometry(w));
+    const upd = () => {
+      const n = deckGeometry(w, heroOf(el));
+      setG(p => p && p.s === n.s && p.rootH === n.rootH && p.barBottom === n.barBottom && p.barRight === n.barRight ? p : n);
+    };
     upd();
     w.addEventListener("resize", upd);
-    return () => w.removeEventListener("resize", upd);
+    const hero = heroOf(el);
+    const ro = hero && typeof w.ResizeObserver === "function" ? new w.ResizeObserver(upd) : null;
+    if (ro) ro.observe(hero);
+    return () => { w.removeEventListener("resize", upd); if (ro) ro.disconnect(); };
   }, []);
-  if (g) { FIT.rootH = DECK_H; FIT.barBottom = g.barBottom; FIT.barRight = g.barRight; useHubLook(g.s !== 1); }
+  if (g) { FIT.rootH = g.rootH; FIT.barBottom = g.barBottom; FIT.barRight = g.barRight; useHubLook(g.s !== 1); }
   // монитор/ТВ — вид и размеры хаба; свой экран Деки — как было (крупно, с подбором масштаба вверх)
-  const css = g && g.s !== 1 ? `.gh-root{zoom:${g.s};--gh-rail-limit:${48 / g.s}px}.gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}${HUB_LOOK_CSS}` : "";
+  const parts = [];
+  if (g && g.s !== 1) parts.push(`.gh-root{zoom:${g.s};--gh-rail-limit:${48 / g.s}px}`);
+  if (g && g.rootH !== DECK_H) parts.push(`.gh-root{height:${g.rootH}px!important}`);   // the base rule is injected later and would win otherwise
+  if (g && g.barBottom !== PLAY_BAR + BAR_GAP) parts.push(`.gh-factbar,.gh-shot{bottom:${g.barBottom}px!important}`);
+  if (g && g.s !== 1) parts.push(HUB_LOOK_CSS);
+  const css = parts.join("");
   return h(React.Fragment, null, h("style", { ref }, css), g ? h(GameHubPanel, { key: appid, appid }) : null);
 }
 
