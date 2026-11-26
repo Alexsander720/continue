@@ -45,7 +45,7 @@ class ReaderTests(unittest.TestCase):
 
     def test_unverified_fields_stay_hidden(self):
         card = read(HERE / "stage7_day117.info")
-        self.assertEqual(card["progress"]["village_rep"], 17)  # HUD showed 5 at this stage: field meaning unknown
+        self.assertEqual(card["progress"]["village_rep"], 17)  # HUD reputation moved 0 -> 10 while this stayed 17: not the HUD value
         self.assertEqual(card["progress"]["town_citizens"], 20)
         for field in ("village_rep", "town_citizens"):
             self.assertIn(field, card["unproven"])

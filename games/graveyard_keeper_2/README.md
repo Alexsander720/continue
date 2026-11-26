@@ -20,7 +20,7 @@ shows the same card as the PC.
 
 ## What stays hidden
 
-- `villageRep`: the sidecar value (17) did not match the reputation the player saw in the HUD (5), so its meaning is
+- `villageRep`: the sidecar value stayed 17 while the HUD reputation went from 0 to 10 between saves, so its meaning is
   unknown and it is never displayed.
 - `townCitizens`: matched the HUD (20) but was constant across all seven stages, so it stays unproven.
 
