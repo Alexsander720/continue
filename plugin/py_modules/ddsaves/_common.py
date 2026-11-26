@@ -295,6 +295,9 @@ def deck_home() -> Path:
     Desktop Linux (non-Deck): Decky still runs the backend as root, but the Steam user is not
     ``deck``. Fall back to the invoking sudo user, then to the single ``/home/*`` account that owns
     a Steam installation, and only then to ``$HOME``."""
+    explicit = os.environ.get("CONTINUE_HOME")
+    if explicit:   # set by reader_sandbox for its child, and by tests
+        return Path(explicit)
     if Path("/home/deck").is_dir():
         return Path("/home/deck")
     sudo_user = os.environ.get("SUDO_USER")

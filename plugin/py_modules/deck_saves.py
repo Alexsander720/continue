@@ -37,15 +37,16 @@ def inscryption(data_dir):
 # Та же копия, что в хабе (GameHub/ddsaves → py_modules/ddsaves, копирует deck_sync.py). Названия — только из данных
 # игр; прежние таблицы по памяти (царства Odyssey вперемешку, «Плато Начала», «Деревня персиковых цветов») удалены.
 
+_CURRENT = {"appid": None}   # appid of the card being read; lets the sandbox bind only that game's folders
+
+
 def _dd(slug, sub=""):
-    import importlib
-    try:
-        mod = importlib.import_module(f"ddsaves.{slug}")
-    except ModuleNotFoundError as e:   # публичная сборка: недоказанных разборов в ней нет
-        if e.name == f"ddsaves.{slug}":
-            return None
-        raise
-    r = mod.read(None)
+    import reader_sandbox
+    r = reader_sandbox.read_card(slug, _CURRENT.get("appid"))   # None: публичная сборка без этого разбора
+    if r is None:
+        return None
+    if r.get("error"):
+        raise RuntimeError(r["error"])
     if not r.get("source_path"):
         return None
     observed = r.get("observed_at")
@@ -152,6 +153,7 @@ def read(appid, data_dir):
     fn = READERS.get(int(appid))
     if not fn:
         return None
+    _CURRENT["appid"] = int(appid)
     try:
         return fn(data_dir)
     except Exception as e:  # битый сейв не должен ронять страницу игры

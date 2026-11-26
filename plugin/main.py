@@ -83,6 +83,8 @@ class Plugin:
             s["schema"] = 1
             self._write_settings(s)
         decky.logger.info("Continue?: старт, данные в %s", DATA)
+        import reader_sandbox
+        decky.logger.info("Continue?: reader sandbox %s", reader_sandbox.status())
 
     async def _unload(self):
         manager = getattr(self, "_standalone_media", None)
@@ -612,6 +614,11 @@ class Plugin:
         code = self.STEAM_LANGS.get(v) or {"ru": "ru", "uk": "uk", "en": "en"}.get(v[:2]) or "en"
         os.environ["CONTINUE_LANG"] = code
         return code
+
+    async def get_sandbox_status(self):
+        """Whether save readers run inside bubblewrap, and how often the sandbox fell back in-process."""
+        import reader_sandbox
+        return reader_sandbox.status()
 
     async def get_card(self, appid, name=""):
         appid = int(appid)
