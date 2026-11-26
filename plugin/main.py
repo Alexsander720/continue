@@ -140,6 +140,11 @@ class Plugin:
         from ddsaves._common import deck_home
         return str(deck_home() / ".local/share/Steam")
 
+    def _theme_music_dir(self):
+        """Game Theme Music plugin cache; lives under the Steam user's homebrew, not necessarily /home/deck."""
+        from ddsaves._common import deck_home
+        return str(deck_home() / "homebrew/data/SDH-GameThemeMusic/music")
+
     async def ensure_blank_movie(self):
         """Положить assets/gh_no_startup.webm (0,2 с чёрного) в config/uioverrides/movies Steam; путь для настройки —
         /uioverrides/movies/gh_no_startup.webm (так его видит SteamClient.Customization.GetLocalStartupMovies)."""
@@ -464,7 +469,7 @@ class Plugin:
         for appid, c in (self._hub_index().get("cards") or {}).items():
             tid = (c.get("media") or {}).get("theme_id")
             if (isinstance(tid, str) and re.fullmatch(r"[A-Za-z0-9_-]{1,128}", tid)
-                    and glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{glob.escape(tid)}.*")):
+                    and glob.glob(f"{self._theme_music_dir()}/{glob.escape(tid)}.*")):
                 out[appid] = tid
         return out
 
@@ -474,7 +479,7 @@ class Plugin:
             return await asyncio.get_running_loop().run_in_executor(None, self._media().music_files)
         out = {}
         for appid, tid in (await self.get_music_map()).items():
-            f = sorted(glob.glob(f"/home/deck/homebrew/data/SDH-GameThemeMusic/music/{glob.escape(tid)}.*"))
+            f = sorted(glob.glob(f"{self._theme_music_dir()}/{glob.escape(tid)}.*"))
             if f:
                 out[appid] = os.path.basename(f[0])
         return out
